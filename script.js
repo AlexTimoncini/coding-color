@@ -42,7 +42,7 @@ function calculate(){
     const textarea = document.getElementById('colorsCss');
     let css = textarea.value;
     //class construct
-    const calculator = new Calculator(from, to, absorbBg, css);
+    const calculator = new Calculator(from, to, css, absorbBg);
 
     console.log(calculator.calc())
 }
@@ -83,8 +83,8 @@ function getAbsorbBg(){
     if(checkbox.checked){
         const input = document.getElementById('bg')
         //validate input
-        const regex = /^#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$/gm;
-        const validation = regex.exec(input.value);
+        const regex = /^#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$/;
+        const validation = regex.test(input.value);
 
         return { 
             response: validation ? true : false,
