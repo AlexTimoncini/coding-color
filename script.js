@@ -44,22 +44,23 @@ function calculate(){
     //class construct
     const calculator = new Calculator(from, to, css, absorbBg);
 
-    console.log(calculator.calc())
+
+    convertCss(calculator.calc());
 }
 
 
 //functions
 
 function getFrom(){
-    let radios = document.getElementsByName('format_in');
-    let format = false;
-    radios.forEach((radio)=>{
-        if(radio.checked){
-            format = radio.value
+    let checkboxes = document.getElementById('from').querySelectorAll('input[type=checkbox]');
+    let format = [];
+    checkboxes.forEach((checkbox)=>{
+        if(checkbox.checked){
+            format.push(checkbox.value);
         }
     })
     return {
-        response: format ? true : false,
+        response: format.length ? true : false,
         data: format ? format : 'Initial format not chosen'
     }
 }
@@ -96,4 +97,8 @@ function getAbsorbBg(){
 
 function alert(msg){
     console.log(msg);
+}
+
+function convertCss(colorsData){
+
 }

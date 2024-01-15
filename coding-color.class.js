@@ -36,9 +36,10 @@ export class Calculator {
         //SECOND CONVERTION ALL TO RGBA
         let colorsValues = [...colors];
         colors.forEach((color, index)=>{
-            let colorValues = this.colorValues('hex', color.color);
+            let colorValues = this.colorValues(this._to_format, color.color);
             colorsValues[index].color = colorValues;
         })
+        
         return colorsValues;
     }
 
@@ -52,7 +53,6 @@ export class Calculator {
 
             case 'hex':
                 let hexToRgb = this.hexToRgb(color);
-                console.log(hexToRgb.response)
                 if(hexToRgb.response){
                     rgba.converted = true;                    
                     rgba.data = [...hexToRgb.data];
@@ -66,7 +66,12 @@ export class Calculator {
             case 'rgb' :
                 let rgbToArr = this.rgbValues(color);
                 if(rgbToArr.response){
-                    
+                    rgba.converted = true;                    
+                    rgba.data = [...rgbToArr.data];
+                    rgba.data.push(1); //aggiungo opacità piena
+                } else {
+                    rgba.converted = false;                    
+                    rgba.data = color;
                 }
             break;
 
