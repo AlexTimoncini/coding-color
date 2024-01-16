@@ -77,7 +77,7 @@ export class Calculator {
             case 'rgba' :
                 let match = color.match(/\(([^)]*)\)/);
                 let values = match ? match[1].split(',') : '';
-                rgba.converted = (values && values.length === 4 ? true : false);                    
+                rgba.converted = (values && values.length === 4);
                 rgba.data = rgba.converted ? values.map(v=>parseFloat(v)) : color;
             break;
 
@@ -100,7 +100,7 @@ export class Calculator {
         }
         let rgb = ['0x'+hex[0]+hex[1]|0,'0x'+hex[2]+hex[3]|0,'0x'+hex[4]+hex[5]|0]; 
         return { 
-            response: validation ? true : false,
+            response: validation,
             data: validation ? rgb : hex
         }
     }
@@ -111,7 +111,7 @@ export class Calculator {
         const regex = /^rgb\(\s*((25[0-5]|2[0-4]\d|1\d{2}|\d{1,2})\s*,\s*){2}(25[0-5]|2[0-4]\d|1\d{2}|\d{1,2})\s*\)$/;
         const match = rgb.match(regex);
         return {
-            response: match ? true : false,
+            response: !!match,
             data: match ? [parseInt(match[1]), parseInt(match[2]), parseInt(match[3])] : rgb
         };
     }

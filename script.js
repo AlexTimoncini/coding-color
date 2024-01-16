@@ -60,7 +60,7 @@ function getFrom(){
         }
     })
     return {
-        response: format.length ? true : false,
+        response: !!format.length,
         data: format.length ? format : 'Initial format not chosen'
     }
 }
@@ -74,7 +74,7 @@ function getTo(){
         }
     })
     return {
-        response: format ? true : false,
+        response: !!format,
         data: format ? format : 'Converting format not chosen'
     }
 }
@@ -88,7 +88,7 @@ function getAbsorbBg(){
         const validation = regex.test(input.value);
 
         return { 
-            response: validation ? true : false,
+            response: validation,
             data: validation ? input.value : 'Background value is not in hex format'
         }
     }
