@@ -61,7 +61,7 @@ function getFrom(){
     })
     return {
         response: format.length ? true : false,
-        data: format ? format : 'Initial format not chosen'
+        data: format.length ? format : 'Initial format not chosen'
     }
 }
 
@@ -100,5 +100,5 @@ function alert(msg){
 }
 
 function convertCss(colorsData){
-
+    console.log(colorsData)
 }

@@ -32,25 +32,24 @@ export class Calculator {
         */
         //FIRST COLOR EXTRACTION FROM CSS
         let colors = this.colorsFromCss(this._css);
-
         //SECOND CONVERTION ALL TO RGBA
         let colorsValues = [...colors];
         colors.forEach((color, index)=>{
-            let colorValues = this.colorValues(this._to_format, color.color);
-            colorsValues[index].color = colorValues;
+            let colorValues = this.colorValues(color.color, color.format);
+            console.log(colorValues)
+            colorsValues[index].color = colorValues.data;
         })
         
-        return colorsValues;
+        return this.convertColors(colorsValues, this._to_format);
     }
 
     //Convert any format into RGBA w/validation
-    colorValues(format, color){
+    colorValues(color, format){
         let rgba = {
             converted: false,
             data: null
         };
         switch(format) {
-
             case 'hex':
                 let hexToRgb = this.hexToRgb(color);
                 if(hexToRgb.response){
@@ -73,6 +72,13 @@ export class Calculator {
                     rgba.converted = false;                    
                     rgba.data = color;
                 }
+            break;
+
+            case 'rgba' :
+                let match = color.match(/\(([^)]*)\)/);
+                let values = match ? match[1].split(',') : '';
+                rgba.converted = (values && values.length === 4 ? true : false);                    
+                rgba.data = rgba.converted ? values.map(v=>parseFloat(v)) : color;
             break;
 
             default: 
@@ -112,15 +118,41 @@ export class Calculator {
 
     //get correct, hex, rgb or rgba colors value and string-position
     colorsFromCss(css){
-        const regex = /(?<=:)\s*#(?:[0-9a-fA-F]{3}){1,2}(?=\s*;)|(?<=:)\s*rgb\(\s*(?:\d{1,2}|1\d{2}|2[0-4]\d|25[0-5])\s*,\s*(?:\d{1,2}|1\d{2}|2[0-4]\d|25[0-5])\s*,\s*(?:\d{1,2}|1\d{2}|2[0-4]\d|25[0-5])\s*\)(?=\s*;)|(?<=:)\s*rgba\(\s*(?:\d{1,2}|1\d{2}|2[0-4]\d|25[0-5])\s*,\s*(?:\d{1,2}|1\d{2}|2[0-4]\d|25[0-5])\s*,\s*(?:\d{1,2}|1\d{2}|2[0-4]\d|25[0-5])\s*,\s*(?:0|1|0?\.\d+)\s*\)(?=\s*;)/g;
+        const regex = /\s*#(?:[0-9a-fA-F]{3}){1,2}\s*|\s*rgb\(\s*(?:\d{1,2}|1\d{2}|2[0-4]\d|25[0-5])\s*,\s*(?:\d{1,2}|1\d{2}|2[0-4]\d|25[0-5])\s*,\s*(?:\d{1,2}|1\d{2}|2[0-4]\d|25[0-5])\s*\)\s*|\s*rgba\(\s*(?:\d{1,2}|1\d{2}|2[0-4]\d|25[0-5])\s*,\s*(?:\d{1,2}|1\d{2}|2[0-4]\d|25[0-5])\s*,\s*(?:\d{1,2}|1\d{2}|2[0-4]\d|25[0-5])\s*,\s*(?:0|1|0?\.\d+)\s*\)\s*/gm;
         let matches;
         let colors = [];
         while ((matches = regex.exec(css)) !== null) {
             const match = matches[0];
             const matchStart = matches.index;
             const matchEnd = matchStart + match.length;
-            colors.push({color: match.trim(), start: matchStart, end: matchEnd})
+            let format;
+            if (match.trim().includes('#')){
+                format = 'hex';
+            } else if (match.trim().includes('rgba')){
+                format = 'rgba';
+            } else {
+                format = 'rgb';
+            }
+            colors.push({color: match.trim(), format: format, start: matchStart, end: matchEnd})
         }
         return colors
+    }
+
+    convertColors(colors, format){
+        const result = {
+            response: false,
+            data: []
+
+        };
+        if(colors){
+            colors.forEach((color)=>{
+                switch(color){
+                    case 'hex':
+                    break;
+                }
+            });
+        }
+
+        return  colors
     }
 }
