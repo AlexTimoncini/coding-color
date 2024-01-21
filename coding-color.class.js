@@ -93,12 +93,13 @@ export class Calculator {
         //validate hex
         const regex = /^#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$/;
         const validation = regex.test(hex);
-
+        
+        hex = hex.replace('#', '');
         //case hex is in 3 digit
-        if(validation && hex.slice(1).length === 3){
-            hex = hex[1]+hex[1]+hex[2]+hex[2]+hex[3]+hex[3];
+        if(validation && hex.length === 3){
+            hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
         }
-        let rgb = ['0x'+hex[0]+hex[1]|0,'0x'+hex[2]+hex[3]|0,'0x'+hex[4]+hex[5]|0]; 
+        let rgb = ['0x'+hex[0]+hex[1]|0,'0x'+hex[2]+hex[3]|0,'0x'+hex[4]+hex[5]|0];
         return { 
             response: validation ? true : false,
             data: validation ? rgb : hex
@@ -108,11 +109,12 @@ export class Calculator {
     //Convert rgb into an array of rgb values
     //Return the incorret rgb if validation is false
     rgbValues(rgb){
-        const regex = /^rgb\(\s*((25[0-5]|2[0-4]\d|1\d{2}|\d{1,2})\s*,\s*){2}(25[0-5]|2[0-4]\d|1\d{2}|\d{1,2})\s*\)$/;
+        const regex = /\((.*?)\)/;
         const match = rgb.match(regex);
+        console.log(rgb, match)
         return {
             response: match ? true : false,
-            data: match ? [parseInt(match[1]), parseInt(match[2]), parseInt(match[3])] : rgb
+            data: match ? match[1].split(',').map(x=>parseInt(x)) : rgb
         };
     }
 
