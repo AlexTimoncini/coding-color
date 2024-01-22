@@ -39,7 +39,7 @@ export class Calculator {
             colorsValues[index].color = colorValues.data;
         })
         
-        return this.convertColors(colorsValues, this._from_format, this._to_format);
+        return this.convertColors(colorsValues, this._from_format, this._to_format, this._bg);
     }
 
     //Convert any format into RGBA w/validation
@@ -138,19 +138,26 @@ export class Calculator {
         return colors
     }
 
-    convertColors(colors, from, to){
+    convertColors(colors, from, to, bg){
+        let bgValues = this.colorValues(bg, 'hex')
         if(colors){
             colors.forEach((color, index)=>{
                 if(from.includes(color.format)){
+                    let alpha = 1 - color.color[3];
+                    let red = Math.round((color.color[3] * (color.color[0] / 255) + (alpha * (bgValues.data[0] / 255))) * 255);
+                    let green = Math.round((color.color[3] * (color.color[1] / 255) + (alpha * (bgValues.data[1] / 255))) * 255);
+                    let blue = Math.round((color.color[3] * (color.color[2] / 255) + (alpha * (bgValues.data[2] / 255))) * 255);
                     switch(to){
                         case 'rgba':
                             color.color = 'rgba('+ color.color[0] +',' + color.color[1] + ','  + color.color[2] + ','  + color.color[3] + ')';
                             color.converted = true
                         break;
                         case 'rgb':
+                            color.color = 'rgb('+red+','+green+','+blue+')';
                             color.converted = true
                         break;
                         case 'hex':
+                            color.color = '#'+red.toString(16)+green.toString(16)+blue.toString(16)
                             color.converted = true
                         break;
                     }

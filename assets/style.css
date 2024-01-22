@@ -55,6 +55,10 @@ main{
     display: none;
 }
 
+.marked{
+    background-color: yellow;
+}
+
 .parameters{
     padding-top: 10px;
     display: inline-block;
@@ -86,6 +90,16 @@ textarea{
     font-family:'Courier New', Courier, monospace;
     letter-spacing: 2px;
     font-size: 1.5rem;
+}
+
+#output{
+    margin: 10px 0;
+    font-family:'Courier New', Courier, monospace;
+    letter-spacing: 2px;
+    font-size: 1.5rem;
+    width: 100%;
+    height: 500px;
+    text-wrap: normal;
 }
 
 button{
