@@ -36,11 +36,10 @@ export class Calculator {
         let colorsValues = [...colors];
         colors.forEach((color, index)=>{
             let colorValues = this.colorValues(color.color, color.format);
-            console.log(colorValues)
             colorsValues[index].color = colorValues.data;
         })
         
-        return this.convertColors(colorsValues, this._to_format);
+        return this.convertColors(colorsValues, this._from_format, this._to_format);
     }
 
     //Convert any format into RGBA w/validation
@@ -111,7 +110,6 @@ export class Calculator {
     rgbValues(rgb){
         const regex = /\((.*?)\)/;
         const match = rgb.match(regex);
-        console.log(rgb, match)
         return {
             response: !!match,
             data: match ? match[1].split(',').map(x=>parseInt(x)) : rgb
@@ -140,17 +138,24 @@ export class Calculator {
         return colors
     }
 
-    convertColors(colors, format){
-        const result = {
-            response: false,
-            data: []
-
-        };
+    convertColors(colors, from, to){
         if(colors){
-            colors.forEach((color)=>{
-                switch(color){
-                    case 'hex':
-                    break;
+            colors.forEach((color, index)=>{
+                if(from.includes(color.format)){
+                    switch(to){
+                        case 'rgba':
+                            color.color = 'rgba('+ color.color[0] +',' + color.color[1] + ','  + color.color[2] + ','  + color.color[3] + ')';
+                            color.converted = true
+                        break;
+                        case 'rgb':
+                            color.converted = true
+                        break;
+                        case 'hex':
+                            color.converted = true
+                        break;
+                    }
+                } else {
+                    color.converted = false
                 }
             });
         }
