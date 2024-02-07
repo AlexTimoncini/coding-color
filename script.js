@@ -98,30 +98,31 @@ function alert(msg){
 function convertCss(colorsData){
     let outputCss = textarea.value
     let colorsToConvert = colorsData.filter(c=>c.converted)
-    console.log(colorsData)
     let shift = 0
-    for(let i = 0; i< colorsToConvert.length; i++){
+    outputCss.replace(/\n/g, '<br>')
+    for(let i = 0; i< colorsToConvert.length; i++) {
         let col = colorsToConvert[i]
-        let stringConversion = replaceSubstring(outputCss, col.start, col.end, col.color, shift)
+        let stringConversion = replaceSubstring(outputCss, col.start, col.end, col.color)
         outputCss = stringConversion.cssConverted
-        if(i < colorsToConvert.length - 1){
+        if (i < colorsToConvert.length - 1) {
             shift += stringConversion.shift
-            colorsToConvert[i+1].start += shift
-            colorsToConvert[i+1].end += shift
+            colorsToConvert[i + 1].start += shift
+            colorsToConvert[i + 1].end += shift
         }
+        console.log(shift)
     }
     textarea.classList.add('hidden')
     output.classList.remove('hidden')
     output.innerHTML = outputCss
 }
 
-function replaceSubstring(originalString, start, end, replacement, shift) {
-    let htmlReplacement = '<span class="marked" title="'+replacement+'">'+replacement+'</span>'
+function replaceSubstring(originalString, start, end, replacement) {
+    let htmlReplacement = ' <span class="marked" title="'+replacement+'">'+replacement+'</span>'
     let positionShift = htmlReplacement.length - (end - start)
     let prefix = originalString.substring(0, start)
     let suffix = originalString.substring(end)
     return {
             cssConverted: prefix + htmlReplacement + suffix,
-            shift: positionShift + shift
+            shift: positionShift
         }
 }
