@@ -9,7 +9,7 @@
 </head>
 <body>
     <nav>
-        <img src="./assets/ocs-logo.png" alt="ocs logo" div class="ocs-logo">
+        <img src="./assets/ocs-logo.png" alt="ocs logo" class="ocs-logo">
         <h1 class="coding-color">CODING COLOR</h1>
     </nav>
     <main>
@@ -17,7 +17,7 @@
             <h2>Color Converter</h2>
             <p>Convert your css colors absorbing or not the opacity</p>
             <p class="danger hidden">Rgba to hex will not considerate opacity if the absorbing option is not checked!</p>
-            <form onsubmit="event.preventDefault()">
+            <form onsubmit="return false;">
                 <div class="parameters" id="from">
                     <h3>From</h3>
                     <label for="rgb_in">RGB</label>
@@ -47,9 +47,10 @@
                     <label for="bg" title="Only works from RGBA to RGB/HEX">Bg Color that wil be absorbed with opacity</label>
                     <input type="text" name="bg" id="bg" value="#fff">
                 </div>
+                <label for="colorsCss">Css</label>
                 <textarea id="colorsCss" placeholder="Import your css colors in any format (rgb, rgba or hex) Es: --orange: rgba(255, 255, 255, .4);"></textarea>
                 <pre id="output" class="hidden"></pre>
-                <button id="calculate_btn">CONVERTI CSS</button>
+                <button id="calculate_btn">CONVERT CSS</button>
             </form>
         </div>
     </main>
