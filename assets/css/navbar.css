@@ -1,0 +1,13 @@
+/*NAVBAR*/
+nav{
+    background-color: var(--peach);
+    height: 90px;
+    padding: 0 10px;
+}
+
+nav a{
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 7px 0;
+}

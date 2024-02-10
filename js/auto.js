@@ -1,4 +1,4 @@
-import {Calculator} from './coding-color.class.js';
+import {Calculator} from './classes/coding-color.class.js';
 
 const form = document.querySelector('form')
 const textarea = document.getElementById('colorsCss')
