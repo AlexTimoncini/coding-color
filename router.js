@@ -1,6 +1,10 @@
 //ROUTER
 import { Router } from './js/classes/router.class.js'
-let router = new Router('http://127.0.0.1:8000');
+let url = window.location.href
+if(url[url.length - 1] === "/"){
+    url = url.substring(0, url.length - 1)
+}
+let router = new Router(url);
 //rotte
 router.get('/', function(){buildPage('home.html', 'home.css')});
 router.get('/manual', function(){buildPage('manual.html')});
