@@ -8,20 +8,15 @@ box-sizing: border-box;
 
 :root {
     /*COLORS*/
-    --white: #F7F1E1;
-    --cream: #F6E6CB;
-    --dcream: #EACEA3;
-    --beige: #CDAD93;
-    --terracotta: #B9816D;
-    --dterracotta: #885444;
-    --peach: #E5AE8A;
-    --orange: #BF835A;
-    --green: #4B5243;
-    --dgreen: #2C3834;
+    --white: #fefcf9;
+    --cream: #f6bd60;
+    --pink: #f5cac3;
+    --fucsia: #f28482;
+    --green: #84a59d;
     
     /*FONTS*/
     --mono: 'source-code-pro';
-    --display: 'lust-sans';
+    --display: 'Verdana, Geneva, Tahoma, sans-serif';
 
     /*PADDING*/
     --paddingX: 20px;
@@ -29,8 +24,8 @@ box-sizing: border-box;
 
 body{
     min-height: 100vh;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    color: var(--dgreen);
+    font-family: var(--display);
+    color: var(--green);
     background-color: var(--white);
     overflow-x: hidden;
 }
@@ -41,7 +36,7 @@ main{
 
 a{
     text-decoration: none;
-    color: #444444;
+    color: var(--green);
 }
 
 a:hover{
@@ -66,6 +61,27 @@ a:hover{
     text-wrap: nowrap;
 }
 
-.black-to-dgreen{
-    filter: invert(28%) sepia(2%) saturate(2907%) hue-rotate(46deg) brightness(100%) contrast(85%);
+.black-to-green{
+    filter: invert(63%) sepia(5%) saturate(1244%) hue-rotate(115deg) brightness(99%) contrast(88%);
+}
+
+/*BG-COLOR CLASSES*/
+.bg-white{
+    background-color: var(--white);
+}
+
+.bg-cream{
+    background-color: var(--cream);
+}
+
+.bg-pink{
+    background-color: var(--pink);
+}
+
+.bg-fucsia{
+    background-color: var(--fucsia);
+}
+
+.bg-green{
+    background-color: var(--green);
 }

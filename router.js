@@ -1,7 +1,7 @@
 //ROUTER
 import { Router } from './js/classes/router.class.js'
-let router = new Router('https://alextimoncini.github.io/coding-color');
-//let router = new Router('http://127.0.0.1:8000');
+//let router = new Router('https://alextimoncini.github.io/coding-color');
+let router = new Router('http://127.0.0.1:8000');
 //rotte
 router.get('/', function(){buildPage('home.html', 'home.css')});
 router.get('/manual', function(){buildPage('manual.html')});

@@ -1,8 +1,8 @@
 /*NAVBAR*/
 nav{
-    background-color: var(--peach);
     height: 90px;
     padding: 0 10px;
+    border-bottom: 2px solid var(--green);
 }
 
 nav a{

@@ -1,9 +1,9 @@
 footer{
     height: 32px;
-    font-size: 12px;
-    padding: 10px 0;
+    font-size: 14px;
+    padding: 8px 0;
     position: relative;
-    border-top: 1px solid var(--dgreen);
+    border-top: 1px solid var(--green);
 }
 
 .logo-right{
