@@ -94,6 +94,11 @@ a:hover{
 .hidden{
     display: none;
 }
+
+.ghost{
+    position: absolute;
+    opacity: 0;
+}
 /*BG-COLOR CLASSES*/
 .bg-white{
     background-color: var(--white);
