@@ -1,6 +1,5 @@
 //ROUTER
 import { Router } from './js/classes/router.class.js'
-//let router = new Router('https://alextimoncini.github.io/coding-color');
 //let router = new Router('http://127.0.0.1:8000');
 //let router = new Router('http://localhost:8000');
 let router = new Router('https://coding-color.it');
@@ -28,6 +27,7 @@ function buildPage(mainHTML, css, src){
     async function main() {
         const resp = await fetch("./views/"+mainHTML);
         const html = await resp.text();
+        document.getElementById("app").innerHTML = ''
         document.getElementById("app").insertAdjacentHTML("afterbegin", html);
     }
 
@@ -43,9 +43,16 @@ function buildPage(mainHTML, css, src){
         script.type = "module";
         document.body.append(script);
     }
-    if(css)loadCss()
-    navbar()
-    main()
-    footer()
-    if(src)script()
+
+    if (!document.getElementById("navbar")) {
+        navbar();
+    }
+
+    if (!document.getElementById("footer")) {
+        footer();
+    }
+
+    if (css) loadCss();
+    main();
+    if (src) script();
 }
