@@ -1,13 +1,12 @@
 import {Calculator} from './classes/coding-color.class.js';
+document.addEventListener("DOMContentLoaded", () => {
+    const textarea = document.getElementById('colorsCss')
+    const output = document.getElementById('output')
+    //add event handler on btn click
+    const btn = document.getElementById('calculate_btn')
+    btn.addEventListener('click', ()=>{calculate()})
 
-const form = document.querySelector('form')
-const textarea = document.getElementById('colorsCss')
-const output = document.getElementById('output')
-//add event handler on btn click
-const btn = document.getElementById('calculate_btn')
-btn.addEventListener('click', ()=>{calculate()})
-
-
+});
 function calculate(){
     //from
     const fromData = getFrom();
@@ -60,7 +59,6 @@ function getFrom(){
         data: format.length ? format : 'Initial format not chosen'
     }
 }
-
 function getTo(){
     let radios = document.getElementsByName('format_out');
     let format = false;
@@ -74,7 +72,6 @@ function getTo(){
         data: format ? format : 'Converting format not chosen'
     }
 }
-
 function getAbsorbBg(){
     const checkbox = document.getElementById('absorb_op');
     if(checkbox.checked){
@@ -90,11 +87,9 @@ function getAbsorbBg(){
     }
     return false;
 }
-
 function alert(msg){
     console.log(msg);
 }
-
 function convertCss(colorsData){
     let outputCss = textarea.value
     let colorsToConvert = colorsData.filter(c=>c.converted)
@@ -115,7 +110,6 @@ function convertCss(colorsData){
     output.classList.remove('hidden')
     output.innerHTML = outputCss
 }
-
 function replaceSubstring(originalString, start, end, replacement) {
     let htmlReplacement = ' <span class="marked" title="'+replacement+'">'+replacement+'</span>'
     let positionShift = htmlReplacement.length - (end - start)
@@ -124,5 +118,6 @@ function replaceSubstring(originalString, start, end, replacement) {
     return {
             cssConverted: prefix + htmlReplacement + suffix,
             shift: positionShift
-        }
+    }
 }
+

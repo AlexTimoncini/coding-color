@@ -8,7 +8,7 @@ box-sizing: border-box;
 
 :root {
     /*COLORS*/
-    --white: #fefcf9;
+    --white: #fff;
     --cream: #f6bd60;
     --pink: #f5cac3;
     --fucsia: #f28482;
@@ -16,7 +16,7 @@ box-sizing: border-box;
     
     /*FONTS*/
     --mono: 'source-code-pro';
-    --display: 'Verdana, Geneva, Tahoma, sans-serif';
+    --display: "Comic Sans MS", "sans-serif";
 
     /*PADDING*/
     --paddingX: 20px;
@@ -31,7 +31,8 @@ body{
 }
 
 main{
-    min-height: calc(100vh - 90px - 32px);
+    height: calc(100vh - 92px - 37px);
+    overflow-y: auto;
 }
 
 a{
@@ -65,6 +66,34 @@ a:hover{
     filter: invert(63%) sepia(5%) saturate(1244%) hue-rotate(115deg) brightness(99%) contrast(88%);
 }
 
+.container{
+    max-width: 80%;
+    margin: 0 auto 0;
+    height: 100%;
+    padding: 20px 50px;
+}
+
+.row{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.col-2-md-10{
+    width: 20%!important;
+}
+
+.col-8-md-10{
+    width: 80%!important;
+}
+
+.danger{
+    color: rgb(243, 116, 116);
+    font-size: 1.1rem;
+}
+
+.hidden{
+    display: none;
+}
 /*BG-COLOR CLASSES*/
 .bg-white{
     background-color: var(--white);
@@ -84,4 +113,27 @@ a:hover{
 
 .bg-green{
     background-color: var(--green);
+}
+
+/*MEDIA QUERIES*/
+@media screen and (max-width: 700px) {
+    .container{
+        max-width: 100%;
+        padding: 20px 20px;
+    }
+
+    .col-2-md-10{
+        width: 100%!important;
+    }
+
+    .col-8-md-10{
+        width: 100%!important;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .container{
+        max-width: 100%;
+        padding: 20px 10px;
+    }
 }

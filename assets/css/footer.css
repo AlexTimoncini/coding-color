@@ -1,5 +1,5 @@
 footer{
-    height: 32px;
+    width: 100%;
     font-size: 14px;
     padding: 8px 0;
     position: relative;
@@ -9,8 +9,8 @@ footer{
 .logo-right{
     position: absolute;
     padding: 5px;
-    right: 0;
     top: 0;
     height: 100%;
-    aspect-ratio: 1/1;
+    right: 0;
+    width: 36px;
 }
