@@ -7,8 +7,8 @@ main{
     padding: var(--paddingX) 0;
 }   
 
-main .card{
-    max-width: 300px;
+.card{
+    max-width: 250px;
     aspect-ratio: 1/1;
     width: 100%;
     margin: 0 5%;
@@ -17,4 +17,14 @@ main .card{
     box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
 }
 
-/*CARD CSS*/
+.card img{
+    margin: 0 auto;
+}
+
+@media screen and (max-width: 500px) {
+    .card{
+        max-width: 150px;
+        padding: 20px 10px;
+        margin: 0 20%;
+    }
+}
