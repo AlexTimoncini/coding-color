@@ -1,21 +1,27 @@
 //ROUTER
 import { Router } from './js/classes/router.class.js'
 //let router = new Router('http://127.0.0.1:8000');
-//let router = new Router('http://localhost:8000');
-let router = new Router('https://coding-color.it');
+let router = new Router('http://localhost:8000');
+//let router = new Router('https://coding-color.it');
 //rotte
 router.get('/', function(){buildPage('home.html', 'home.css')});
 router.get('/manual', function(){buildPage('manual.html')});
-router.get('/automatic', function(){buildPage('auto.html', 'main.css', 'auto.js')});
+router.get('/automatic', function(){buildPage('auto.html', 'auto.css', 'auto.js')});
 router.get('/single', function(){buildPage('single.html')});
 router.start();
 
 function buildPage(mainHTML, css, src){
+    function removeOldStyles() {
+        const existingStyles = document.querySelectorAll('link[rel="stylesheet"]:not([data-default=true])');
+        existingStyles.forEach(style => style.remove());
+    }
     function loadCss(){
-        let link = document.createElement('link');
-        link.rel = "stylesheet";
-        link.href = "./assets/css/"+css;
-        document.head.append(link);
+        if(css){
+            let link = document.createElement('link');
+            link.rel = "stylesheet";
+            link.href = "./assets/css/"+css;
+            document.head.append(link);
+        }
     }
 
     async function navbar() {
@@ -52,7 +58,8 @@ function buildPage(mainHTML, css, src){
         footer();
     }
 
-    if (css) loadCss();
+    removeOldStyles()
+    loadCss();
     main();
-    if (src) script();
+    if(src) script();
 }
