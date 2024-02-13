@@ -99,6 +99,10 @@ a:hover{
 .pl-2{
     padding-left: 1rem;
 }
+
+.ml-auto{
+    margin-left: auto;
+}
 /*BG-COLOR CLASSES*/
 .bg-white{
     background-color: var(--white);

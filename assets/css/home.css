@@ -20,13 +20,13 @@ main{
 section .container{
     display: flex;
     align-items: center;
-    flex-wrap: wrap;
+    flex-wrap: wrap;    
+    max-width: 1000px;
 }
 
 section img{
     max-width: 400px;
     aspect-ratio: 1/1;
-    margin: 0 auto;
     display: block;
 }
 
@@ -36,4 +36,14 @@ section img{
 
 section.order-reverse{
     background-color: var(--lgray);
+}
+
+@media screen and (max-width: 500px) {
+    .title{
+        margin-bottom: 2rem;
+    }
+
+    main{
+        padding-top: 2rem;
+    }
 }
