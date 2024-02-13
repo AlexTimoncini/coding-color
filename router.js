@@ -5,6 +5,7 @@ import { Router } from './js/classes/router.class.js'
 let router = new Router('https://coding-color.it');
 //rotte
 router.get('/', function(){buildPage('home.html', 'home.css')});
+router.get('/tools', function(){buildPage('tools.html', 'tools.css')});
 router.get('/manual', function(){buildPage('manual.html')});
 router.get('/automatic', function(){buildPage('auto.html', 'auto.css', 'auto.js')});
 router.get('/single', function(){buildPage('single.html')});

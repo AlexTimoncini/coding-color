@@ -11,6 +11,8 @@ box-sizing: border-box;
     --white: #fff;
     --black: #000;
     --lgray: #eeeeee;
+    --blue: #6865f7;
+    --yellow: #ffd166;
     /*FONTS*/
     --mono: 'source-code-pro';
     --display: 'Roboto', sans-serif;
@@ -103,27 +105,40 @@ a:hover{
 .ml-auto{
     margin-left: auto;
 }
+
+.mx-auto{
+    margin: 0 auto;
+}
+
+a.btn-primary{
+    display: inline-block;
+    border: 1px solid;
+    border-color: var(--black);
+    padding: 15px 13px;
+    border-radius: 20px;
+    font-weight: bold;
+    text-decoration: none;
+    transition: all 0.33s ease-in-out;
+}
+
+a.btn-primary:hover{    
+    color: var(--white);
+    background-color: var(--blue);
+    border-color: var(--blue);
+}
+
 /*BG-COLOR CLASSES*/
 .bg-white{
     background-color: var(--white);
 }
 
-.bg-cream{
-    background-color: var(--cream);
+.bg-black{
+    background-color: var(--black);
 }
 
-.bg-pink{
-    background-color: var(--pink);
+.bg-lgray{
+    background-color: var(--lgray);
 }
-
-.bg-fucsia{
-    background-color: var(--fucsia);
-}
-
-.bg-green{
-    background-color: var(--green);
-}
-
 /*MEDIA QUERIES*/
 @media screen and (max-width: 700px) {
     .container{

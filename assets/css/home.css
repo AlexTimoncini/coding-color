@@ -21,7 +21,7 @@ section .container{
     display: flex;
     align-items: center;
     flex-wrap: wrap;    
-    max-width: 1000px;
+    max-width: 1100px;
 }
 
 section img{
@@ -34,8 +34,8 @@ section img{
     flex-direction: row-reverse;
 }
 
-section.order-reverse{
-    background-color: var(--lgray);
+.btn-primary{
+    margin-top: 1rem
 }
 
 @media screen and (max-width: 500px) {
@@ -45,5 +45,11 @@ section.order-reverse{
 
     main{
         padding-top: 2rem;
+    }
+}
+
+@media screen and (max-width: 700px) {
+    section img{
+        margin: 0 auto;
     }
 }
