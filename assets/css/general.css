@@ -85,6 +85,14 @@ a:hover{
     width: 50%!important;
 }
 
+.col-3-md-10{
+    width: 33%!important;
+}
+
+.col-3-lg-10{
+    width: 33%!important;
+}
+
 .danger{
     color: rgb(243, 116, 116);
     font-size: 1.1rem;
@@ -139,7 +147,21 @@ a.btn-primary:hover{
 .bg-lgray{
     background-color: var(--lgray);
 }
+
+.bg-yellow{
+    background-color: var(--yellow);
+}
+
+.bg-blue{
+    background-color: var(--blue);
+}
 /*MEDIA QUERIES*/
+@media screen and (max-width: 992px) {
+    .col-3-lg-10{
+        width: 100%!important;
+    }
+}
+
 @media screen and (max-width: 700px) {
     .container{
         max-width: 100%;
@@ -155,6 +177,10 @@ a.btn-primary:hover{
     }
 
     .col-5-md-10{
+        width: 100%!important;
+    }
+
+    .col-3-md-10{
         width: 100%!important;
     }
 }
