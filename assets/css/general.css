@@ -9,14 +9,11 @@ box-sizing: border-box;
 :root {
     /*COLORS*/
     --white: #fff;
-    --cream: #f6bd60;
-    --pink: #f5cac3;
-    --fucsia: #f28482;
-    --green: #84a59d;
-    
+    --black: #000;
+    --lgray: #eeeeee;
     /*FONTS*/
     --mono: 'source-code-pro';
-    --display: "Comic Sans MS", "sans-serif";
+    --display: 'Roboto', sans-serif;
 
     /*PADDING*/
     --paddingX: 20px;
@@ -25,7 +22,7 @@ box-sizing: border-box;
 body{
     min-height: 100vh;
     font-family: var(--display);
-    color: var(--green);
+    color: var(--black);
     background-color: var(--white);
     overflow-x: hidden;
 }
@@ -62,10 +59,6 @@ a:hover{
     text-wrap: none;
 }
 
-.black-to-green{
-    filter: invert(63%) sepia(5%) saturate(1244%) hue-rotate(115deg) brightness(99%) contrast(88%);
-}
-
 .container{
     max-width: 80%;
     margin: 0 auto 0;
@@ -86,6 +79,10 @@ a:hover{
     width: 80%!important;
 }
 
+.col-5-md-10{
+    width: 50%!important;
+}
+
 .danger{
     color: rgb(243, 116, 116);
     font-size: 1.1rem;
@@ -98,6 +95,9 @@ a:hover{
 .ghost{
     position: absolute;
     opacity: 0;
+}
+.pl-2{
+    padding-left: 1rem;
 }
 /*BG-COLOR CLASSES*/
 .bg-white{
@@ -134,6 +134,10 @@ a:hover{
     .col-8-md-10{
         width: 100%!important;
     }
+
+    .col-5-md-10{
+        width: 100%!important;
+    }
 }
 
 @media screen and (max-width: 500px) {
@@ -141,4 +145,10 @@ a:hover{
         max-width: 100%;
         padding: 20px 10px;
     }
+}
+
+/*FONT*/
+@font-face {
+    font-family: 'Roboto';
+    src: url(../Roboto/Roboto-Regular.ttf) format('truetype');
 }

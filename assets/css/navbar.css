@@ -1,8 +1,7 @@
 /*NAVBAR*/
 nav{
-    height: 90px;
+    height: 70px;
     padding: 0 10px;
-    border-bottom: 2px solid var(--green);
 }
 
 nav a{
