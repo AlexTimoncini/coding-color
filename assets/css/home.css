@@ -52,4 +52,7 @@ section img{
     section img{
         margin: 0 auto;
     }
+    article{
+        text-align: center;
+    }
 }
