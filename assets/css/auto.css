@@ -2,6 +2,7 @@
     margin: 10px 0;
     border-right: 1px solid var(--green);
     min-height: calc(100vh - 90px - 37px - 20px);
+    min-width: 220px;
     padding: 0 10px;
 }
 
@@ -15,5 +16,26 @@
     border-radius: 5px;
     font-size: 1.7rem;
     cursor: pointer;
+}
+
+label.btn-primary{
+    padding: 6px 13px;
+    cursor: pointer;
+    transition-duration: 0.2s;
+    margin: 0.5rem 0;
+}
+
+label.btn-primary:hover{
+    transform: scale(1.05);
+}
+
+label.btn-primary:active{
+    transform: scale(0.95);
+}
+
+input:checked + label.btn-primary{
+    color: var(--white);
+    background-color: var(--blue);
+    border-color: var(--blue);
 }
 

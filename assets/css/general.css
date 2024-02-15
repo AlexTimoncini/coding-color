@@ -118,7 +118,7 @@ a:hover{
     margin: 0 auto;
 }
 
-a.btn-primary{
+.btn-primary{
     display: inline-block;
     border: 1px solid;
     border-color: var(--black);
@@ -127,9 +127,10 @@ a.btn-primary{
     font-weight: bold;
     text-decoration: none;
     transition: all 0.33s ease-in-out;
+    user-select: none;
 }
 
-a.btn-primary:hover{    
+a.btn-primary:hover{
     color: var(--white);
     background-color: var(--blue);
     border-color: var(--blue);
