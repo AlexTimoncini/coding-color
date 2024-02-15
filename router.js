@@ -11,11 +11,16 @@ router.get('/automatic', function(){buildPage('auto.html', 'auto.css', 'auto.js'
 router.get('/single', function(){buildPage('single.html')});
 router.start();
 
-function buildPage(mainHTML, css, src){
+async function buildPage(mainHTML, css, src){
+    if (document.getElementById("loader")) {
+        document.getElementById("loader").classList.remove("hidden")
+    }
+
     function removeOldStyles() {
         const existingStyles = document.querySelectorAll('link[rel="stylesheet"]:not([data-default=true])');
         existingStyles.forEach(style => style.remove());
     }
+
     function loadCss(){
         if(css){
             let link = document.createElement('link');
@@ -23,6 +28,13 @@ function buildPage(mainHTML, css, src){
             link.href = "./assets/css/"+css;
             document.head.append(link);
         }
+        return Promise.resolve();
+    }
+
+    async function loader() {
+        const resp = await fetch("./components/loader.html");
+        const html = await resp.text();
+        document.getElementById("app").insertAdjacentHTML("beforebegin", html);
     }
 
     async function navbar() {
@@ -51,16 +63,24 @@ function buildPage(mainHTML, css, src){
         document.body.append(script);
     }
 
+    if (!document.getElementById("loader")) {
+        await loader();
+    }
+
     if (!document.getElementById("navbar")) {
-        navbar();
+        await navbar();
     }
 
     if (!document.getElementById("footer")) {
-        footer();
+        await footer();
     }
 
-    main();
+    await main();
     removeOldStyles()
     loadCss();
     if(src) script();
+    
+    setTimeout(() => {
+        document.getElementById('loader').classList.add('hidden');
+    }, 1000);
 }
