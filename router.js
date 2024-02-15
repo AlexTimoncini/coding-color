@@ -12,6 +12,7 @@ router.get('/single', function(){buildPage('single.html')});
 router.start();
 
 async function buildPage(mainHTML, css, src){
+    disableScroll()
     if (document.getElementById("loader")) {
         document.getElementById("loader").classList.remove("hidden")
     }
@@ -82,5 +83,6 @@ async function buildPage(mainHTML, css, src){
     
     setTimeout(() => {
         document.getElementById('loader').classList.add('hidden');
+        enableScroll()
     }, 1000);
 }
