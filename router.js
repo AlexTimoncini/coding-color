@@ -5,39 +5,43 @@ import { Router } from './js/classes/router.class.js'
 let router = new Router('https://coding-color.it');
 //rotte
 router.get('/', function(){
-    buildPage('home.html',
-        ['home.css'])
+     buildPage('home.html',
+         ['home.css']).then(()=>stopLoading())
 });
 
 router.get('/tools', function(){
     buildPage('tools.html',
-        ['tools.css'])
+        ['tools.css']).then(()=>stopLoading())
 });
 router.get('/manual', function(){
-    buildPage('manual.html')
+    buildPage('manual.html').then(()=>stopLoading())
 });
 router.get('/automatic', function(){
     buildPage('auto.html',
         ['shared/codemirror.min.css', 'shared/sidebar.css', 'shared/toggle.css', 'auto.css'],
-        ['shared/codemirror.min.js', 'shared/sidebar.js', 'auto.js'])
+        ['shared/codemirror.min.js', 'shared/sidebar.js', 'auto.js']).then(()=>stopLoading())
 });
 router.get('/single', function(){
-    buildPage('single.html')
+    buildPage('single.html').then(()=>stopLoading())
 });
 router.start();
 
 async function buildPage(mainHTML, css, src){
-    //START LOADER
-    disableScroll()
-    if (document.getElementById("loader")) {
-        document.getElementById("loader").classList.remove("hidden")
-    }
+    //RUN
+    startLoading()
+    removeOldStyles()
+    loadCss();
+    if (!document.getElementById("loader"))await loader()
+    if (!document.getElementById("navbar"))await navbar()
+    if (!document.getElementById("footer"))await footer()
+    await main()
+    script()
 
+    //Functions
     function removeOldStyles() {
         const existingStyles = document.querySelectorAll('link[rel="stylesheet"]:not([data-default=true])');
         existingStyles.forEach(style => style.remove());
     }
-
     function loadCss(){
         if(css){
             css.forEach((url)=>{
@@ -48,32 +52,27 @@ async function buildPage(mainHTML, css, src){
             })
         }
     }
-
     async function loader() {
         const resp = await fetch("./components/loader.html");
         const html = await resp.text();
         document.getElementById("app").insertAdjacentHTML("beforebegin", html);
     }
-
     async function navbar() {
         const resp = await fetch("./components/navbar.html");
         const html = await resp.text();
         document.getElementById("app").insertAdjacentHTML("beforebegin", html);
     }
-
     async function main() {
         const resp = await fetch("./views/"+mainHTML);
         const html = await resp.text();
         document.getElementById("app").innerHTML = ''
         document.getElementById("app").insertAdjacentHTML("afterbegin", html);
     }
-
     async function footer() {
         const resp = await fetch("./components/footer.html");
         const html = await resp.text();
         document.getElementById("app").insertAdjacentHTML("afterend", html);
     }
-
     function script(){
         if(src){
             src.forEach((url)=>{
@@ -84,17 +83,15 @@ async function buildPage(mainHTML, css, src){
             })
         }
     }
+}
 
-    //RUN
-    removeOldStyles()
-    loadCss();
-    if (!document.getElementById("loader"))await loader()
-    if (!document.getElementById("navbar"))await navbar()
-    if (!document.getElementById("footer"))await footer()
-    await main()
-    script()
-    
-    //STOP LOADER
+function startLoading(){
+    disableScroll()
+    if (document.getElementById("loader")) {
+        document.getElementById("loader").classList.remove("hidden")
+    }
+}
+function stopLoading(){
     setTimeout(() => {
         document.getElementById('loader').classList.add('hidden');
         enableScroll()
