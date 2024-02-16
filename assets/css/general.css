@@ -34,11 +34,6 @@ main{
     overflow-y: auto;
 }
 
-a{
-    text-decoration: none;
-    color: var(--green);
-}
-
 a:hover{
     text-decoration: underline;
 }
@@ -118,22 +113,33 @@ a:hover{
     margin: 0 auto;
 }
 
+.mb-2{
+    margin-bottom: 1rem;
+}
+
+a{
+    text-decoration: none;
+    color: var(--black);
+}
+
 .btn-primary{
     display: inline-block;
     border: 1px solid;
-    border-color: var(--black);
+    border-color: var(--blue);
     padding: 15px 13px;
     border-radius: 20px;
     font-weight: bold;
     text-decoration: none;
     transition: all 0.33s ease-in-out;
     user-select: none;
+    color: var(--blue)
 }
 
 a.btn-primary:hover{
     color: var(--white);
     background-color: var(--blue);
     border-color: var(--blue);
+    text-decoration: none;
 }
 
 /*BG-COLOR CLASSES*/

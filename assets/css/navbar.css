@@ -2,6 +2,7 @@
 nav{
     height: 70px;
     padding: 0 10px;
+    background-color: var(--lgray);
 }
 
 nav a{
