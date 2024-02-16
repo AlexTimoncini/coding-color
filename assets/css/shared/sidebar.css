@@ -81,6 +81,7 @@ input:checked + label.btn-primary{
 
 .input-number{
     width: 50px;
+    text-align: center;
 }
 
 .input-primary:focus{
