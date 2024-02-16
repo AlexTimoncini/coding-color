@@ -1,7 +1,7 @@
 /*STRUCTURE SIDE*/
 .sidebar{
     position: relative;
-    height: calc(100vh - 70px);
+    height: 100%;
     width: 220px;
     padding: 30px 10px;
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
@@ -19,7 +19,6 @@
 }
 
 .filter-column{
-    border-right: 1px solid var(--green);
     height: 100%;
 }
 
