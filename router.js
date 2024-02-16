@@ -35,7 +35,7 @@ async function buildPage(mainHTML, css, src){
     if (!document.getElementById("navbar"))await navbar()
     if (!document.getElementById("footer"))await footer()
     await main()
-    script()
+    await script()
 
     //Functions
     function removeOldStyles() {
@@ -73,15 +73,22 @@ async function buildPage(mainHTML, css, src){
         const html = await resp.text();
         document.getElementById("app").insertAdjacentHTML("afterend", html);
     }
-    function script(){
-        if(src){
-            src.forEach((url)=>{
-                let script = document.createElement('script');
-                script.src = "./js/"+url;
-                script.type = "module";
-                document.body.append(script);
-            })
+    async function script() {
+        if (src) {
+            for (const url of src) {
+                await loadScript(url);
+            }
         }
+    }
+    async function loadScript(url) {
+        return new Promise((resolve, reject) => {
+            let script = document.createElement('script');
+            script.src = "./js/" + url;
+            script.type = "module";
+            script.onload = resolve;
+            script.onerror = reject;
+            document.body.append(script);
+        });
     }
 }
 
