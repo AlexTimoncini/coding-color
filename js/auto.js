@@ -1,6 +1,11 @@
 import {Calculator} from './classes/coding-color.class.js';
 /* DOM */
-
+//textarea
+let editor = CodeMirror.fromTextArea(document.getElementById('colorsCss'), {
+    lineNumbers: true,
+    lineWrapping: true,
+    autofocus: true
+});
 //filter ref
 const textarea = document.getElementById('colorsCss')
 const output = document.getElementById('output')

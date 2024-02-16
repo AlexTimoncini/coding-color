@@ -1,16 +1,20 @@
-
-#navbar{
-    border-bottom: 1px solid var(--black);
-}
-
-#footer{
-    border-top: 1px solid var(--black);
-}
-
 /*STRUCTURE RESULT*/
 .result-column{
     flex-grow: 1;
     padding: 30px 50px;
+}
+
+/*TEXTAREA*/
+.code-area{
+    max-width: 100%;
+}
+
+@media screen and (max-width: 700px) {
+    .result-column{
+        max-width: 100%;
+        padding: 30px 10px;
+    }
+
 }
 
 

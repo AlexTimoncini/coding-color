@@ -42,10 +42,11 @@
             </div>
         </div>
         <div class="result-column">
-            <h2>Automatic Converter</h2>
-            <p>Convert your css colors</p>
-            <label for="colorsCss">Css</label>
-            <textarea id="colorsCss" placeholder="Import your css colors in any format (rgb, rgba or hex) Es: --orange: rgba(255, 255, 255, .4);"></textarea>
+            <h2 class="mb-2">Automatic Converter</h2>
+            <label for="colorsCss">Insert your code to be converted</label>
+            <div class="code-area">
+                <textarea id="colorsCss" name="colorCss"></textarea>
+            </div>
             <pre id="output" class="hidden"></pre>
             <button id="calculate_btn">CONVERT CSS</button>
         </div>
