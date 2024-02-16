@@ -1,23 +1,66 @@
-.filter-column{
-    margin: 10px 0;
-    border-right: 1px solid var(--green);
-    min-height: calc(100vh - 90px - 37px - 20px);
-    min-width: 220px;
-    padding: 0 10px;
+
+#navbar{
+    border-bottom: 1px solid var(--black);
 }
 
-#calculate_btn{
-    display: block;
-    border: none;
-    background-color: var(--cream);
-    color: var(--white);
-    margin: 0 auto;
-    padding: 10px 30px;
-    border-radius: 5px;
-    font-size: 1.7rem;
+#footer{
+    border-top: 1px solid var(--black);
+}
+/*STRUCTURE SIDE*/
+.sidebar{
+    position: relative;
+    height: calc(100vh - 70px);
+    width: 220px;
+    padding: 30px 10px;
+    box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+    transition: .3s linear;
+}
+
+.sidebar-toggle{
+    position: absolute;
+    right: 5px;
+    top: 10px;
+    height: 15px;
     cursor: pointer;
+    transform: rotate(180deg);
+    transition: .3s linear;
 }
 
+.filter-column{
+    border-right: 1px solid var(--green);
+    height: 100%;
+}
+
+.sidebar.minimize{
+    width: 35px;
+}
+
+.sidebar.minimize .sidebar-toggle{
+    transform: rotate(0);
+    right: 10px;
+}
+
+.parameters{
+    margin-bottom: 1rem;
+}
+
+.parameter{
+    margin: .75rem 0;
+}
+
+.parameter-wide{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/*STRUCTURE RESULT*/
+.result-column{
+    flex-grow: 1;
+    padding: 30px 50px;
+}
+
+/*FORMAT BTN*/
 label.btn-primary{
     padding: 6px 13px;
     cursor: pointer;
@@ -39,3 +82,51 @@ input:checked + label.btn-primary{
     border-color: var(--blue);
 }
 
+/*INPUT*/
+.input-primary{
+    border: 2px solid var(--black);
+    border-radius: 5px;
+    height: 30px;
+    color: var(--blue);
+    width: 100px;
+    font-size: 16px;
+    padding: 0 6px;
+    margin-left: 1rem;
+}
+
+.input-number{
+    width: 50px;
+}
+
+.input-primary:focus{
+    border-color: var(--blue);
+}
+
+/*MEDIA QUERIES*/
+@media screen and (max-width: 700px) {
+    .sidebar{
+        width: 100%;
+        min-height: 400px;
+        max-height: 400px;
+        overflow: hidden;
+    }
+
+    .sidebar-toggle{
+        transform: rotate(270deg);
+        border: 1px var(--blue);
+        fill: var(--blue);
+    }
+
+    .sidebar.minimize{
+        width: 100%;
+        min-height: 35px;
+        max-height: 35px;
+        padding: 10px;
+    }
+
+    .sidebar.minimize .sidebar-toggle{
+        right: 5px;
+        transform: rotate(90deg);
+        border: 1px var(--blue);
+    }
+}

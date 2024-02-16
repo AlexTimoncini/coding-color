@@ -1,12 +1,37 @@
 import {Calculator} from './classes/coding-color.class.js';
-document.addEventListener("DOMContentLoaded", () => {
-    const textarea = document.getElementById('colorsCss')
-    const output = document.getElementById('output')
-    //add event handler on btn click
-    const btn = document.getElementById('calculate_btn')
-    btn.addEventListener('click', ()=>{calculate()})
+/* DOM */
 
-});
+//sidebar hide/show
+let chill = false;
+document.querySelector(".sidebar-toggle").addEventListener("click", function(){
+    //chill to prevent multiple clicks
+    if (!chill) {
+        chill = true;
+        let sidebar = this.parentElement
+        sidebar.classList.toggle("minimize")
+
+        let filters = this.nextElementSibling
+        if(filters.classList.contains("hidden")){
+            setTimeout(()=>filters.classList.remove('hidden'),300)
+        } else {
+            filters.classList.add('hidden')
+        }
+        
+        setTimeout(function () {
+            chill = false;
+        }, 300);
+    }
+    
+})
+
+//filter ref
+const textarea = document.getElementById('colorsCss')
+const output = document.getElementById('output')
+const btn = document.getElementById('calculate_btn')
+btn.addEventListener('click', ()=>{calculate()})
+
+/* END DOM */
+
 function calculate(){
     //from
     const fromData = getFrom();
@@ -43,9 +68,7 @@ function calculate(){
     convertCss(calculator.calc());
 }
 
-
 //functions
-
 function getFrom(){
     let checkboxes = document.getElementById('from').querySelectorAll('input[type=checkbox]');
     let format = [];

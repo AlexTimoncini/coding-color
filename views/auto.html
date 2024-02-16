@@ -1,37 +1,47 @@
 <div>
     <div class="row">
-        <div class="col-2-md-10 filter-column">
-            <div class="parameters" id="from">
-                <h3>From</h3>
-                <input type="checkbox" name="rgb_in" id="rgb_in" value="rgb" checked class="ghost">
-                <label for="rgb_in" class="btn-primary">RGB</label>
-                <input type="checkbox" name="rgba_in" id="rgba_in" value="rgba" checked class="ghost">
-                <label for="rgba_in" class="btn-primary">RGBA</label>
-                <input type="checkbox" name="hex_in" id="hex_in" value="hex" checked class="ghost">
-                <label for="hex_in" class="btn-primary">HEX</label>
+        <div class="sidebar">
+            <div class="sidebar-toggle">
+                <img src=".\assets\images\shared\chevron.svg" alt="chevron svg" class="img-fluidY">
             </div>
-            <div class="parameters" id="to">
-                <h3>To</h3>
-                <input type="radio" class="ghost" name="format_out" id="rgb_out" value="rgb">
-                <label class="btn-primary" for="rgb_out">RGB</label>
-                <input type="radio" class="ghost" name="format_out" id="rgba_out" value="rgba">
-                <label class="btn-primary" for="rgba_out">RGBA</label>
-                <input type="radio" class="ghost" name="format_out" id="hex_out" value="hex">
-                <label class="btn-primary" for="hex_out">HEX</label>
-            </div>
-            <div class="parameters" id="options">
-                <h3>Options</h3>
-                <label for="absorb_op" title="Only works from RGBA to RGB/HEX">Absorb Opacity</label>
-                <input type="checkbox" name="absorb_op" id="absorb_op">
-                <p class="small">(Ex: rgba(0, 0, 0, 0.4) on bg #fff -> rgb(153,153,153))</p>
-            </div>
-            <div class="parameters" id="background">
-                <h3>Background</h3>
-                <label for="bg" title="Only works from RGBA to RGB/HEX">Bg Color that wil be absorbed with opacity</label>
-                <input type="text" name="bg" id="bg" value="#fff">
+            <div class="filter-column">
+                <div class="parameters" id="from">
+                    <h3>From</h3>
+                    <input type="checkbox" name="rgb_in" id="rgb_in" value="rgb" checked class="ghost">
+                    <label for="rgb_in" class="btn-primary">RGB</label>
+                    <input type="checkbox" name="rgba_in" id="rgba_in" value="rgba" checked class="ghost">
+                    <label for="rgba_in" class="btn-primary">RGBA</label>
+                    <input type="checkbox" name="hex_in" id="hex_in" value="hex" checked class="ghost">
+                    <label for="hex_in" class="btn-primary">HEX</label>
+                </div>
+                <div class="parameters" id="to">
+                    <h3>To</h3>
+                    <input type="radio" class="ghost" name="format_out" id="rgb_out" value="rgb">
+                    <label class="btn-primary" for="rgb_out">RGB</label>
+                    <input type="radio" class="ghost" name="format_out" id="rgba_out" value="rgba">
+                    <label class="btn-primary" for="rgba_out">RGBA</label>
+                    <input type="radio" class="ghost" name="format_out" id="hex_out" value="hex">
+                    <label class="btn-primary" for="hex_out">HEX</label>
+                </div>
+                <div class="parameters" id="opacity">
+                    <h3>Opacity</h3>
+                    <div class="parameter parameter-wide">
+                        <label for="op">Value</label>
+                        <input type="text" name="op" id="op" class="input-primary input-number">
+                    </div>
+
+                    <div class="parameter toggle-wrapper parameter-wide">
+                        <label for="ab_op">Absorb Opacity</label>
+                        <input type="checkbox" class="toggle" name="ab_op" id="ab_op">
+                    </div>
+                    <div class="parameter parameter-wide">
+                        <label for="bg">Background</label>
+                        <input type="text" name="bg" id="bg" value="#fff" class="input-primary">
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="col-8-md-10">
+        <div class="result-column">
             <h2>Automatic Converter</h2>
             <p>Convert your css colors</p>
             <label for="colorsCss">Css</label>

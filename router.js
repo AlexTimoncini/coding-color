@@ -4,14 +4,15 @@ import { Router } from './js/classes/router.class.js'
 //let router = new Router('http://localhost:8000');
 let router = new Router('https://coding-color.it');
 //rotte
-router.get('/', function(){buildPage('home.html', 'home.css')});
-router.get('/tools', function(){buildPage('tools.html', 'tools.css')});
+router.get('/', function(){buildPage('home.html', ['home.css'])});
+router.get('/tools', function(){buildPage('tools.html', ['tools.css'])});
 router.get('/manual', function(){buildPage('manual.html')});
-router.get('/automatic', function(){buildPage('auto.html', 'auto.css', 'auto.js')});
+router.get('/automatic', function(){buildPage('auto.html', ['auto.css', 'shared/toggle.css'], 'auto.js')});
 router.get('/single', function(){buildPage('single.html')});
 router.start();
 
 async function buildPage(mainHTML, css, src){
+    //START LOADER
     disableScroll()
     if (document.getElementById("loader")) {
         document.getElementById("loader").classList.remove("hidden")
@@ -24,12 +25,13 @@ async function buildPage(mainHTML, css, src){
 
     function loadCss(){
         if(css){
-            let link = document.createElement('link');
-            link.rel = "stylesheet";
-            link.href = "./assets/css/"+css;
-            document.head.append(link);
+            css.forEach((url)=>{
+                let link = document.createElement('link');
+                link.rel = "stylesheet";
+                link.href = "./assets/css/"+url;
+                document.head.append(link);
+            })
         }
-        return Promise.resolve();
     }
 
     async function loader() {
@@ -64,25 +66,18 @@ async function buildPage(mainHTML, css, src){
         document.body.append(script);
     }
 
-    if (!document.getElementById("loader")) {
-        await loader();
-    }
-
-    if (!document.getElementById("navbar")) {
-        await navbar();
-    }
-
-    if (!document.getElementById("footer")) {
-        await footer();
-    }
-
-    await main();
+    //RUN
     removeOldStyles()
     loadCss();
-    if(src) script();
+    if (!document.getElementById("loader"))await loader()
+    if (!document.getElementById("navbar"))await navbar()
+    if (!document.getElementById("footer"))await footer()
+    await main()
+    if(src) script()
     
+    //STOP LOADER
     setTimeout(() => {
         document.getElementById('loader').classList.add('hidden');
         enableScroll()
-    }, 1000);
+    }, 500);
 }
