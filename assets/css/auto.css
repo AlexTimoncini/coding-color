@@ -1,12 +1,12 @@
 /*STRUCTURE RESULT*/
 .result-column{
     flex-grow: 1;
-    padding: 30px 50px;
+    padding: 30px;
 }
 
 /*TEXTAREA*/
-.code-area{
-    max-width: 100%;
+.row{
+    flex-wrap: nowrap;
 }
 
 #calculate_btn{
@@ -26,6 +26,14 @@
     .result-column{
         max-width: 100%;
         padding: 30px 10px;
+    }
+
+    .row{
+        flex-wrap: wrap;
+    }
+
+    .CodeMirror{
+        width: 100%;
     }
 }
 
