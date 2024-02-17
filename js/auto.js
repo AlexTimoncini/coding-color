@@ -10,13 +10,13 @@ let editor = CodeMirror.fromTextArea(document.getElementById('colorsCss'), {
 const textarea = document.getElementById('colorsCss')
 const output = document.getElementById('output')
 const btn = document.getElementById('calculate_btn')
-btn.addEventListener('click', ()=>{calculate()})
+btn.addEventListener('click', ()=>{convert()})
 
 /* END DOM */
 
-function calculate(){
+function convert(){
     //from
-    const fromData = getFrom();
+    let fromData = getFrom();
     let from;
     if(fromData.response){
         from = fromData.data;
@@ -26,7 +26,7 @@ function calculate(){
     }
     
     //to
-    const toData = getTo();
+    let toData = getTo();
     let to;
     if(toData.response){
         to = toData.data;
@@ -35,19 +35,39 @@ function calculate(){
         return
     }
 
-    //absorb opacity
-    const absorbBgData = getAbsorbBg();
-    let absorbBg;
-    if(absorbBgData.response){
-        absorbBg = absorbBgData.data;
-    } else if(absorbBgData.response === false){
-        alert(absorbBgData.data)
+    //opacity
+    let opacityData = getOpacity();
+    let opacity;
+    if(opacityData.response){
+        opacity = opacityData.data;
+    } else {
+        alert(opacityData.data)
         return
     }
 
-    //class construct
-    const calculator = new Calculator(from, to, textarea.value, absorbBg);
-    convertCss(calculator.calc());
+    //background
+    let backgroundData = getBackground();
+    let background = false;
+    if(backgroundData){
+        if(backgroundData.response){
+            background = backgroundData.data;
+        } else {
+            alert(backgroundData.data)
+            return
+        }
+    }
+
+    //css
+    let css = editor.getValue();
+
+    if(css.length){
+        //class color converter builder
+        let calculator = new Calculator(from, to, css, opacity, background);
+        convertCss(calculator.calc(), css);
+    } else {
+        editor.focus()
+    }
+
 }
 
 //functions
@@ -64,6 +84,7 @@ function getFrom(){
         data: format.length ? format : 'Initial format not chosen'
     }
 }
+
 function getTo(){
     let radios = document.getElementsByName('format_out');
     let format = false;
@@ -77,14 +98,23 @@ function getTo(){
         data: format ? format : 'Converting format not chosen'
     }
 }
-function getAbsorbBg(){
-    const checkbox = document.getElementById('absorb_op');
-    if(checkbox.checked){
+
+function getOpacity(){
+    let value = parseFloat(parseFloat(document.getElementById('op').value).toFixed(1));
+    let validation = value >= 0 || value <= 1
+    return { 
+        response: validation,
+        data: validation ? value : 'Opacity Value isn\'t in the right format'
+    }
+}
+
+function getBackground(){
+    const toggle = document.getElementById('ab_op');
+    if(toggle.checked){
         const input = document.getElementById('bg')
         //validate input
         const regex = /^#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$/;
         const validation = regex.test(input.value);
-
         return { 
             response: validation,
             data: validation ? input.value : 'Background value is not in hex format'
@@ -92,18 +122,20 @@ function getAbsorbBg(){
     }
     return false;
 }
+
 function alert(msg){
     console.log(msg);
 }
-function convertCss(colorsData){
-    let outputCss = textarea.value
-    let colorsToConvert = colorsData.filter(c=>c.converted)
-    let shift = 0
-    outputCss.replace(/\n/g, '<br>')
+
+function convertCss(colorsData, oldCss){
+    let newCss = oldCss,
+        colorsToConvert = colorsData.filter(c=>c.converted),
+        shift = 0
+    newCss.replace(/\n/g, '<br>')
     for(let i = 0; i< colorsToConvert.length; i++) {
         let col = colorsToConvert[i]
-        let stringConversion = replaceSubstring(outputCss, col.start, col.end, col.color)
-        outputCss = stringConversion.cssConverted
+        let stringConversion = replaceSubstring(newCss, col.start, col.end, col.color)
+        newCss = stringConversion.cssConverted
         if (i < colorsToConvert.length - 1) {
             shift += stringConversion.shift
             colorsToConvert[i + 1].start += shift
@@ -111,10 +143,9 @@ function convertCss(colorsData){
         }
         console.log(shift)
     }
-    textarea.classList.add('hidden')
-    output.classList.remove('hidden')
-    output.innerHTML = outputCss
+    editor.getDoc().setValue(newCss);
 }
+
 function replaceSubstring(originalString, start, end, replacement) {
     let htmlReplacement = ' <span class="marked" title="'+replacement+'">'+replacement+'</span>'
     let positionShift = htmlReplacement.length - (end - start)

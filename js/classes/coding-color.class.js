@@ -1,45 +1,20 @@
 export class Calculator {
-    //CONSTRUCT
-    constructor(from_format, to_format, css, bg=null) {
+    constructor(from_format, to_format, css, opacity, background) {
         this._from_format = from_format;
         this._to_format = to_format;
         this._css = css;
-        this._bg = bg;
+        this._opacity = opacity;
+        this._background = background || '#fff';
     }
-    // GETTER
-    get from() {
-        return this._from_format;
-    }
-    get to() {
-        return this._to_format;
-    }
-    get css() {
-        return this._css;
-    }
-    get bg() {
-        return this._bg ?? false;
-    }
-    // METHOD
+
     calc() {
-        /*Verifications:
-            1- VALIDATE FORM --SCRIPT
-            2- VALIDATE TO --SCRIPT
-            3- VALIDATE CSS
-                - Val RGB on rgbValues()
-                - Val Hex on hexValidation()
-            4- VALIDATE BG --SCRIPT
-            5- FROM != TO
-        */
-        //FIRST COLOR EXTRACTION FROM CSS
-        let colors = this.colorsFromCss(this._css);
-        //SECOND CONVERTION ALL TO RGBA
+        let colors = this.colorsFromCss();
         let colorsValues = [...colors];
         colors.forEach((color, index)=>{
             let colorValues = this.colorValues(color.color, color.format);
             colorsValues[index].color = colorValues.data;
         })
-        
-        return this.convertColors(colorsValues, this._from_format, this._to_format, this._bg);
+        return this.convertColors(colorsValues);
     }
 
     //Convert any format into RGBA w/validation
@@ -54,7 +29,7 @@ export class Calculator {
                 if(hexToRgb.response){
                     rgba.converted = true;                    
                     rgba.data = [...hexToRgb.data];
-                    rgba.data.push(1); //aggiungo opacità piena
+                    rgba.data.push(this._opacity);
                 } else {
                     rgba.converted = false;                    
                     rgba.data = color;
@@ -66,7 +41,7 @@ export class Calculator {
                 if(rgbToArr.response){
                     rgba.converted = true;                    
                     rgba.data = [...rgbToArr.data];
-                    rgba.data.push(1); //aggiungo opacità piena
+                    rgba.data.push(this._opacity);
                 } else {
                     rgba.converted = false;                    
                     rgba.data = color;
@@ -78,10 +53,6 @@ export class Calculator {
                 let values = match ? match[1].split(',') : '';
                 rgba.converted = (values && values.length === 4);
                 rgba.data = rgba.converted ? values.map(v=>parseFloat(v)) : color;
-            break;
-
-            default: 
-                console.log('anyToRgba method format error')
         }
         return rgba;
     }
@@ -117,11 +88,11 @@ export class Calculator {
     }
 
     //get correct, hex, rgb or rgba colors value and string-position
-    colorsFromCss(css){
+    colorsFromCss(){
         const regex = /\s*#(?:[0-9a-fA-F]{3}){1,2}\s*|\s*rgb\(\s*(?:\d{1,2}|1\d{2}|2[0-4]\d|25[0-5])\s*,\s*(?:\d{1,2}|1\d{2}|2[0-4]\d|25[0-5])\s*,\s*(?:\d{1,2}|1\d{2}|2[0-4]\d|25[0-5])\s*\)\s*|\s*rgba\(\s*(?:\d{1,2}|1\d{2}|2[0-4]\d|25[0-5])\s*,\s*(?:\d{1,2}|1\d{2}|2[0-4]\d|25[0-5])\s*,\s*(?:\d{1,2}|1\d{2}|2[0-4]\d|25[0-5])\s*,\s*(?:0|1|0?\.\d+)\s*\)\s*/gm;
         let matches;
         let colors = [];
-        while ((matches = regex.exec(css)) !== null) {
+        while ((matches = regex.exec(this._css)) !== null) {
             const match = matches[0];
             const matchStart = matches.index;
             const matchEnd = matchStart + match.length;
@@ -138,16 +109,16 @@ export class Calculator {
         return colors
     }
 
-    convertColors(colors, from, to, bg){
-        let bgValues = this.colorValues(bg, 'hex')
+    convertColors(colors){
+        let bgValues = this.colorValues(this._background, 'hex') //estraiamo i valori dello sfondo (default #fff)
         if(colors){
-            colors.forEach((color, index)=>{
-                if(from.includes(color.format)){
+            colors.forEach((color)=>{
+                if(this._from_format.includes(color.format)){
                     let alpha = 1 - color.color[3];
                     let red = Math.round((color.color[3] * (color.color[0] / 255) + (alpha * (bgValues.data[0] / 255))) * 255);
                     let green = Math.round((color.color[3] * (color.color[1] / 255) + (alpha * (bgValues.data[1] / 255))) * 255);
                     let blue = Math.round((color.color[3] * (color.color[2] / 255) + (alpha * (bgValues.data[2] / 255))) * 255);
-                    switch(to){
+                    switch(this._to_format){
                         case 'rgba':
                             color.color = 'rgba('+ color.color[0] +',' + color.color[1] + ','  + color.color[2] + ','  + color.color[3] + ')';
                             color.converted = true
@@ -166,7 +137,7 @@ export class Calculator {
                 }
             });
         }
-
+        console.log('final', colors)
         return  colors
     }
 }
