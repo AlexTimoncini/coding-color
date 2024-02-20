@@ -58,12 +58,12 @@ function convert(){
     }
 
     //css
-    let css = editor.getValue();
+    let css = editor.getValue().split('\n');
 
     if(css.length){
         //class color converter builder
         let calculator = new Calculator(from, to, css, opacity, background);
-        convertCss(calculator.calc(), css);
+        editor.setValue(calculator.calc());
     } else {
         editor.focus()
     }
@@ -126,34 +126,3 @@ function getBackground(){
 function alert(msg){
     console.log(msg);
 }
-
-function convertCss(colorsData, oldCss){
-    let newCss = oldCss,
-        colorsToConvert = colorsData.filter(c=>c.converted),
-        shift = 0
-    newCss.replace(/\n/g, '<br>')
-    for(let i = 0; i< colorsToConvert.length; i++) {
-        let col = colorsToConvert[i]
-        let stringConversion = replaceSubstring(newCss, col.start, col.end, col.color)
-        newCss = stringConversion.cssConverted
-        if (i < colorsToConvert.length - 1) {
-            shift += stringConversion.shift
-            colorsToConvert[i + 1].start += shift
-            colorsToConvert[i + 1].end += shift
-        }
-        console.log(shift)
-    }
-    editor.getDoc().setValue(newCss);
-}
-
-function replaceSubstring(originalString, start, end, replacement) {
-    let htmlReplacement = ' <span class="marked" title="'+replacement+'">'+replacement+'</span>'
-    let positionShift = htmlReplacement.length - (end - start)
-    let prefix = originalString.substring(0, start)
-    let suffix = originalString.substring(end)
-    return {
-            cssConverted: prefix + htmlReplacement + suffix,
-            shift: positionShift
-    }
-}
-
