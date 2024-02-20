@@ -8,5 +8,5 @@ My todolist:
 
 ```bash
 -Color Picker for Bg
--Codemirror highlighted result
+-Codemirror to test and style
 ```

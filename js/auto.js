@@ -58,12 +58,32 @@ function convert(){
     }
 
     //css
-    let css = editor.getValue().split('\n');
+    let css = editor.getValue().split('\n')
 
     if(css.length){
         //class color converter builder
-        let calculator = new Calculator(from, to, css, opacity, background);
-        editor.setValue(calculator.calc());
+        let calculator = new Calculator(from, to, css, opacity, background)
+        let matrix = calculator.calc()
+        let colors = calculator.colors
+        let newCss = matrix.map((line)=>{return line.css}).join('\n')
+        editor.setValue(newCss);
+
+        let shift = 0
+        console.log(colors)
+        colors.forEach((col, i)=>{
+            editor.markText(
+                {line: col.line, ch: col.start},
+                {line: col.line ,ch: col.start + col.color.length},
+                { className: "marked"}
+            )
+            if(colors[i+1] && colors[i+1].line === col.line){
+                shift += (col.color.length - (col.end - col.start))
+                colors[i+1].start += shift
+                colors[i+1].end += shift
+            } else {
+                shift = 0
+            }
+        })
     } else {
         editor.focus()
     }
@@ -100,7 +120,7 @@ function getTo(){
 }
 
 function getOpacity(){
-    let value = parseFloat(parseFloat(document.getElementById('op').value).toFixed(1));
+    let value = parseFloat(parseFloat(document.getElementById('op').value).toFixed(1))
     let validation = value >= 0 || value <= 1
     return { 
         response: validation,

@@ -5,6 +5,12 @@ export class Calculator {
         this._css = css
         this._opacity = opacity
         this._background = background || '#fff'
+        this._parsedColors = []
+    }
+
+    //GETTERS
+    get colors() {
+        return this._parsedColors;
     }
 
     calc() {
@@ -18,8 +24,8 @@ export class Calculator {
             let colorValues = this.colorValues(color.color, color.format)
             colorsValues[index].color = colorValues.data
         })
-        let parsedColors = this.convertColors(colorsValues)
-        return this.convertCss(parsedColors)
+        this._parsedColors = this.convertColors(colorsValues).filter(c=>c.converted)
+        return this.convertCss(this._parsedColors)
     }
 
     //Convert any format into RGBA w/validation
@@ -98,18 +104,19 @@ export class Calculator {
         let matches;
         let colors = [];
         while ((matches = regex.exec(css)) !== null) {
-            const match = matches[0];
-            const matchStart = matches.index;
+            const match = matches[0].trim();
+            const spacesBefore = matches[0].length - matches[0].trimStart().length
+            const matchStart = matches.index + spacesBefore;
             const matchEnd = matchStart + match.length;
             let format;
-            if (match.trim().includes('#')){
+            if (match.includes('#')){
                 format = 'hex';
-            } else if (match.trim().includes('rgba')){
+            } else if (match.includes('rgba')){
                 format = 'rgba';
             } else {
                 format = 'rgb';
             }
-            colors.push({color: match.trim(), format: format, start: matchStart, end: matchEnd, line: lineNumber})
+            colors.push({color: match, format: format, start: matchStart, end: matchEnd, line: lineNumber})
         }
         return colors
     }
@@ -142,33 +149,33 @@ export class Calculator {
                 }
             });
         }
-        console.log('final', colors)
         return  colors
     }
 
     convertCss(colorsData){
-        console.log(colorsData)
-        let css = this._css,
-            colorsToConvert = colorsData.filter(c=>c.converted),
-            shift = 0
+        let matrix = []
 
-        colorsToConvert.forEach((col)=>{
-            let newLine = this.replaceColor(css[col.line], col.start, col.end, col.color)
-            css[col.line] = newLine
-
+        this._css.forEach((line)=>{
+            matrix.push({
+                css: line,
+                shift: 0
+            })
         })
-        return css
-        //editor.getDoc().setValue(newCss);
+
+        colorsData.forEach((col, i)=>{
+            let newLine = this.replaceColor(matrix[col.line].css, col.start, col.end, col.color, matrix[col.line].shift)
+            matrix[col.line] = newLine
+        })
+        return matrix
     }
 
-    replaceColor(originalString, start, end, replacement) {
-        let htmlReplacement = ' <span class="marked" title="'+replacement+'">'+replacement+'</span>'
-        let positionShift = htmlReplacement.length - (end - start)
-        let prefix = originalString.substring(0, start)
-        let suffix = originalString.substring(end)
+    replaceColor(originalString, start, end, replacement, initialShift) {
+        let positionShift = replacement.length - (end - start)
+        let prefix = originalString.substring(0, start + initialShift)
+        let suffix = originalString.substring(end + initialShift)
         return {
-            cssConverted: prefix + htmlReplacement + suffix,
-            shift: positionShift
+            css: prefix + replacement + suffix,
+            shift: initialShift + positionShift
         }
     }
 
