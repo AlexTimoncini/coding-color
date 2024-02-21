@@ -5,10 +5,9 @@ import { Router } from './js/classes/router.class.js'
 let router = new Router('https://coding-color.it');
 //rotte
 router.get('/', function(){
-     buildPage('home.html',
-         ['home.css']).then(()=>stopLoading())
+    buildPage('home.html',
+        ['home.css']).then(()=>stopLoading())
 });
-
 router.get('/tools', function(){
     buildPage('tools.html',
         ['tools.css']).then(()=>stopLoading())
@@ -24,6 +23,7 @@ router.get('/automatic', function(){
 router.get('/single', function(){
     buildPage('single.html').then(()=>stopLoading())
 });
+
 router.start();
 
 async function buildPage(mainHTML, css, src){
@@ -98,6 +98,7 @@ function startLoading(){
         document.getElementById("loader").classList.remove("hidden")
     }
 }
+
 function stopLoading(){
     setTimeout(() => {
         document.getElementById('loader').classList.add('hidden');

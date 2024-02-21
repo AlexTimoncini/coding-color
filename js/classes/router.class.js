@@ -7,13 +7,18 @@ export class Router {
         this.routes[this.root + route] = callback;
     }
     start() {
-        window.addEventListener('hashchange', this.handleHashChange.bind(this));
-        window.addEventListener('load', this.handleHashChange.bind(this));
+        window.addEventListener('popstate', this.handleURLChange.bind(this));
+        window.addEventListener('load', this.handleURLChange.bind(this));
+
+        if (window.location.hash) {
+            const currentURL = window.location.href.split('#')[0];
+            history.replaceState({}, document.title, currentURL);
+        }
     }
 
-    handleHashChange() {
-        const currentHash = window.location.hash.substring(1);
-        const currentRoute = this.root + (currentHash || '/');
+    handleURLChange() {
+        const currentPath = window.location.pathname;
+        const currentRoute = this.root + (currentPath || '/');
 
         if (currentRoute in this.routes) {
             this.routes[currentRoute]();
@@ -24,5 +29,11 @@ export class Router {
                 this.routes[defaultRoute]();
             }
         }
+    }
+
+    navigateTo(route) {
+        const newURL = this.root + route;
+        history.pushState({}, document.title, newURL);
+        this.handleURLChange();
     }
 }
