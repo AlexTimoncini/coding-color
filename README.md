@@ -7,6 +7,8 @@ A description is on the way
 My todolist:
 
 ```bash
+-Router try to remove #
 -Color Picker for Bg
--Codemirror to test and style
+-Codemirror to style
+-Opacity to decide how to fix
 ```
