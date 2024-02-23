@@ -6,9 +6,24 @@ let editor = CodeMirror.fromTextArea(document.getElementById('colorsCss'), {
     lineWrapping: true,
     autofocus: true
 });
+
+//Convert css button
 document.getElementById('calculate_btn').addEventListener('click', ()=>{convert()})
+
+//toggle no-events on opacity
 document.getElementById('ab_op').addEventListener('change', ()=>{
     document.querySelectorAll("#opacity .parameter:not(:first-of-type)").forEach(el=> el.classList.toggle("no-events"))
+})
+
+//opacity value handle
+document.getElementById('op').addEventListener('blur', (e)=>{
+    console.log(e.target.value)
+})
+
+document.getElementById('op').addEventListener('input', (e)=>{
+    if (!/[\d.,]/.test(e.data)) {
+        e.target.value = e.target.value.replace(/[^0-9.,]/g, '');
+    }
 })
 /* END DOM */
 
