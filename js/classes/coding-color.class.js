@@ -7,12 +7,10 @@ export class Calculator {
         this._background = background || '#fff'
         this._parsedColors = []
     }
-
     //GETTERS
     get colors() {
         return this._parsedColors;
     }
-
     calc() {
         let colors = []
         this._css.forEach((line, index)=>{
@@ -46,7 +44,6 @@ export class Calculator {
                     rgba.data = color
                 }
             break
-
             case 'rgb' :
                 let rgbToArr = this.rgbValues(color)
                 if(rgbToArr.response){
@@ -58,7 +55,6 @@ export class Calculator {
                     rgba.data = color
                 }
             break
-
             case 'rgba' :
                 let match = color.match(/\(([^)]*)\)/)
                 let values = match ? match[1].split(',') : ''
@@ -121,6 +117,7 @@ export class Calculator {
         return colors
     }
 
+    //values to string
     convertColors(colors){
         let bgValues = this.colorValues(this._background, 'hex') //estraiamo i valori dello sfondo (default #fff)
         if(colors){
@@ -153,6 +150,7 @@ export class Calculator {
         return  colors
     }
 
+    //replace old css colors with new converted
     convertCss(colorsData){
         let matrix = []
 
@@ -169,6 +167,7 @@ export class Calculator {
         return matrix
     }
 
+    //subfunction for converCss
     replaceColor(originalString, start, end, replacement, initialShift) {
         let positionShift = replacement.length - (end - start)
         let prefix = originalString.substring(0, start + initialShift)
