@@ -6,16 +6,14 @@ let editor = CodeMirror.fromTextArea(document.getElementById('colorsCss'), {
     lineWrapping: true,
     autofocus: true
 });
-//filter ref
-const textarea = document.getElementById('colorsCss')
-const output = document.getElementById('output')
-const btn = document.getElementById('calculate_btn')
-btn.addEventListener('click', ()=>{convert()})
-
+document.getElementById('calculate_btn').addEventListener('click', ()=>{convert()})
+document.getElementById('ab_op').addEventListener('change', ()=>{
+    document.querySelectorAll("#opacity .parameter:not(:first-of-type)").forEach(el=> el.classList.toggle("no-events"))
+})
 /* END DOM */
 
 function convert(){
-    //from
+    //From
     let fromData = getFrom();
     let from;
     if(fromData.response){
@@ -25,7 +23,7 @@ function convert(){
         return
     }
     
-    //to
+    //To
     let toData = getTo();
     let to;
     if(toData.response){
@@ -35,26 +33,30 @@ function convert(){
         return
     }
 
-    //opacity
-    let opacityData = getOpacity();
-    let opacity;
-    if(opacityData.response){
-        opacity = opacityData.data;
-    } else {
-        alert(opacityData.data)
-        return
-    }
-
-    //background
-    let backgroundData = getBackground();
+    //Opacity
+    const toggleOp = document.getElementById('ab_op');
     let background = false;
-    if(backgroundData){
-        if(backgroundData.response){
+    let opacity = false;
+    if(toggleOp.checked) {
+
+        //Value
+        let opacityData = getOpacity();
+        if (opacityData.response) {
+            opacity = opacityData.data;
+        } else {
+            alert(opacityData.data)
+            return
+        }
+
+        //Background
+        let backgroundData = getBackground();
+        if (backgroundData.response) {
             background = backgroundData.data;
         } else {
             alert(backgroundData.data)
             return
         }
+
     }
 
     //css
@@ -129,18 +131,14 @@ function getOpacity(){
 }
 
 function getBackground(){
-    const toggle = document.getElementById('ab_op');
-    if(toggle.checked){
-        const input = document.getElementById('bg')
-        //validate input
-        const regex = /^#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$/;
-        const validation = regex.test(input.value);
-        return { 
-            response: validation,
-            data: validation ? input.value : 'Background value is not in hex format'
-        }
+    const input = document.getElementById('bg')
+    //validate input
+    const regex = /^#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$/;
+    const validation = regex.test(input.value);
+    return {
+        response: validation,
+        data: validation ? input.value : 'Background value is not in hex format'
     }
-    return false;
 }
 
 function alert(msg){
