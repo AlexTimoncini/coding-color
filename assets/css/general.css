@@ -132,7 +132,8 @@ a{
     text-decoration: none;
     transition: all 0.33s ease-in-out;
     user-select: none;
-    color: var(--blue)
+    color: var(--blue);
+    background-color: var(--white);
 }
 
 a.btn-primary:hover{
@@ -140,6 +141,11 @@ a.btn-primary:hover{
     background-color: var(--blue);
     border-color: var(--blue);
     text-decoration: none;
+}
+
+.no-events{
+    pointer-events: none;
+    opacity: 0.5;
 }
 
 /*BG-COLOR CLASSES*/
