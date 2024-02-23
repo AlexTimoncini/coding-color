@@ -3,7 +3,7 @@ export class Calculator {
         this._from_format = from_format
         this._to_format = to_format
         this._css = css
-        this._opacity = opacity
+        this._opacity = opacity || 1
         this._background = background || '#fff'
         this._parsedColors = []
     }
@@ -140,7 +140,8 @@ export class Calculator {
                             color.converted = true
                         break;
                         case 'hex':
-                            color.color = '#'+red.toString(16)+green.toString(16)+blue.toString(16)
+                            color.color = '#'+(red < 16 ? '0' : '')+red.toString(16)+(green < 16 ? '0' : '')+green.toString(16)+(red < 16 ? '0' : '')+blue.toString(16)
+                            console.log(red, red.toString(16), green, green.toString(16), blue, blue.toString(16))
                             color.converted = true
                         break;
                     }
