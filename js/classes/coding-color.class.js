@@ -163,9 +163,8 @@ export class Calculator {
             })
         })
 
-        colorsData.forEach((col, i)=>{
-            let newLine = this.replaceColor(matrix[col.line].css, col.start, col.end, col.color, matrix[col.line].shift)
-            matrix[col.line] = newLine
+        colorsData.forEach((col)=>{
+            matrix[col.line] = this.replaceColor(matrix[col.line].css, col.start, col.end, col.color, matrix[col.line].shift)
         })
         return matrix
     }
