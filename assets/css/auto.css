@@ -1,10 +1,13 @@
 /*STRUCTURE RESULT*/
-.result-column{
-    flex-grow: 1;
-    padding: 30px;
+main{
+    overflow-x: hidden;
 }
 
-/*TEXTAREA*/
+.result-column{
+    flex-grow: 1;
+    padding: 20px;
+}
+
 .row{
     flex-wrap: nowrap;
 }
@@ -24,8 +27,8 @@
 
 .marked{
     color: var(--blue);
-    background-color: var(--yellow);
-    border: 1px solid var(--blue);
+    border: 2px solid var(--blue);
+    border-radius: 5px;
 }
 
 @media screen and (max-width: 700px) {

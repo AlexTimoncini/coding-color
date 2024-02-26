@@ -3,7 +3,7 @@ export class Calculator {
         this._from_format = from_format
         this._to_format = to_format
         this._css = css
-        this._opacity = opacity || 1
+        this._opacity = typeof opacity === 'number' ? opacity : 1
         this._background = background || '#fff'
         this._parsedColors = []
     }
@@ -123,10 +123,13 @@ export class Calculator {
         if(colors){
             colors.forEach((color)=>{
                 if(this._from_format.includes(color.format)){
-                    let alpha = 1 - color.color[3];
-                    let red = Math.round((color.color[3] * (color.color[0] / 255) + (alpha * (bgValues.data[0] / 255))) * 255);
-                    let green = Math.round((color.color[3] * (color.color[1] / 255) + (alpha * (bgValues.data[1] / 255))) * 255);
-                    let blue = Math.round((color.color[3] * (color.color[2] / 255) + (alpha * (bgValues.data[2] / 255))) * 255);
+                    let alpha = color.color[3];
+                    let inverseAlpha = 1 - alpha;
+                    console.log(alpha)
+                    let red = Math.round((alpha * color.color[0] + inverseAlpha * bgValues.data[0]) / 255 * 255);
+                    let green = Math.round((alpha * color.color[1] + inverseAlpha * bgValues.data[1]) / 255 * 255);
+                    let blue = Math.round((alpha * color.color[2] + inverseAlpha * bgValues.data[2]) / 255 * 255);
+                    console.log(red, green, blue)
                     switch(this._to_format){
                         case 'rgba':
                             color.color = 'rgba('+ color.color[0] +',' + color.color[1] + ','  + color.color[2] + ','  + color.color[3] + ')';
@@ -138,7 +141,6 @@ export class Calculator {
                         break;
                         case 'hex':
                             color.color = '#'+(red < 16 ? '0' : '')+red.toString(16)+(green < 16 ? '0' : '')+green.toString(16)+(red < 16 ? '0' : '')+blue.toString(16)
-                            console.log(red, red.toString(16), green, green.toString(16), blue, blue.toString(16))
                             color.converted = true
                         break;
                     }
@@ -153,7 +155,6 @@ export class Calculator {
     //replace old css colors with new converted
     convertCss(colorsData){
         let matrix = []
-
         this._css.forEach((line)=>{
             matrix.push({
                 css: line,

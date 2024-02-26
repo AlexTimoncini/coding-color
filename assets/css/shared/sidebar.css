@@ -2,7 +2,7 @@
 .sidebar{
     position: relative;
     height: calc(100vh - 70px);
-    width: 220px;
+    min-width: 220px;
     padding: 30px 10px;
     box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
     transition: .3s linear;
@@ -86,6 +86,12 @@ input:checked + label.btn-primary{
 
 .input-primary:focus{
     border-color: var(--blue);
+}
+
+.input-primary.jscolor{
+    font-size: 14px;
+    width: 140px;
+    margin-left: 20px;
 }
 
 /*MEDIA QUERIES*/

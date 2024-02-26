@@ -15,11 +15,6 @@ document.getElementById('ab_op').addEventListener('change', ()=>{
     document.querySelectorAll("#opacity .parameter:not(:first-of-type)").forEach(el=> el.classList.toggle("no-events"))
 })
 
-//opacity value handle
-document.getElementById('op').addEventListener('blur', (e)=>{
-    console.log(e.target.value)
-})
-
 document.getElementById('op').addEventListener('input', (e)=>{
     const inputElement = e.target;
     const lastChIndex = inputElement.value.length - 1
@@ -91,7 +86,6 @@ function convert(){
         editor.setValue(newCss);
 
         let shift = 0
-        console.log(colors)
         colors.forEach((col, i)=>{
             editor.markText(
                 {line: col.line, ch: col.start},

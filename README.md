@@ -7,8 +7,7 @@ A description is on the way
 My todolist:
 
 ```bash
--Router try to remove #
--Color Picker for Bg
--Codemirror to style
--Opacity to decide how to fix
+-Mini bug on hex conversion
+-Tutorial mode
+-Info btn on ab_op
 ```
