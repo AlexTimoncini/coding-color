@@ -21,10 +21,12 @@ document.getElementById('op').addEventListener('blur', (e)=>{
 })
 
 document.getElementById('op').addEventListener('input', (e)=>{
-    if (!/[\d.,]/.test(e.data)) {
-        e.target.value = e.target.value.replace(/[^0-9.,]/g, '');
-    }
-})
+    const inputElement = e.target;
+    const inputValue = inputElement.value;
+    const sanitizedValue = inputValue.replace(',', '.');
+    if (!/^[\d.]*$/.test(sanitizedValue)) {
+        inputElement.value = sanitizedValue.replace(/[^0-9.]/g, '');
+    }})
 /* END DOM */
 
 function convert(){
