@@ -22,10 +22,13 @@ document.getElementById('op').addEventListener('blur', (e)=>{
 
 document.getElementById('op').addEventListener('input', (e)=>{
     const inputElement = e.target;
+    const lastChIndex = inputElement.value.length - 1
+    if(inputElement.value[lastChIndex] === ','){
+        inputElement.value = inputElement.value.substring(0, lastChIndex) + '.'
+    }
     const inputValue = inputElement.value;
-    const sanitizedValue = inputValue.replace(',', '.');
-    if (!/^[\d.]*$/.test(sanitizedValue)) {
-        inputElement.value = sanitizedValue.replace(/[^0-9.]/g, '');
+    if (!/^[\d.]*$/.test(inputValue)) {
+        inputElement.value = inputValue.replace(/[^0-9.]/g, '');
     }})
 /* END DOM */
 
