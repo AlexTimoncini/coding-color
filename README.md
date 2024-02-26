@@ -7,7 +7,6 @@ A description is on the way
 My todolist:
 
 ```bash
--Mini bug on hex conversion
 -Tutorial mode
 -Info btn on ab_op
 ```
