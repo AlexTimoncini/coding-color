@@ -1,5 +1,14 @@
 import {Calculator} from './classes/coding-color.class.js';
 /* DOM */
+//tutorial mode
+buildTutorial({
+    steps: [
+        'a',
+        'b',
+        'c'
+    ]
+})
+
 //textarea
 let editor = CodeMirror.fromTextArea(document.getElementById('colorsCss'), {
     lineNumbers: true,

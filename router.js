@@ -1,8 +1,8 @@
 //ROUTER
 import { Router } from './js/classes/router.class.js'
 //let router = new Router('http://127.0.0.1:8000');
-let router = new Router('http://localhost:8000');
-//let router = new Router('https://coding-color.it');
+//let router = new Router('http://localhost:8000');
+let router = new Router('https://coding-color.it');
 //rotte
 router.get('/', function(){
     buildPage('home.html',
@@ -17,8 +17,20 @@ router.get('/manual', function(){
 });
 router.get('/automatic', function(){
     buildPage('auto.html',
-        ['shared/codemirror.min.css', 'shared/sidebar.css', 'shared/toggle.css', 'auto.css'],
-        ['shared/codemirror.min.js', 'shared/jscolor.min.js', 'shared/sidebar.js', 'auto.js']).then(()=>stopLoading())
+        [
+            'shared/codemirror.min.css',
+            'shared/sidebar.css',
+            'shared/toggle.css',
+            'shared/tutorial_mode.css',
+            'auto.css'
+        ],
+        [
+            'shared/codemirror.min.js',
+            'shared/jscolor.min.js',
+            'shared/sidebar.js',
+            'shared/tutorial_mode.js',
+            'auto.js'
+        ]).then(()=>stopLoading())
 });
 router.get('/single', function(){
     buildPage('single.html').then(()=>stopLoading())
@@ -92,6 +104,7 @@ async function buildPage(mainHTML, css, src){
     }
 }
 
+//loader
 function startLoading(){
     disableScroll()
     if (document.getElementById("loader")) {

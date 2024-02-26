@@ -1,0 +1,7 @@
+.overlay-tutorial{
+    z-index: 99;
+    position: absolute;
+    pointer-events: none;
+    background-color: var(--white);
+    opacity: 0.5;
+}
