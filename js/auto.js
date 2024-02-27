@@ -1,16 +1,16 @@
 import {Calculator} from './classes/coding-color.class.js';
+import {Tutorial} from './classes/tutorial_mode.class.js';
 /* DOM */
-//tutorial mode
-buildTutorial({
-    steps: [
-        'a',
-        'b',
-        'c'
-    ]
+
+//tutorial
+const tutorial = new Tutorial({
+    steps: ['a', 'b'],
+    identifier: 'automatic'
 })
+tutorial.start()
 
 //textarea
-let editor = CodeMirror.fromTextArea(document.getElementById('colorsCss'), {
+const editor = CodeMirror.fromTextArea(document.getElementById('colorsCss'), {
     lineNumbers: true,
     lineWrapping: true,
     autofocus: true

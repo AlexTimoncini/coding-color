@@ -28,7 +28,6 @@ router.get('/automatic', function(){
             'shared/codemirror.min.js',
             'shared/jscolor.min.js',
             'shared/sidebar.js',
-            'shared/tutorial_mode.js',
             'auto.js'
         ]).then(()=>stopLoading())
 });
