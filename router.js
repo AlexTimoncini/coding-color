@@ -1,8 +1,8 @@
 //ROUTER
 import { Router } from './js/classes/router.class.js'
-//let router = new Router('http://127.0.0.1:8000');
+let router = new Router('http://127.0.0.1:8000');
 //let router = new Router('http://localhost:8000');
-let router = new Router('https://coding-color.it');
+//let router = new Router('https://coding-color.it');
 //rotte
 router.get('/', function(){
     buildPage('home.html',

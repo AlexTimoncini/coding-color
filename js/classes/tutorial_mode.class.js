@@ -9,12 +9,14 @@ export class Tutorial {
         if(localStorage.getItem(this._sessionId) === null){
             localStorage.setItem(this._sessionId, true)
         }
-
+        console.log(localStorage.getItem(this._sessionId))
         //get HTML
         if(!localStorage.getItem('tutorial')){
+            console.log('tutorial closed')
             return false;
         } else {
-            fetch('components/tutorial-overlay.html')
+            console.log('tutorial opened')
+            fetch('/components/tutorial-overlay.html')
             .then(result => result.text())
             .then(text=> document.querySelector('body').innerHTML += text);
 
