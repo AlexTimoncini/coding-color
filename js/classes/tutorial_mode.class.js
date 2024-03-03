@@ -39,8 +39,13 @@ export class Tutorial {
         document.getElementById('step_msg').innerHTML = this._steps[this.step_index].msg
 
         //actions
-        document.getElementById('tutorial_prev').addEventListener('click', ()=>{this.prev()});
-        document.getElementById('tutorial_next').addEventListener('click', ()=>{this.next()});
+        const btnBox = document.getElementById('step_actions');
+        btnBox.innerHTML = ''
+        btnBox.insertAdjacentHTML('beforeend','<button id="tutorial_prev">prev</button><button id="tutorial_next">next</button>')
+
+    
+        document.getElementById('tutorial_prev').addEventListener('click', this.prev.bind(this));
+        document.getElementById('tutorial_next').addEventListener('click', this.next.bind(this));
 
         //spotlight
         document.querySelectorAll('.spotlight').forEach(el=>el.classList.remove('spotlight'))
@@ -49,21 +54,23 @@ export class Tutorial {
     }
 
     prev(){
-        console.log('prev', localStorage.setItem('step_index', this.step_index))
+        console.log('prev', this.step_index)
         if(this.step_index > 0){
             this.step_index--;
             localStorage.setItem('step_index', this.step_index)
             this.build()
         }
+        return false
     }
 
     next(){
-        console.log('next', localStorage.setItem('step_index', this.step_index))
+        console.log('next', this.step_index)
         if(this.step_index < this._steps.length - 1){
             this.step_index++;
             localStorage.setItem('step_index', this.step_index)
             this.build()
         }
+        return false
     }
 }
 
