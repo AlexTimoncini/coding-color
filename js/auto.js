@@ -4,11 +4,26 @@ import {Tutorial} from './classes/tutorial_mode.class.js';
 
 //tutorial
 const tutorial = new Tutorial({
-    steps: ['a', 'b'],
+    steps: [
+        {
+            title: 'Choose the initial format',
+            msg: 'The tool will automatically convert all the colors with these formats',
+            selector: "#from"
+        }, 
+        {
+            title: 'Choose the final format',
+            msg: 'After get all the colors with format you chose in the first step, the tool will convert them all in the format you\'ll choose',
+            selector: "#to"
+        },
+        {
+            title: 'Choose the opacity option',
+            msg: 'After get all the colors with format you chose in the first step, the tool will convert them all in the format you\'ll choose',
+            selector: "#opacity"
+        }
+    ],
     identifier: 'automatic'
 })
 tutorial.start()
-
 //textarea
 const editor = CodeMirror.fromTextArea(document.getElementById('colorsCss'), {
     lineNumbers: true,

@@ -1,4 +1,9 @@
 <div class="overlay-tutorial">
-    <h1 class="step-title">Step {{step_index}}: {{step_title}}</h1>
-    <p class="step-msg">Step {{step_msg}}</p>
+    <div class="step-box">
+        <h1 class="step-title">Step <span id="step_index"></span>: <span id="step_title"></span></h1>
+        <p class="step-msg"><span id="step_msg"></span></p>
+    </div>
+    <div class="step-actions">
+        <button id="tutorial_prev">prev</button><button id="tutorial_next">next</button>
+    </div>
 </div>

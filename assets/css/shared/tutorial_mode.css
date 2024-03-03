@@ -5,8 +5,22 @@
     height: 100vh;
     z-index: 99;
     position: absolute;
-    pointer-events: none;
-    background-color: rgba(255,255,255,.7);
+    background-color: rgba(255,255,255,.8);
     text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     padding-top: 30px;
+}
+
+.step-box{
+    padding: 0 20px;
+    z-index: 100;
+}
+
+.spotlight{
+    border: 1px solid var(--blue);
+    z-index: 100;
+    position: relative;
+    padding: 20px 5px;
 }
