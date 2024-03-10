@@ -26,6 +26,9 @@ main{
 }
 
 .marked{
+    display: inline-block;
+    padding: 2px 4px;
+    margin: 1px 0;
     color: var(--blue);
     border: 2px solid var(--blue);
     border-radius: 5px;

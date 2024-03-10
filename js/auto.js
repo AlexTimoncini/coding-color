@@ -1,29 +1,30 @@
 import {Calculator} from './classes/coding-color.class.js';
-import {Tutorial} from './classes/tutorial_mode.class.js';
+//import {Tutorial} from './classes/tutorial_mode.class.js';
 /* DOM */
 
-//tutorial
-const tutorial = new Tutorial({
-    steps: [
-        {
-            title: 'Choose the initial format',
-            msg: 'The tool will automatically convert all the colors with these formats',
-            selector: "#from"
-        }, 
-        {
-            title: 'Choose the final format',
-            msg: 'After get all the colors with format you chose in the first step, the tool will convert them all in the format you\'ll choose',
-            selector: "#to"
-        },
-        {
-            title: 'Choose the opacity option',
-            msg: 'After get all the colors with format you chose in the first step, the tool will convert them all in the format you\'ll choose',
-            selector: "#opacity"
-        }
-    ],
-    identifier: 'automatic'
-})
-tutorial.start()
+// //tutorial
+// const tutorial = new Tutorial({
+//     steps: [
+//         {
+//             title: 'Choose the initial format',
+//             msg: 'The tool will automatically convert all the colors with these formats',
+//             selector: "#from"
+//         }, 
+//         {
+//             title: 'Choose the final format',
+//             msg: 'After get all the colors with format you chose in the first step, the tool will convert them all in the format you\'ll choose',
+//             selector: "#to"
+//         },
+//         {
+//             title: 'Choose the opacity option',
+//             msg: 'After get all the colors with format you chose in the first step, the tool will convert them all in the format you\'ll choose',
+//             selector: "#opacity"
+//         }
+//     ],
+//     identifier: 'automatic'
+// })
+// tutorial.start()
+
 //textarea
 const editor = CodeMirror.fromTextArea(document.getElementById('colorsCss'), {
     lineNumbers: true,
@@ -48,7 +49,11 @@ document.getElementById('op').addEventListener('input', (e)=>{
     const inputValue = inputElement.value;
     if (!/^[\d.]*$/.test(inputValue)) {
         inputElement.value = inputValue.replace(/[^0-9.]/g, '');
-    }})
+    }
+})
+
+document.querySelector('.copy-icon').addEventListener('click', copyToClipboard)
+
 /* END DOM */
 
 function convert(){
@@ -181,4 +186,13 @@ function getBackground(){
 
 function alert(msg){
     console.log(msg);
+}
+
+function copyToClipboard(){
+
+    let copyText = editor.getValue()
+
+    navigator.clipboard.writeText(copyText);
+
+    alert("Copied the text: " + copyText);
 }

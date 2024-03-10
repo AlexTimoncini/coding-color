@@ -26,7 +26,12 @@
                 <div class="parameters" id="opacity">
                     <h3>Opacity</h3>
                     <div class="parameter toggle-wrapper parameter-wide">
-                        <label for="ab_op">Absorb Opacity</label>
+                        <label for="ab_op">Absorb Opacity 
+                            <span class="more-info">
+                                <span class="info-btn">i</span>
+                                <span class="info-text">This value will never overwrite rgba alpha value, it will only works for rgb and hex</span>
+                            </span>
+                        </label>
                         <input type="checkbox" class="toggle" name="ab_op" id="ab_op">
                     </div>
                     <div class="parameter parameter-wide no-events">
@@ -43,8 +48,11 @@
         <div class="result-column">
             <h2 class="mb-2">Automatic Converter</h2>
             <label for="colorsCss">Insert your code to be converted</label>
-            <div class="code-area">
+            <div class="code-area relative">
                 <textarea id="colorsCss" name="colorCss"></textarea>
+                <div class="copy-icon">
+                    <img src="/assets/images/shared/copy.svg" alt="copy icon">
+                </div>
             </div>
             <pre id="output" class="hidden"></pre>
             <button id="calculate_btn">CONVERT</button>
