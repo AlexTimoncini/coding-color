@@ -13,6 +13,7 @@ box-sizing: border-box;
     --lgray: #eeeeee;
     --blue: #6865f7;
     --yellow: #ffd166;
+    --error: #721c24;
     /*FONTS*/
     --mono: 'source-code-pro';
     --display: 'Roboto', sans-serif;
@@ -181,11 +182,25 @@ a.btn-primary:hover{
     display: none;
     top: 0;
     left: 50%;
-    transform: translate(-50%, -105%);
+    transform: translate(calc(-50% - 2px), -115%);
     opacity: 0;
     position: absolute;
     transition: opacity 0.3s;
     z-index: 2;
+}
+
+.info-text:after{
+    position: absolute;
+    content: "";
+    height: 14px;
+    width: 14px;
+    background-color: white;
+    border: 1px solid var(--blue);
+    transform: rotate(45deg);
+    top: calc(100% - 7px);
+    left: calc(50% - 7px);
+    border-top: none;
+    border-left: none;
 }
 
 .copy-icon{
@@ -201,6 +216,106 @@ a.btn-primary:hover{
     width: 100%;
     display: block;
     filter: invert(38%) sepia(43%) saturate(3183%) hue-rotate(225deg) brightness(97%) contrast(100%);
+}
+
+.alert{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--white);
+    position: absolute;
+    left: calc(50% - 200px);
+    top: 20px;
+    width: calc(100% - 20px);
+    max-width: 400px;
+    height: 70px;
+    box-shadow: 0 6px 20px -5px rgba(0, 0, 0, 0.1);
+    padding: 5px 20px 5px 10px;
+    overflow: hidden;
+}
+
+.alert-msg{
+    flex-grow: 1;
+    padding-left: 10px;
+}
+
+.alert-icon::before {
+    content: "\26A0"; /* Unicode character for warning symbol */
+    font-size: 24px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--blue);
+}
+
+.alert-progress{
+    width: 100%;
+    height: 5px;
+    background-color: var(--blue);
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    animation: progress linear 5s;
+}
+
+@keyframes progress {
+    from{
+        width: 100%;
+    }
+    to{
+        width: 0;
+    }
+}
+
+.success-icon::before {
+    content: "\2713"; /* Unicode character for checkmark symbol */
+    font-size: 24px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--blue);
+}
+
+.error-icon::before {
+    content: "\2717"; /* Unicode character for cross symbol */
+    font-size: 24px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--error);
+}
+
+.close-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 15px;
+    height: 15px;
+    cursor: pointer;
+}
+
+.close-button::before,
+.close-button::after {
+    content: '';
+    position: absolute;
+    width: 3px;
+    border-radius: 3px;
+    height: 100%;
+    background-color: var(--blue);
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.close-button::before {
+    transform: translateX(-50%) rotate(45deg);
+}
+
+.close-button::after {
+    transform: translateX(-50%) rotate(-45deg);
 }
 
 /*BG-COLOR CLASSES*/

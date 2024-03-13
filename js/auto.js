@@ -52,7 +52,7 @@ document.getElementById('op').addEventListener('input', (e)=>{
     }
 })
 
-document.querySelector('.copy-icon').addEventListener('click', copyToClipboard)
+document.querySelector('.copy-icon').addEventListener('click', copyToClipboardCss)
 
 /* END DOM */
 
@@ -63,7 +63,7 @@ function convert(){
     if(fromData.response){
         from = fromData.data;
     } else {
-        alert(fromData.data)
+        alert('Please select the initial format!', 'alert')
         return
     }
     
@@ -73,7 +73,7 @@ function convert(){
     if(toData.response){
         to = toData.data;
     } else {
-        alert(toData.data)
+        alert('Please select the final format!', 'alert')
         return
     }
 
@@ -88,7 +88,7 @@ function convert(){
         if (opacityData.response) {
             opacity = opacityData.data;
         } else {
-            alert(opacityData.data)
+            alert('Opacity must be a number between 0 and 1!', 'alert')
             return
         }
 
@@ -97,7 +97,7 @@ function convert(){
         if (backgroundData.response) {
             background = backgroundData.data;
         } else {
-            alert(backgroundData.data)
+            alert('The background isn\'t a valid color!', 'alert')
             return
         }
 
@@ -184,14 +184,9 @@ function getBackground(){
     }
 }
 
-function alert(msg){
-    console.log(msg);
-}
-
-function copyToClipboard(){
+function copyToClipboardCss(){
 
     let copyText = editor.getValue()
-
     navigator.clipboard.writeText(copyText);
 
     alert("Copied the text: " + copyText);
