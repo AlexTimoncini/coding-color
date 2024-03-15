@@ -30,8 +30,8 @@ export class Calculator {
     colorValues(color, format){
         let rgba = {
             converted: false,
-            data: null
-        };
+            data: color
+        }
         switch(format) {
             case 'hex':
                 let hexToRgb = this.hexToRgb(color)
@@ -39,9 +39,6 @@ export class Calculator {
                     rgba.converted = true
                     rgba.data = [...hexToRgb.data]
                     rgba.data.push(this._opacity)
-                } else {
-                    rgba.converted = false
-                    rgba.data = color
                 }
             break
             case 'rgb' :
@@ -50,9 +47,6 @@ export class Calculator {
                     rgba.converted = true
                     rgba.data = [...rgbToArr.data]
                     rgba.data.push(this._opacity)
-                } else {
-                    rgba.converted = false
-                    rgba.data = color
                 }
             break
             case 'rgba' :
@@ -112,7 +106,7 @@ export class Calculator {
             } else {
                 format = 'rgb';
             }
-            colors.push({color: match, format: format, start: matchStart, end: matchEnd, line: lineNumber})
+            colors.push({color: match, format: format, start: matchStart, end: matchEnd, line: lineNumber, original: match})
         }
         return colors
     }

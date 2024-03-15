@@ -121,7 +121,10 @@ function convert(){
         editor.markText(
             {line: col.line, ch: col.start},
             {line: col.line ,ch: col.start + col.color.length},
-            { className: "marked"}
+            { 
+                className: "marked",
+                attributes: {"data-original": col.original}
+            }   
         )
         if(colors[i+1] && colors[i+1].line === col.line){
             shift += (col.color.length - (col.end - col.start))
@@ -131,36 +134,37 @@ function convert(){
             shift = 0
         }
     })
+
+    /* MARKED COLORS CLICK AND HOVER */
     document.querySelectorAll('.CodeMirror .marked').forEach(el => {
         el.addEventListener("click", function () {
             copyToClipboardColor(el.innerText.trim())
         })
 
         el.addEventListener("mouseover", function () {
-            let oldColor = el.innerText,
+            let oldColor = el.dataset.original,
                 convertedColor = el.innerText,
                 html = `
-            <div class="info-text rected">
-                <div class="color-squares">
-                    <div class="color-square" style="background-color:${convertedColor}"></div>
-                    <p>&rightarrow;</p>
-                    <div class="color-square" style="background-color:${convertedColor}"></div>
-                </div>
-                <div class="color-strings">
-                    <p class="color-string">${oldColor}&nbsp;&nbsp;</p>
-                    <p class="color-string">&nbsp;&nbsp;${convertedColor}</p>
-                </div>    
-            </div>
-        `
-
-            document.body.insertAdjacentHTML("afterbegin", html)
-            document.querySelector('.info-text.rected').style.opacity = '1'
-            document.querySelector('.info-text.rected').style.display = 'block'
-            document.querySelector('.info-text.rected').style.width = 'auto'
-
-            const rect = el.getBoundingClientRect();
-            document.querySelector('.info-text.rected').style.top = (rect.top + window.scrollY - 7) + "px";
-            document.querySelector('.info-text.rected').style.left = (rect.left + window.scrollX + (rect.width / 2)) + "px";
+                    <div class="info-text rected">
+                        <div class="color-squares">
+                            <div class="color-square" style="background-color:${oldColor}"></div>
+                            <p>&rightarrow;</p>
+                            <div class="color-square" style="background-color:${convertedColor}"></div>
+                        </div>
+                        <div class="color-strings">
+                            <p class="color-string">${oldColor}&nbsp;&nbsp;</p>
+                            <p class="color-string">&nbsp;&nbsp;${convertedColor}</p>
+                        </div>    
+                    </div>`   
+            const rect = el.getBoundingClientRect()
+            document.body.insertAdjacentHTML("afterbegin", html);
+            const infoText = document.querySelector('.info-text.rected')
+            infoText.style.cssText = `
+                opacity: 1;
+                display: block;
+                width: auto;
+                top: ${rect.top + window.scrollY - 7}px;
+                left: ${rect.left + window.scrollX + (rect.width / 2)}px;`
         })
 
         el.addEventListener("mouseout", function () {
