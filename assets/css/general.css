@@ -250,13 +250,18 @@ a.btn-primary:hover{
 }
 
 .alert-progress{
-    width: 100%;
+    width: 0;
     height: 5px;
     background-color: var(--blue);
     position: absolute;
     bottom: 0;
     left: 0;
     animation: progress linear 5s;
+}
+
+.error{
+    color: var(--error)!important;
+    border-color: var(--error)!important;
 }
 
 @keyframes progress {

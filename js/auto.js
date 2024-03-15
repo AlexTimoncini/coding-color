@@ -63,7 +63,7 @@ function convert(){
     if(fromData.response){
         from = fromData.data;
     } else {
-        alert('Please select the initial format!', 'alert')
+        alert('Please select the initial format!', 'alert', '#from label')
         return
     }
     
@@ -73,7 +73,7 @@ function convert(){
     if(toData.response){
         to = toData.data;
     } else {
-        alert('Please select the final format!', 'alert')
+        alert('Please select the final format!', 'alert', '#to label')
         return
     }
 
@@ -88,7 +88,7 @@ function convert(){
         if (opacityData.response) {
             opacity = opacityData.data;
         } else {
-            alert('Opacity must be a number between 0 and 1!', 'alert')
+            alert('Opacity must be a number between 0 and 1!', 'alert', '#op')
             return
         }
 
@@ -97,7 +97,7 @@ function convert(){
         if (backgroundData.response) {
             background = backgroundData.data;
         } else {
-            alert('The background isn\'t a valid color!', 'alert')
+            alert('The background isn\'t a valid color!', 'alert', '#bg')
             return
         }
 
@@ -146,7 +146,7 @@ function getFrom(){
     })
     return {
         response: !!format.length,
-        data: format.length ? format : 'Initial format not chosen'
+        data: format.length ? format : ''
     }
 }
 
@@ -160,16 +160,16 @@ function getTo(){
     })
     return {
         response: !!format,
-        data: format ? format : 'Converting format not chosen'
+        data: format ? format : ''
     }
 }
 
 function getOpacity(){
-    let value = parseFloat(parseFloat(document.getElementById('op').value).toFixed(1))
-    let validation = value >= 0 || value <= 1
+    let value = parseFloat(parseFloat(document.getElementById('op').value).toFixed(2))
+    let validation = value >= 0 && value <= 1
     return { 
         response: validation,
-        data: validation ? value : 'Opacity Value isn\'t in the right format'
+        data: validation ? value : ''
     }
 }
 
@@ -180,14 +180,17 @@ function getBackground(){
     const validation = regex.test(input.value);
     return {
         response: validation,
-        data: validation ? input.value : 'Background value is not in hex format'
+        data: validation ? input.value : ''
     }
 }
 
 function copyToClipboardCss(){
-
-    let copyText = editor.getValue()
-    navigator.clipboard.writeText(copyText);
-
-    alert("Copied the text: " + copyText);
+    let css = editor.getValue()
+    if(css.length > 0){
+        let copyText = '--Thank you for using Coding-Color.it--\n'+css
+        navigator.clipboard.writeText(copyText);
+        alert('Editor test has been copied to clipboard', 'success');
+    } else {
+        alert('There\'s nothing to copy!', 'alert');
+    }
 }
