@@ -224,7 +224,7 @@ a.btn-primary:hover{
     justify-content: space-between;
     align-items: center;
     background-color: var(--white);
-    position: absolute;
+    position: fixed;
     left: calc(50% - 200px);
     top: 20px;
     width: calc(100% - 20px);
@@ -378,6 +378,11 @@ a.btn-primary:hover{
     .container{
         max-width: 100%;
         padding: 20px 10px;
+    }
+
+    .alert{
+        left: 50%;
+        transform: translateX(-50%);
     }
 }
 
