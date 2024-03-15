@@ -125,11 +125,9 @@ export class Calculator {
                 if(this._from_format.includes(color.format)){
                     let alpha = color.color[3];
                     let inverseAlpha = 1 - alpha;
-                    console.log(alpha)
                     let red = Math.round((alpha * color.color[0] + inverseAlpha * bgValues.data[0]) / 255 * 255);
                     let green = Math.round((alpha * color.color[1] + inverseAlpha * bgValues.data[1]) / 255 * 255);
                     let blue = Math.round((alpha * color.color[2] + inverseAlpha * bgValues.data[2]) / 255 * 255);
-                    console.log(red, green, blue)
                     switch(this._to_format){
                         case 'rgba':
                             color.color = 'rgba('+ color.color[0] +',' + color.color[1] + ','  + color.color[2] + ','  + color.color[3] + ')';

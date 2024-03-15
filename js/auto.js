@@ -131,6 +131,11 @@ function convert(){
             shift = 0
         }
     })
+    document.querySelectorAll('.CodeMirror .marked').forEach(el=> {
+        el.addEventListener("click", function () {
+            copyToClipboardColor(el.innerText)
+        })
+    })
 }
 
 //functions
@@ -191,4 +196,9 @@ function copyToClipboardCss(){
     } else {
         alert('There\'s nothing to copy!', 'alert');
     }
+}
+
+function copyToClipboardColor(text){
+    navigator.clipboard.writeText(text);
+    alert('Color ' + text + ' has been copied to clipboard', 'success');
 }

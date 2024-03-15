@@ -32,6 +32,7 @@ main{
     color: var(--blue);
     border: 2px solid var(--blue);
     border-radius: 5px;
+    cursor: pointer;
 }
 
 @media screen and (max-width: 700px) {
