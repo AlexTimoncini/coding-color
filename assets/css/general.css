@@ -10,7 +10,8 @@ box-sizing: border-box;
     /*COLORS*/
     --white: #fff;
     --black: #000;
-    --lgray: #eeeeee;
+    --lgray: #eee;
+    --dgray: #6c6c6c;
     --blue: #6865f7;
     --yellow: #ffd166;
     --error: #721c24;

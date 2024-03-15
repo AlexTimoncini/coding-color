@@ -131,9 +131,40 @@ function convert(){
             shift = 0
         }
     })
-    document.querySelectorAll('.CodeMirror .marked').forEach(el=> {
+    document.querySelectorAll('.CodeMirror .marked').forEach(el => {
         el.addEventListener("click", function () {
-            copyToClipboardColor(el.innerText)
+            copyToClipboardColor(el.innerText.trim())
+        })
+
+        el.addEventListener("mouseover", function () {
+            let oldColor = el.innerText,
+                convertedColor = el.innerText,
+                html = `
+            <div class="info-text rected">
+                <div class="color-squares">
+                    <div class="color-square" style="background-color:${convertedColor}"></div>
+                    <p>&rightarrow;</p>
+                    <div class="color-square" style="background-color:${convertedColor}"></div>
+                </div>
+                <div class="color-strings">
+                    <p class="color-string">${oldColor}&nbsp;&nbsp;</p>
+                    <p class="color-string">&nbsp;&nbsp;${convertedColor}</p>
+                </div>    
+            </div>
+        `
+
+            document.body.insertAdjacentHTML("afterbegin", html)
+            document.querySelector('.info-text.rected').style.opacity = '1'
+            document.querySelector('.info-text.rected').style.display = 'block'
+            document.querySelector('.info-text.rected').style.width = 'auto'
+
+            const rect = el.getBoundingClientRect();
+            document.querySelector('.info-text.rected').style.top = (rect.top + window.scrollY - 7) + "px";
+            document.querySelector('.info-text.rected').style.left = (rect.left + window.scrollX + (rect.width / 2)) + "px";
+        })
+
+        el.addEventListener("mouseout", function () {
+            document.querySelector('.info-text.rected').remove()
         })
     })
 }
