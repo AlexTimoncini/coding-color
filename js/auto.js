@@ -221,7 +221,10 @@ function getBackground(){
 function copyToClipboardCss(){
     let css = editor.getValue()
     if(css.length > 0){
-        let copyText = '--Thank you for using Coding-Color.it--\n'+css
+        let copyText = css
+        if(!css.startsWith('--Thank you for using Coding-Color.it--\n')) {
+            copyText = '--Thank you for using Coding-Color.it--\n'+css
+        }
         navigator.clipboard.writeText(copyText);
         alert('Editor test has been copied to clipboard', 'success');
     } else {
