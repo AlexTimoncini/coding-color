@@ -104,35 +104,33 @@ function convert(){
     }
 
     //css
-    let css = editor.getValue().split('\n')
-
-    if(css.length){
-        //class color converter builder
-        let calculator = new Calculator(from, to, css, opacity, background)
-        let matrix = calculator.calc()
-        let colors = calculator.colors
-        let newCss = matrix.map((line)=>{return line.css}).join('\n')
-        editor.setValue(newCss);
-
-        let shift = 0
-        colors.forEach((col, i)=>{
-            editor.markText(
-                {line: col.line, ch: col.start},
-                {line: col.line ,ch: col.start + col.color.length},
-                { className: "marked"}
-            )
-            if(colors[i+1] && colors[i+1].line === col.line){
-                shift += (col.color.length - (col.end - col.start))
-                colors[i+1].start += shift
-                colors[i+1].end += shift
-            } else {
-                shift = 0
-            }
-        })
-    } else {
+    let cssEditor = editor.getValue()
+    if(!cssEditor.length){
+        alert('There\'s nothing to convert!', 'alert', '.CodeMirror')
         editor.focus()
+        return
     }
-
+    let css = cssEditor.split('\n'),
+        calculator = new Calculator(from, to, css, opacity, background),
+        matrix = calculator.calc(),
+        newCss = matrix.map((line)=>{return line.css}).join('\n'),
+        colors = calculator.colors,
+        shift = 0
+    editor.setValue(newCss);
+    colors.forEach((col, i)=>{
+        editor.markText(
+            {line: col.line, ch: col.start},
+            {line: col.line ,ch: col.start + col.color.length},
+            { className: "marked"}
+        )
+        if(colors[i+1] && colors[i+1].line === col.line){
+            shift += (col.color.length - (col.end - col.start))
+            colors[i+1].start += shift
+            colors[i+1].end += shift
+        } else {
+            shift = 0
+        }
+    })
 }
 
 //functions
