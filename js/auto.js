@@ -124,7 +124,7 @@ function convert(){
             { 
                 className: "marked",
                 attributes: {"data-original": col.original}
-            }   
+            }
         )
         if(colors[i+1] && colors[i+1].line === col.line){
             shift += (col.color.length - (col.end - col.start))
@@ -134,6 +134,12 @@ function convert(){
             shift = 0
         }
     })
+    if(colors.length > 1)
+        alert(colors.length+' colors have been successfully converted', 'success')
+    else if (colors.length > 0)
+        alert('Color '+colors[0].original+' has been successfully converted', 'success')
+    else
+        alert('No colors detected, try adjusting the filters', 'alert')
 
     /* MARKED COLORS CLICK AND HOVER */
     document.querySelectorAll('.CodeMirror .marked').forEach(el => {
