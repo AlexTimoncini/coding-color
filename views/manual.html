@@ -1,1 +1,32 @@
-<h1>manual conversion work in progress</h1>
+<div>
+    <div class="row">
+        <div class="sidebar">
+            <div class="sidebar-toggle">
+                <img src=".\assets\images\shared\chevron.svg" alt="chevron svg" class="img-fluidY">
+            </div>
+            <div class="filter-column">
+                <div class="parameters" id="from">
+                    <h3>Format to extract</h3>
+                    <input type="checkbox" name="rgb_in" id="rgb_in" value="rgb" checked class="ghost">
+                    <label for="rgb_in" class="btn-primary">RGB</label>
+                    <input type="checkbox" name="rgba_in" id="rgba_in" value="rgba" checked class="ghost">
+                    <label for="rgba_in" class="btn-primary">RGBA</label>
+                    <input type="checkbox" name="hex_in" id="hex_in" value="hex" checked class="ghost">
+                    <label for="hex_in" class="btn-primary">HEX</label>
+                </div>
+            </div>
+        </div>
+        <div class="result-column">
+            <h2 class="mb-2">Step by Step Converter</h2>
+            <label for="colorsCss">Insert your code to be converted</label>
+            <div class="code-area relative">
+                <textarea id="colorsCss" name="colorCss"></textarea>
+                <div class="copy-icon">
+                    <img src="/assets/images/shared/copy.svg" alt="copy icon">
+                </div>
+            </div>
+            <pre id="output" class="hidden"></pre>
+            <button id="calculate_btn">EXTRACT</button>
+        </div>
+    </div>
+</div>

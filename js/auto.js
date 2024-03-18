@@ -1,60 +1,4 @@
 import {Calculator} from './classes/coding-color.class.js';
-//import {Tutorial} from './classes/tutorial_mode.class.js';
-/* DOM */
-
-// //tutorial
-// const tutorial = new Tutorial({
-//     steps: [
-//         {
-//             title: 'Choose the initial format',
-//             msg: 'The tool will automatically convert all the colors with these formats',
-//             selector: "#from"
-//         }, 
-//         {
-//             title: 'Choose the final format',
-//             msg: 'After get all the colors with format you chose in the first step, the tool will convert them all in the format you\'ll choose',
-//             selector: "#to"
-//         },
-//         {
-//             title: 'Choose the opacity option',
-//             msg: 'After get all the colors with format you chose in the first step, the tool will convert them all in the format you\'ll choose',
-//             selector: "#opacity"
-//         }
-//     ],
-//     identifier: 'automatic'
-// })
-// tutorial.start()
-
-//textarea
-const editor = CodeMirror.fromTextArea(document.getElementById('colorsCss'), {
-    lineNumbers: true,
-    lineWrapping: true,
-    autofocus: true
-});
-
-//Convert css button
-document.getElementById('calculate_btn').addEventListener('click', ()=>{convert()})
-
-//toggle no-events on opacity
-document.getElementById('ab_op').addEventListener('change', ()=>{
-    document.querySelectorAll("#opacity .parameter:not(:first-of-type)").forEach(el=> el.classList.toggle("no-events"))
-})
-
-document.getElementById('op').addEventListener('input', (e)=>{
-    const inputElement = e.target;
-    const lastChIndex = inputElement.value.length - 1
-    if(inputElement.value[lastChIndex] === ','){
-        inputElement.value = inputElement.value.substring(0, lastChIndex) + '.'
-    }
-    const inputValue = inputElement.value;
-    if (!/^[\d.]*$/.test(inputValue)) {
-        inputElement.value = inputValue.replace(/[^0-9.]/g, '');
-    }
-})
-
-document.querySelector('.copy-icon').addEventListener('click', copyToClipboardCss)
-
-/* END DOM */
 
 function convert(){
     //From
@@ -226,23 +170,4 @@ function getBackground(){
         response: validation,
         data: validation ? input.value : ''
     }
-}
-
-function copyToClipboardCss(){
-    let css = editor.getValue()
-    if(css.length > 0){
-        let copyText = css
-        if(!css.startsWith('--Thank you for using Coding-Color.it--\n')) {
-            copyText = '--Thank you for using Coding-Color.it--\n'+css
-        }
-        navigator.clipboard.writeText(copyText);
-        alert('Editor test has been copied to clipboard', 'success');
-    } else {
-        alert('There\'s nothing to copy!', 'alert');
-    }
-}
-
-function copyToClipboardColor(text){
-    navigator.clipboard.writeText(text);
-    alert('Color ' + text + ' has been copied to clipboard', 'success');
 }
