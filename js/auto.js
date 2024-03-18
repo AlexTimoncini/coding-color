@@ -1,30 +1,4 @@
 import {Calculator} from './classes/coding-color.class.js';
-//import {Tutorial} from './classes/tutorial_mode.class.js';
-/* DOM */
-
-// //tutorial
-// const tutorial = new Tutorial({
-//     steps: [
-//         {
-//             title: 'Choose the initial format',
-//             msg: 'The tool will automatically convert all the colors with these formats',
-//             selector: "#from"
-//         }, 
-//         {
-//             title: 'Choose the final format',
-//             msg: 'After get all the colors with format you chose in the first step, the tool will convert them all in the format you\'ll choose',
-//             selector: "#to"
-//         },
-//         {
-//             title: 'Choose the opacity option',
-//             msg: 'After get all the colors with format you chose in the first step, the tool will convert them all in the format you\'ll choose',
-//             selector: "#opacity"
-//         }
-//     ],
-//     identifier: 'automatic'
-// })
-// tutorial.start()
-
 //textarea
 const editor = CodeMirror.fromTextArea(document.getElementById('colorsCss'), {
     lineNumbers: true,
@@ -193,7 +167,6 @@ function getFrom(){
         data: format.length ? format : ''
     }
 }
-
 function getTo(){
     let radios = document.getElementsByName('format_out');
     let format = false;
@@ -207,7 +180,6 @@ function getTo(){
         data: format ? format : ''
     }
 }
-
 function getOpacity(){
     let value = parseFloat(parseFloat(document.getElementById('op').value).toFixed(2))
     let validation = value >= 0 && value <= 1
@@ -216,7 +188,6 @@ function getOpacity(){
         data: validation ? value : ''
     }
 }
-
 function getBackground(){
     const input = document.getElementById('bg')
     //validate input
@@ -227,7 +198,6 @@ function getBackground(){
         data: validation ? input.value : ''
     }
 }
-
 function copyToClipboardCss(){
     let css = editor.getValue()
     if(css.length > 0){
@@ -241,7 +211,6 @@ function copyToClipboardCss(){
         alert('There\'s nothing to copy!', 'alert');
     }
 }
-
 function copyToClipboardColor(text){
     navigator.clipboard.writeText(text);
     alert('Color ' + text + ' has been copied to clipboard', 'success');
