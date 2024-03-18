@@ -24,6 +24,7 @@
 
 .sidebar.minimize{
     width: 35px;
+    min-width: 35px;
 }
 
 .sidebar.minimize .sidebar-toggle{
