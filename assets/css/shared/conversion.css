@@ -24,6 +24,15 @@ main{
     cursor: pointer;
 }
 
+.marked{
+    display: inline-block;
+    padding: 2px 4px;
+    margin: 1px 0;
+    color: var(--blue);
+    border: 2px solid var(--blue);
+    border-radius: 5px;
+    cursor: pointer;
+}
 
 @media screen and (max-width: 700px) {
     .result-column{

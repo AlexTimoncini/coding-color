@@ -1,53 +1,59 @@
 import {Calculator} from './classes/coding-color.class.js';
 
+//Convert button
+document.getElementById('calculate_btn').addEventListener('click', ()=>{convert()}) 
+
+//textarea
+const editor = CodeMirror.fromTextArea(document.getElementById('colorsCss'), {
+    lineNumbers: true,
+    lineWrapping: true,
+    autofocus: true
+})
+
+//Copy editor btn
+document.querySelector('.copy-icon').addEventListener('click', copyToClipboardCss)
+
 function convert(){
     //From
-    let fromData = getFrom();
-    let from;
-    if(fromData.response){
-        from = fromData.data;
-    } else {
+    let fromData = getFrom()
+    if(!fromData.response){
         alert('Please select the initial format!', 'alert', '#from label')
         return
     }
+    let from = fromData.data
     
     //To
-    let toData = getTo();
-    let to;
-    if(toData.response){
-        to = toData.data;
-    } else {
+    let toData = getTo()
+    if(!toData.response){
         alert('Please select the final format!', 'alert', '#to label')
         return
     }
+    let to = toData.data
 
     //Opacity
     const toggleOp = document.getElementById('ab_op');
-    let background = false;
-    let opacity = false;
+    let background = false
+    let opacity = false
     if(toggleOp.checked) {
 
         //Value
-        let opacityData = getOpacity();
-        if (opacityData.response) {
-            opacity = opacityData.data;
-        } else {
+        let opacityData = getOpacity()
+        if (!opacityData.response) {
             alert('Opacity must be a number between 0 and 1!', 'alert', '#op')
             return
         }
+        opacity = opacityData.data
 
         //Background
-        let backgroundData = getBackground();
-        if (backgroundData.response) {
-            background = backgroundData.data;
-        } else {
+        let backgroundData = getBackground()
+        if (!backgroundData.response) {
             alert('The background isn\'t a valid color!', 'alert', '#bg')
             return
         }
-
+        background = backgroundData.data
     }
 
-    //css
+    //Css
     let cssEditor = editor.getValue()
     if(!cssEditor.length){
         alert('There\'s nothing to convert!', 'alert', '.CodeMirror')
@@ -58,7 +64,7 @@ function convert(){
         calculator = new Calculator(from, to, css, opacity, background),
         matrix = calculator.calc(),
         newCss = matrix.map((line)=>{return line.css}).join('\n'),
-        colors = calculator.colors,
+        colors = calculator.parsedColors,
         shift = 0
     editor.setValue(newCss);
     colors.forEach((col, i)=>{
@@ -137,7 +143,6 @@ function getFrom(){
         data: format.length ? format : ''
     }
 }
-
 function getTo(){
     let radios = document.getElementsByName('format_out');
     let format = false;
@@ -151,7 +156,6 @@ function getTo(){
         data: format ? format : ''
     }
 }
-
 function getOpacity(){
     let value = parseFloat(parseFloat(document.getElementById('op').value).toFixed(2))
     let validation = value >= 0 && value <= 1
@@ -160,7 +164,6 @@ function getOpacity(){
         data: validation ? value : ''
     }
 }
-
 function getBackground(){
     const input = document.getElementById('bg')
     //validate input
@@ -170,4 +173,21 @@ function getBackground(){
         response: validation,
         data: validation ? input.value : ''
     }
+}
+function copyToClipboardCss(){
+    let css = editor.getValue()
+    if(css.length > 0){
+        let copyText = css
+        if(!css.startsWith('--Thank you for using Coding-Color.it--\n')) {
+            copyText = '--Thank you for using Coding-Color.it--\n'+css
+        }
+        navigator.clipboard.writeText(copyText);
+        alert('Editor test has been copied to clipboard', 'success');
+    } else {
+        alert('There\'s nothing to copy!', 'alert');
+    }
+}
+function copyToClipboardColor(text){
+    navigator.clipboard.writeText(text);
+    alert('Color ' + text + ' has been copied to clipboard', 'success');
 }

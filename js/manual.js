@@ -1,14 +1,53 @@
 import {Calculator} from './classes/coding-color.class.js';
-function convert(){
+/* DOM */
+//Convert button
+document.getElementById('calculate_btn').addEventListener('click', ()=>{extract()})
+
+//Editor init
+const editor = CodeMirror.fromTextArea(document.getElementById('colorsCss'), {
+    lineNumbers: true,
+    lineWrapping: true,
+    autofocus: true
+})
+
+//Copy editor btn
+document.querySelector('.copy-icon').addEventListener('click', copyToClipboardCss)
+
+//Sidebar default values
+let optionsJSON = localStorage.getItem('manual_options')
+if(optionsJSON){
+    let options = JSON.parse(optionsJSON)
+
+    //from
+    options.from.forEach(f=>{
+        document.querySelector('#from [value="'+f+'"]').checked = true
+    })
+
+    //to
+    if(options.to){
+        document.querySelector('#to [value="'+options.to+'"]').checked = true
+    }
+
+    //Opacity value
+    document.getElementById('op').value = options.op
+
+    //Opacity bg
+    document.getElementById('bg').value = options.bg
+
+    //get opacity from variables flag
+    document.getElementById('op_from_var').checked =  options.op_from_var
+}
+
+ /* END DOM */
+function extract(){
+    setDefaultOptions()
     //From
     let fromData = getFrom();
-    let from;
-    if(fromData.response){
-        from = fromData.data;
-    } else {
-        alert('Please select the initial format!', 'alert', '#from label')
+    if(!fromData.response){
+        alert('Please select at least one extracting format!', 'alert', '#from label')
         return
     }
+    let from = fromData.data
 
     //css
     let cssEditor = editor.getValue()
@@ -19,38 +58,80 @@ function convert(){
     }
     
     let css = cssEditor.split('\n'),
-        calculator = new Calculator(from, to, css, opacity, background),
-        matrix = calculator.calc(),
-        newCss = matrix.map((line)=>{return line.css}).join('\n'),
-        colors = calculator.colors,
-        shift = 0
-    editor.setValue(newCss);
-    colors.forEach((col, i)=>{
-        editor.markText(
-            {line: col.line, ch: col.start},
-            {line: col.line ,ch: col.start + col.color.length},
-            { 
-                className: "marked",
-                attributes: {"data-original": col.original}
-            }
-        )
-        if(colors[i+1] && colors[i+1].line === col.line){
-            shift += (col.color.length - (col.end - col.start))
-            colors[i+1].start += shift
-            colors[i+1].end += shift
-        } else {
-            shift = 0
-        }
-    })
-    if(colors.length > 1)
-        alert(colors.length+' colors have been successfully converted', 'success')
-    else if (colors.length > 0)
-        alert('Color '+colors[0].original+' has been successfully converted', 'success')
+        calculator = new Calculator(from, false, css),
+        colors = calculator.detectedColors
+        console.log(css, colors)
+    if(colors.length)
+        colorList(colors)
     else
         alert('No colors detected, try adjusting the filters', 'alert')
 }
 
 //functions
+function setDefaultOptions(){
+    const options = {
+        from: ['hex', 'rgb', 'rgba'],
+        to: false,
+        op: 1,
+        bg: '#fff',
+        op_from_var: false
+    }
+    
+    //From
+    let fromData = getFrom();
+    if(fromData.response){
+        options.from = fromData.data;
+    }
+    
+    //To
+    let toData = getTo();
+    if(toData.response){
+        options.to = toData.data;
+    }
+
+    //Opacity
+    const toggleOp = document.getElementById('ab_op');
+    if(toggleOp.checked) {
+
+        //Value
+        let opacityData = getOpacity();
+        if (opacityData.response) {
+            options.op = opacityData.data;
+        }
+
+        //Background
+        let backgroundData = getBackground();
+        if (backgroundData.response) {
+            options.bg = backgroundData.data;
+        }
+
+        //get opacity from variables flag
+        options.op_from_var = document.getElementById('op_from_var').checked
+    }
+
+    localStorage.setItem('manual_options', JSON.stringify(options))
+}
+function colorList(colors){
+    localStorage.setItem('manual_colors', JSON.stringify(colors))
+    const wrapper = document.querySelector('.color-list')
+    colors.forEach(col=>{
+        let html = `
+            <div class="color-row">
+                <p class="color-main">${col.color} - <span class="color-original">${col.original}</span></p>
+                <div class="color-info">
+                    
+                </div>
+            </div>
+        `
+        wrapper.insertAdjacentHTML('beforeend', html)
+    })
+    if(!document.querySelector('.editor-wrapper').classList.contains('hidden')){
+        document.querySelector('.editor-wrapper').classList.add('hidden')
+    }
+    if(wrapper.classList.contains('hidden')){
+        wrapper.classList.remove('hidden')
+    }
+}
 function getFrom(){
     let checkboxes = document.getElementById('from').querySelectorAll('input[type=checkbox]');
     let format = [];
@@ -63,4 +144,52 @@ function getFrom(){
         response: !!format.length,
         data: format.length ? format : ''
     }
+}
+function getTo(){
+    let radios = document.getElementsByName('format_out');
+    let format = false;
+    radios.forEach((radio)=>{
+        if(radio.checked){
+            format = radio.value
+        }
+    })
+    return {
+        response: !!format,
+        data: format ? format : ''
+    }
+}
+function getOpacity(){
+    let value = parseFloat(parseFloat(document.getElementById('op').value).toFixed(2))
+    let validation = value >= 0 && value <= 1
+    return { 
+        response: validation,
+        data: validation ? value : ''
+    }
+}
+function getBackground(){
+    const input = document.getElementById('bg')
+    //validate input
+    const regex = /^#[0-9a-fA-F]{3}([0-9a-fA-F]{3})?$/;
+    const validation = regex.test(input.value);
+    return {
+        response: validation,
+        data: validation ? input.value : ''
+    }
+}
+function copyToClipboardCss(){
+    let css = editor.getValue()
+    if(css.length > 0){
+        let copyText = css
+        if(!css.startsWith('--Thank you for using Coding-Color.it--\n')) {
+            copyText = '--Thank you for using Coding-Color.it--\n'+css
+        }
+        navigator.clipboard.writeText(copyText);
+        alert('Editor test has been copied to clipboard', 'success');
+    } else {
+        alert('There\'s nothing to copy!', 'alert');
+    }
+}
+function copyToClipboardColor(text){
+    navigator.clipboard.writeText(text);
+    alert('Color ' + text + ' has been copied to clipboard', 'success');
 }

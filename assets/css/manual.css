@@ -1,34 +1,24 @@
-.marked{
-    display: inline-block;
-    padding: 2px 4px;
-    margin: 1px 0;
-    color: var(--blue);
-    border: 2px solid var(--blue);
-    border-radius: 5px;
-    cursor: pointer;
+.color-list{
+    border-top: 2px solid var(--blue);
+    border-bottom: 2px solid var(--blue);
 }
 
-.color-squares{
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    margin-bottom: 1rem;
-    min-width: 100px;
-}
-
-.color-square{
-    width: 1.5rem;
-    height: 1.5rem;
-    box-shadow: rgba(6, 24, 44, 0.4) 0 0 0 2px, rgba(6, 24, 44, 0.65) 0 4px 6px -1px, rgba(255, 255, 255, 0.08) 0 1px 0 inset;
-}
-
-.color-strings{
+.color-row{
+    padding: 0.7rem 0.2rem;
+    border-top: 2px solid var(--blue);
+    border-bottom: 2px solid var(--blue);
     display: flex;
     justify-content: space-between;
-    align-items: center;
 }
 
-.color-string{
+.color-main{
+    font-size: 1.1rem;
+    color: var(--blue);
+    letter-spacing: 2px;
+}
+
+.color-original{
     color: var(--dgray);
-    font-size: 0.85rem;
+    font-size: 1rem;
+    letter-spacing: normal;
 }

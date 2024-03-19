@@ -2,7 +2,7 @@
     <div class="row">
         <div class="sidebar">
             <div class="sidebar-toggle">
-                <img src=".\assets\images\shared\chevron.svg" alt="chevron svg" class="img-fluidY">
+                <img src="/assets/images/shared/chevron.svg" alt="chevron svg" class="img-fluidY">
             </div>
             <div class="filter-column">
                 <div class="parameters" id="from">
@@ -14,19 +14,59 @@
                     <input type="checkbox" name="hex_in" id="hex_in" value="hex" checked class="ghost">
                     <label for="hex_in" class="btn-primary">HEX</label>
                 </div>
+                <div class="parameters" id="to">
+                    <h3>Default conversion format</h3>
+                    <input type="radio" class="ghost" name="format_out" id="rgb_out" value="rgb">
+                    <label class="btn-primary" for="rgb_out">RGB</label>
+                    <input type="radio" class="ghost" name="format_out" id="rgba_out" value="rgba">
+                    <label class="btn-primary" for="rgba_out">RGBA</label>
+                    <input type="radio" class="ghost" name="format_out" id="hex_out" value="hex">
+                    <label class="btn-primary" for="hex_out">HEX</label>
+                </div>
+                <div class="parameters" id="opacity">
+                    <h3>Opacity general options</h3>
+                    <div class="parameter toggle-wrapper parameter-wide">
+                        <label for="ab_op">Absorb Opacity 
+                            <span class="more-info">
+                                <span class="info-btn">i</span>
+                                <span class="info-text">This value will never overwrite rgba alpha value, it will only works for rgb and hex</span>
+                            </span>
+                        </label>
+                        <input type="checkbox" class="toggle" name="ab_op" id="ab_op">
+                    </div>
+                    <div class="parameter parameter-wide no-events">
+                        <label for="op">Default value</label>
+                        <input type="text" name="op" id="op" value="1" maxlength="4" class="input-primary input-number">
+                    </div>
+                    <div class="parameter toggle-wrapper parameter-wide no-events">
+                        <label for="op_from_var">Get value from variables
+                            <span class="more-info">
+                                <span class="info-btn">i</span>
+                                <span class="info-text">This value will never overwrite rgba alpha value, it will only works for rgb and hex</span>
+                            </span>
+                        </label>
+                        <input type="checkbox" class="toggle" name="op_from_var" id="op_from_var">
+                    </div>
+                    <div class="parameter parameter-wide no-events">
+                        <label for="bg">Default color</label>
+                        <input type="text" name="bg" id="bg" class="input-primary" data-jscolor="{}">
+                    </div>
+                </div>
             </div>
         </div>
         <div class="result-column">
             <h2 class="mb-2">Step by Step Converter</h2>
-            <label for="colorsCss">Insert your code to be converted</label>
-            <div class="code-area relative">
-                <textarea id="colorsCss" name="colorCss"></textarea>
-                <div class="copy-icon">
-                    <img src="/assets/images/shared/copy.svg" alt="copy icon">
+            <div class="editor-wrapper">
+                <label for="colorsCss">Insert your code to be converted</label>
+                <div class="code-area relative">
+                    <textarea id="colorsCss" name="colorCss"></textarea>
+                    <div class="copy-icon">
+                        <img src="/assets/images/shared/copy.svg" alt="copy icon">
+                    </div>
                 </div>
+                <button id="calculate_btn">EXTRACT</button>
             </div>
-            <pre id="output" class="hidden"></pre>
-            <button id="calculate_btn">EXTRACT</button>
+            <div class="color-list hidden"></div>
         </div>
     </div>
 </div>

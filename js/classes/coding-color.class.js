@@ -1,28 +1,34 @@
 export class Calculator {
     constructor(from_format, to_format, css, opacity, background) {
         this._from_format = from_format
-        this._to_format = to_format
+        this._to_format = to_format || false
         this._css = css
         this._opacity = typeof opacity === 'number' ? opacity : 1
         this._background = background || '#fff'
         this._parsedColors = []
-    }
-    //GETTERS
-    get colors() {
-        return this._parsedColors;
-    }
-    calc() {
+        
         let colors = []
         this._css.forEach((line, index)=>{
             let newColors = this.colorsFromCss(line, index)
             newColors.forEach(col=>colors.push(col))
         })
-        let colorsValues = [...colors]
-        colors.forEach((color, index)=>{
+        this._detectedColors = colors
+    }
+    //GETTERS
+    get detectedColors() {
+        return this._detectedColors;
+    }
+    get parsedColors() {
+        return this._parsedColors;
+    }
+    calc() {
+        if(!this._to_format) return
+        let parsingColor = [...this._detectedColors]
+        this._detectedColors.forEach((color, index)=>{
             let colorValues = this.colorValues(color.color, color.format)
-            colorsValues[index].color = colorValues.data
+            parsingColor[index].color = colorValues.data
         })
-        this._parsedColors = this.convertColors(colorsValues).filter(c=>c.converted)
+        this._parsedColors = this.convertColors(parsingColor).filter(c=>c.converted)
         return this.convertCss(this._parsedColors)
     }
 
