@@ -61,10 +61,15 @@ function extract(){
         calculator = new Calculator(from, false, css),
         colors = calculator.detectedColors
         console.log(css, colors)
-    if(colors.length)
+    if(colors.length > 1) {
+        alert(colors.length+' colors have been successfully extracted', 'success')
         colorList(colors)
-    else
+    } else if (colors.length > 0) {
+        alert('Color '+colors[0].original+' has been successfully extracted', 'success')
+        colorList(colors)
+    } else {
         alert('No colors detected, try adjusting the filters', 'alert')
+    }
 }
 
 //functions
