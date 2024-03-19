@@ -15,7 +15,13 @@
                     <label for="hex_in" class="btn-primary">HEX</label>
                 </div>
                 <div class="parameters" id="to">
-                    <h3>Default conversion format</h3>
+                    <p>
+                        <span class="h3">Default final format</span>
+                        <span class="relative">
+                            <span class="info-btn">i</span>
+                            <span class="info-text">If any format is selected the conversion won't change the color format</span>
+                        </span>
+                    </p>
                     <input type="radio" class="ghost" name="format_out" id="rgb_out" value="rgb">
                     <label class="btn-primary" for="rgb_out">RGB</label>
                     <input type="radio" class="ghost" name="format_out" id="rgba_out" value="rgba">
@@ -27,7 +33,7 @@
                     <h3>Opacity general options</h3>
                     <div class="parameter toggle-wrapper parameter-wide">
                         <label for="ab_op">Absorb Opacity 
-                            <span class="more-info">
+                            <span class="relative">
                                 <span class="info-btn">i</span>
                                 <span class="info-text">This value will never overwrite rgba alpha value, it will only works for rgb and hex</span>
                             </span>
@@ -40,7 +46,7 @@
                     </div>
                     <div class="parameter toggle-wrapper parameter-wide no-events">
                         <label for="op_from_var">Get value from variables
-                            <span class="more-info">
+                            <span class="relative">
                                 <span class="info-btn">i</span>
                                 <span class="info-text">This value will never overwrite rgba alpha value, it will only works for rgb and hex</span>
                             </span>

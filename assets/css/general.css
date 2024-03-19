@@ -41,64 +41,54 @@ a:hover{
 }
 
 /*GENERAL CSS*/
+.d-block{
+    display: block;
+}
 .text-center{
     text-align: center;
 }
-
 .mx-auto{
     margin: 0 auto;
 }
-
 .img-fluidY{
     display: block;
     height: 100%;
 }
-
 .text-nowrap{
     text-wrap: none;
 }
-
 .container{
     max-width: 80%;
     margin: 0 auto 0;
     height: 100%;
     padding: 20px 50px;
 }
-
 .row{
     display: flex;
     flex-wrap: wrap;
 }
-
 .col-2-md-10{
     width: 20%!important;
 }
-
 .col-8-md-10{
     width: 80%!important;
 }
-
 .col-5-md-10{
     width: 50%!important;
 }
-
 .col-3-md-10{
     width: 33%!important;
 }
-
 .col-3-lg-10{
     width: 33%!important;
 }
-
 .danger{
     color: rgb(243, 116, 116);
     font-size: 1.1rem;
 }
-
 .hidden{
     display: none;
 }
-
 .ghost{
     position: absolute;
     opacity: 0;
@@ -106,28 +96,26 @@ a:hover{
 .pl-2{
     padding-left: 1rem;
 }
-
 .ml-auto{
     margin-left: auto;
 }
-
 .mx-auto{
     margin: 0 auto;
 }
-
 .mb-2{
     margin-bottom: 1rem;
 }
-
 a{
     text-decoration: none;
     color: var(--black);
 }
-
+.h3{
+    font-size: 1.17em;
+    font-weight: bold;
+}
 .relative{
     position: relative;
 }
-
 .btn-primary{
     display: inline-block;
     border: 1px solid;
@@ -141,23 +129,16 @@ a{
     color: var(--blue);
     background-color: var(--white);
 }
-
 a.btn-primary:hover{
     color: var(--white);
     background-color: var(--blue);
     border-color: var(--blue);
     text-decoration: none;
 }
-
 .no-events{
     pointer-events: none;
     opacity: 0.5;
 }
-
-.more-info{
-    position: relative;
-}
-
 .info-btn{
     display: inline-block;
     color: var(--blue);
@@ -168,13 +149,12 @@ a.btn-primary:hover{
     text-align: center;
     vertical-align: middle;
     z-index: 2;
+    cursor: pointer;
 }
-
 .info-btn:hover + .info-text{
     opacity: 1;
     display: block;
 }
-
 .info-text{
     background-color: var(--white);
     border: 1px solid var(--blue);
@@ -189,7 +169,6 @@ a.btn-primary:hover{
     transition: opacity 0.3s;
     z-index: 99;
 }
-
 .info-text:after{
     position: absolute;
     content: "";
@@ -203,7 +182,6 @@ a.btn-primary:hover{
     border-top: none;
     border-left: none;
 }
-
 .copy-icon{
     position: absolute;
     bottom: calc(100% + 10px);
@@ -212,13 +190,11 @@ a.btn-primary:hover{
     height: 30px;
     cursor: pointer;
 }
-
 .copy-icon img{
     width: 100%;
     display: block;
     filter: invert(38%) sepia(43%) saturate(3183%) hue-rotate(225deg) brightness(97%) contrast(100%);
 }
-
 .alert{
     display: flex;
     justify-content: space-between;
@@ -235,12 +211,10 @@ a.btn-primary:hover{
     overflow: hidden;
     z-index: 100;
 }
-
 .alert-msg{
     flex-grow: 1;
     padding-left: 10px;
 }
-
 .alert-icon::before {
     content: "\26A0"; /* Unicode character for warning symbol */
     font-size: 24px;
@@ -250,7 +224,6 @@ a.btn-primary:hover{
     justify-content: center;
     color: var(--blue);
 }
-
 .alert-progress{
     width: 0;
     height: 5px;
@@ -260,7 +233,6 @@ a.btn-primary:hover{
     left: 0;
     animation: progress linear 5s;
 }
-
 .error{
     color: var(--error)!important;
     border-color: var(--error)!important;
@@ -284,7 +256,6 @@ a.btn-primary:hover{
     justify-content: center;
     color: var(--blue);
 }
-
 .error-icon::before {
     content: "\2717"; /* Unicode character for cross symbol */
     font-size: 24px;
@@ -294,7 +265,6 @@ a.btn-primary:hover{
     justify-content: center;
     color: var(--error);
 }
-
 .close-button {
     position: absolute;
     top: 5px;
@@ -303,7 +273,6 @@ a.btn-primary:hover{
     height: 15px;
     cursor: pointer;
 }
-
 .close-button::before,
 .close-button::after {
     content: '';
@@ -316,11 +285,9 @@ a.btn-primary:hover{
     left: 50%;
     transform: translateX(-50%);
 }
-
 .close-button::before {
     transform: translateX(-50%) rotate(45deg);
 }
-
 .close-button::after {
     transform: translateX(-50%) rotate(-45deg);
 }

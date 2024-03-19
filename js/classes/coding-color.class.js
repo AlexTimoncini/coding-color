@@ -22,7 +22,6 @@ export class Calculator {
         return this._parsedColors;
     }
     calc() {
-        if(!this._to_format) return
         let parsingColor = [...this._detectedColors]
         this._detectedColors.forEach((color, index)=>{
             let colorValues = this.colorValues(color.color, color.format)
@@ -121,14 +120,16 @@ export class Calculator {
     convertColors(colors){
         let bgValues = this.colorValues(this._background, 'hex') //estraiamo i valori dello sfondo (default #fff)
         if(colors){
+            
             colors.forEach((color)=>{
+                let format = this._to_format || color.format
                 if(this._from_format.includes(color.format)){
                     let alpha = color.color[3];
                     let inverseAlpha = 1 - alpha;
                     let red = Math.round((alpha * color.color[0] + inverseAlpha * bgValues.data[0]) / 255 * 255);
                     let green = Math.round((alpha * color.color[1] + inverseAlpha * bgValues.data[1]) / 255 * 255);
                     let blue = Math.round((alpha * color.color[2] + inverseAlpha * bgValues.data[2]) / 255 * 255);
-                    switch(this._to_format){
+                    switch(format){
                         case 'rgba':
                             color.color = 'rgba('+ color.color[0] +',' + color.color[1] + ','  + color.color[2] + ','  + color.color[3] + ')';
                             color.converted = true

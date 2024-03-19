@@ -23,12 +23,8 @@ function convert(){
     let from = fromData.data
     
     //To
-    let toData = getTo()
-    if(!toData.response){
-        alert('Please select the final format!', 'alert', '#to label')
-        return
-    }
-    let to = toData.data
+    let toData = getTo(),
+        to = toData.data
 
     //Opacity
     const toggleOp = document.getElementById('ab_op');
@@ -153,7 +149,7 @@ function getTo(){
     })
     return {
         response: !!format,
-        data: format ? format : ''
+        data: format ? format : false
     }
 }
 function getOpacity(){
