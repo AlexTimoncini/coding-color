@@ -67,6 +67,15 @@ a:hover{
     display: flex;
     flex-wrap: wrap;
 }
+.cg-2{
+    column-gap: 0.5rem;
+}
+.g-4{
+    gap: 1rem;
+}
+.justify-center{
+    justify-content: center;
+}
 .col-2-md-10{
     width: 20%!important;
 }
@@ -104,6 +113,12 @@ a:hover{
 }
 .mb-2{
     margin-bottom: 1rem;
+}
+.mt-4{
+    margin-top: 1rem;
+}
+.m-0{
+    margin: 0!important;
 }
 a{
     text-decoration: none;

@@ -51,6 +51,7 @@ function extract(){
 
     //css
     let cssEditor = editor.getValue()
+    localStorage.setItem('manual_originalCss', cssEditor)
     if(!cssEditor.length){
         alert('There\'s nothing to convert!', 'alert', '.CodeMirror')
         editor.focus()
@@ -118,7 +119,9 @@ function setDefaultOptions(){
 }
 function colorList(colors){
     localStorage.setItem('manual_colors', JSON.stringify(colors))
-    const wrapper = document.querySelector('.color-list')
+    const wrapper = document.querySelector('.color-list-wrapper')
+    wrapper.appendChild(document.createElement("div"))
+    wrapper.querySelector('div').classList.add('color-list')
     colors.forEach(col=>{
         let html = `
             <div class="color-row">
@@ -126,16 +129,111 @@ function colorList(colors){
                 <div class="color-info">
                     
                 </div>
-            </div>
-        `
-        wrapper.insertAdjacentHTML('beforeend', html)
+            </div>`
+        wrapper.querySelector('.color-list').insertAdjacentHTML('beforeend', html)
     })
+    let actions = `
+        <div class="row mx-auto justify-center mt-4 g-4">
+            <button class="conversion-btn-sec m-0" id="reset_btn">BACK</button>
+            <button class="conversion-btn-pri m-0" id="build_btn">BUILD</button>
+        </div>`
+    wrapper.insertAdjacentHTML('beforeend', actions)
+    document.getElementById('reset_btn').addEventListener('click',()=>resetConversion())
+    document.getElementById('build_btn').addEventListener('click',()=>build())
     if(!document.querySelector('.editor-wrapper').classList.contains('hidden')){
         document.querySelector('.editor-wrapper').classList.add('hidden')
     }
     if(wrapper.classList.contains('hidden')){
         wrapper.classList.remove('hidden')
     }
+}
+function build(){
+    let optionsJSON = localStorage.getItem('manual_options')
+    if(optionsJSON){
+        let options = JSON.parse(optionsJSON),
+            css = localStorage.getItem('manual_originalCss').split('\n'),
+            colors = JSON.parse(localStorage.getItem('manual_colors')),
+            calculator = new Calculator(options.from, options.to, css, options.op, options.bg),
+            matrix = calculator.convertCss(colors),
+            newCss = matrix.map((line)=>{return line.css}).join('\n'),
+            shift = 0
+
+        resetConversion()
+        editor.setValue(newCss)
+        colors.forEach((col, i)=>{
+            editor.markText(
+                {line: col.line, ch: col.start},
+                {line: col.line ,ch: col.start + col.color.length},
+                { 
+                    className: "marked",
+                    attributes: {"data-original": col.original}
+                }
+            )
+            if(colors[i+1] && colors[i+1].line === col.line){
+                shift += (col.color.length - (col.end - col.start))
+                colors[i+1].start += shift
+                colors[i+1].end += shift
+            } else {
+                shift = 0
+            }
+        })
+        if(colors.length > 1)
+            alert(colors.length+' colors have been successfully converted', 'success')
+        else if (colors.length > 0)
+            alert('Color '+colors[0].original+' has been successfully converted', 'success')
+        else
+            alert('No colors detected converted')
+    
+        /* MARKED COLORS CLICK AND HOVER */
+        document.querySelectorAll('.CodeMirror .marked').forEach(el => {
+            el.addEventListener("click", function () {
+                copyToClipboardColor(el.innerText.trim())
+            })
+    
+            el.addEventListener("mouseover", function () {
+                let oldColor = el.dataset.original,
+                    convertedColor = el.innerText,
+                    html = `
+                        <div class="info-text rected">
+                            <div class="color-squares">
+                                <div class="color-square" style="background-color:${oldColor}"></div>
+                                <p>&rightarrow;</p>
+                                <div class="color-square" style="background-color:${convertedColor}"></div>
+                            </div>
+                            <div class="color-strings">
+                                <p class="color-string">${oldColor}&nbsp;&nbsp;</p>
+                                <p class="color-string">&nbsp;&nbsp;${convertedColor}</p>
+                            </div>    
+                        </div>`   
+                const rect = el.getBoundingClientRect()
+                document.body.insertAdjacentHTML("afterbegin", html);
+                const infoText = document.querySelector('.info-text.rected')
+                infoText.style.cssText = `
+                    opacity: 1;
+                    display: block;
+                    width: auto;
+                    top: ${rect.top + window.scrollY - 7}px;
+                    left: ${rect.left + window.scrollX + (rect.width / 2)}px;`
+            })
+    
+            el.addEventListener("mouseout", function () {
+                document.querySelector('.info-text.rected').remove()
+            })
+        })
+    }
+}
+function resetConversion(){
+    const wrapper = document.querySelector('.color-list-wrapper')
+    wrapper.innerHTML = ''
+    if(document.querySelector('.editor-wrapper').classList.contains('hidden')){
+        document.querySelector('.editor-wrapper').classList.remove('hidden')
+    }
+    if(!wrapper.classList.contains('hidden')){
+        wrapper.classList.add('hidden')
+    }
+    editor.focus()
+    let old_value = localStorage.getItem('manual_originalCss')
+    editor.setValue(old_value)
 }
 function getFrom(){
     let checkboxes = document.getElementById('from').querySelectorAll('input[type=checkbox]');

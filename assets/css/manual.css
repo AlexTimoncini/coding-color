@@ -15,10 +15,12 @@
     font-size: 1.1rem;
     color: var(--blue);
     letter-spacing: 2px;
+    text-transform: uppercase;
 }
 
 .color-original{
     color: var(--dgray);
     font-size: 1rem;
     letter-spacing: normal;
+    text-transform: uppercase;
 }

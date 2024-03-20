@@ -11,7 +11,7 @@ main{
     flex-wrap: nowrap;
 }
 
-#calculate_btn{
+.conversion-btn-pri{
     border: none;
     background-color: var(--blue);
     border-radius: 10px;
@@ -22,6 +22,31 @@ main{
     color: var(--white);
     font-weight: 600;
     cursor: pointer;
+    transition: all 0.2s linear;
+}
+
+.conversion-btn-sec{
+    border: var(--blue) 1px solid;
+    background-color: var(--white);
+    border-radius: 10px;
+    padding: 10px 0;
+    width: 200px;
+    display: block;
+    margin: 1rem auto 0;
+    color: var(--blue);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s linear;
+}
+
+.conversion-btn-pri:hover,
+.conversion-btn-sec:hover{
+    transform: scale(1.05);
+}
+
+.conversion-btn-pri:active,
+.conversion-btn-sec:active{
+    transform: scale(0.95);
 }
 
 .marked{
