@@ -1,28 +1,33 @@
 export class Calculator {
     constructor(from_format, to_format, css, opacity, background) {
         this._from_format = from_format
-        this._to_format = to_format
+        this._to_format = to_format || false
         this._css = css
         this._opacity = typeof opacity === 'number' ? opacity : 1
         this._background = background || '#fff'
         this._parsedColors = []
-    }
-    //GETTERS
-    get colors() {
-        return this._parsedColors;
-    }
-    calc() {
+        
         let colors = []
         this._css.forEach((line, index)=>{
             let newColors = this.colorsFromCss(line, index)
             newColors.forEach(col=>colors.push(col))
         })
-        let colorsValues = [...colors]
-        colors.forEach((color, index)=>{
+        this._detectedColors = colors
+    }
+    //GETTERS
+    get detectedColors() {
+        return this._detectedColors;
+    }
+    get parsedColors() {
+        return this._parsedColors;
+    }
+    calc() {
+        let parsingColor = [...this._detectedColors]
+        this._detectedColors.forEach((color, index)=>{
             let colorValues = this.colorValues(color.color, color.format)
-            colorsValues[index].color = colorValues.data
+            parsingColor[index].color = colorValues.data
         })
-        this._parsedColors = this.convertColors(colorsValues).filter(c=>c.converted)
+        this._parsedColors = this.convertColors(parsingColor).filter(c=>c.converted)
         return this.convertCss(this._parsedColors)
     }
 
@@ -115,14 +120,16 @@ export class Calculator {
     convertColors(colors){
         let bgValues = this.colorValues(this._background, 'hex') //estraiamo i valori dello sfondo (default #fff)
         if(colors){
+            
             colors.forEach((color)=>{
+                let format = this._to_format || color.format
                 if(this._from_format.includes(color.format)){
                     let alpha = color.color[3];
                     let inverseAlpha = 1 - alpha;
                     let red = Math.round((alpha * color.color[0] + inverseAlpha * bgValues.data[0]) / 255 * 255);
                     let green = Math.round((alpha * color.color[1] + inverseAlpha * bgValues.data[1]) / 255 * 255);
                     let blue = Math.round((alpha * color.color[2] + inverseAlpha * bgValues.data[2]) / 255 * 255);
-                    switch(this._to_format){
+                    switch(format){
                         case 'rgba':
                             color.color = 'rgba('+ color.color[0] +',' + color.color[1] + ','  + color.color[2] + ','  + color.color[3] + ')';
                             color.converted = true

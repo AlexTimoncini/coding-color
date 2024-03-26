@@ -1,0 +1,26 @@
+.color-list{
+    border-top: 2px solid var(--blue);
+    border-bottom: 2px solid var(--blue);
+}
+
+.color-row{
+    padding: 0.7rem 0.2rem;
+    border-top: 2px solid var(--blue);
+    border-bottom: 2px solid var(--blue);
+    display: flex;
+    justify-content: space-between;
+}
+
+.color-main{
+    font-size: 1.1rem;
+    color: var(--blue);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.color-original{
+    color: var(--dgray);
+    font-size: 1rem;
+    letter-spacing: normal;
+    text-transform: uppercase;
+}

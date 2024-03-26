@@ -24,6 +24,7 @@
 
 .sidebar.minimize{
     width: 35px;
+    min-width: 35px;
 }
 
 .sidebar.minimize .sidebar-toggle{
@@ -99,7 +100,7 @@ input:checked + label.btn-primary{
     .sidebar{
         width: 100%;
         min-height: 400px;
-        max-height: 400px;
+        max-height: 450px;
         overflow: hidden;
     }
 

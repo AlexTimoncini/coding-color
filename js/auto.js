@@ -1,83 +1,55 @@
 import {Calculator} from './classes/coding-color.class.js';
+
+//Convert button
+document.getElementById('calculate_btn').addEventListener('click', ()=>{convert()}) 
+
 //textarea
 const editor = CodeMirror.fromTextArea(document.getElementById('colorsCss'), {
     lineNumbers: true,
     lineWrapping: true,
     autofocus: true
-});
-
-//Convert css button
-document.getElementById('calculate_btn').addEventListener('click', ()=>{convert()})
-
-//toggle no-events on opacity
-document.getElementById('ab_op').addEventListener('change', ()=>{
-    document.querySelectorAll("#opacity .parameter:not(:first-of-type)").forEach(el=> el.classList.toggle("no-events"))
 })
 
-document.getElementById('op').addEventListener('input', (e)=>{
-    const inputElement = e.target;
-    const lastChIndex = inputElement.value.length - 1
-    if(inputElement.value[lastChIndex] === ','){
-        inputElement.value = inputElement.value.substring(0, lastChIndex) + '.'
-    }
-    const inputValue = inputElement.value;
-    if (!/^[\d.]*$/.test(inputValue)) {
-        inputElement.value = inputValue.replace(/[^0-9.]/g, '');
-    }
-})
-
+//Copy editor btn
 document.querySelector('.copy-icon').addEventListener('click', copyToClipboardCss)
-
-/* END DOM */
 
 function convert(){
     //From
-    let fromData = getFrom();
-    let from;
-    if(fromData.response){
-        from = fromData.data;
-    } else {
+    let fromData = getFrom()
+    if(!fromData.response){
         alert('Please select the initial format!', 'alert', '#from label')
         return
     }
+    let from = fromData.data
     
     //To
-    let toData = getTo();
-    let to;
-    if(toData.response){
-        to = toData.data;
-    } else {
-        alert('Please select the final format!', 'alert', '#to label')
-        return
-    }
+    let toData = getTo(),
+        to = toData.data
 
     //Opacity
     const toggleOp = document.getElementById('ab_op');
-    let background = false;
-    let opacity = false;
+    let background = false
+    let opacity = false
     if(toggleOp.checked) {
 
         //Value
-        let opacityData = getOpacity();
-        if (opacityData.response) {
-            opacity = opacityData.data;
-        } else {
+        let opacityData = getOpacity()
+        if (!opacityData.response) {
             alert('Opacity must be a number between 0 and 1!', 'alert', '#op')
             return
         }
+        opacity = opacityData.data
 
         //Background
-        let backgroundData = getBackground();
-        if (backgroundData.response) {
-            background = backgroundData.data;
-        } else {
+        let backgroundData = getBackground()
+        if (!backgroundData.response) {
             alert('The background isn\'t a valid color!', 'alert', '#bg')
             return
         }
-
+        background = backgroundData.data
     }
 
-    //css
+    //Css
     let cssEditor = editor.getValue()
     if(!cssEditor.length){
         alert('There\'s nothing to convert!', 'alert', '.CodeMirror')
@@ -88,7 +60,7 @@ function convert(){
         calculator = new Calculator(from, to, css, opacity, background),
         matrix = calculator.calc(),
         newCss = matrix.map((line)=>{return line.css}).join('\n'),
-        colors = calculator.colors,
+        colors = calculator.parsedColors,
         shift = 0
     editor.setValue(newCss);
     colors.forEach((col, i)=>{
@@ -177,7 +149,7 @@ function getTo(){
     })
     return {
         response: !!format,
-        data: format ? format : ''
+        data: format ? format : false
     }
 }
 function getOpacity(){
