@@ -1,7 +1,4 @@
-//toggle no-events on opacity
-document.getElementById('ab_op').addEventListener('change', ()=>{
-    document.querySelectorAll("#opacity .parameter:not(:first-of-type)").forEach(el=> el.classList.toggle("no-events"))
-})
+
 
 //as now we can select no final format (so it won't be changed) we have to make those radios button unselectable
 //toggle no-events on opacity
