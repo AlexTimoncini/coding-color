@@ -1,9 +1,16 @@
 import {Calculator} from './classes/coding-color.class.js';
 /* DOM */
 //toggle no-events on opacity
-document.getElementById('ab_op').addEventListener('change', ()=>{
-    document.querySelectorAll("#opacity .parameter:not(:first-of-type)").forEach(el=> el.classList.toggle("no-events"))
+document.getElementById('ab_op').addEventListener('change', () => {
+    document.querySelectorAll("#opacity .parameter:not(:first-of-type)").forEach(el => {
+        if(document.getElementById('ab_op').checked){
+            el.classList.remove("no-events")
+        } else {
+            el.classList.add("no-events")
+        }
+    })
 })
+
 //Convert button
 document.getElementById('calculate_btn').addEventListener('click', ()=>{extract()})
 

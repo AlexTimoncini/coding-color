@@ -1,7 +1,4 @@
-
-
 //as now we can select no final format (so it won't be changed) we have to make those radios button unselectable
-//toggle no-events on opacity
 document.querySelectorAll('#to input[type="radio"]').forEach(btn => {
     let id = btn.id;
     document.querySelector('label[for="' + id + '"]').addEventListener('click', (e) => {
@@ -12,12 +9,11 @@ document.querySelectorAll('#to input[type="radio"]').forEach(btn => {
     })
 })
 
-
 document.getElementById('ab_op').addEventListener('change', ()=>{
     document.querySelectorAll("#opacity .parameter:not(:first-of-type)").forEach(el=> el.classList.toggle("no-events"))
 })
 
-//validate opaciti value
+//validate opacity value
 document.getElementById('op').addEventListener('input', (e)=>{
     const inputElement = e.target;
     const lastChIndex = inputElement.value.length - 1
