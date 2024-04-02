@@ -28,23 +28,18 @@ document.querySelector('.copy-icon').addEventListener('click', copyToClipboardCs
 let optionsJSON = localStorage.getItem('manual_options')
 if(optionsJSON){
     let options = JSON.parse(optionsJSON)
-
     //from
     options.from.forEach(f=>{
         document.querySelector('#from [value="'+f+'"]').checked = true
     })
-
     //to
     if(options.to){
         document.querySelector('#to [value="'+options.to+'"]').checked = true
     }
-
     //Opacity value
     document.getElementById('op').value = options.op
-
     //Opacity bg
     document.getElementById('bg').value = options.bg
-
     //get opacity from variables flag
     document.getElementById('op_from_var').checked =  options.op_from_var
 }
@@ -68,11 +63,14 @@ function extract(){
         editor.focus()
         return
     }
-    
-    let css = cssEditor.split('\n'),
-        calculator = new Calculator(from, false, css),
-        colors = calculator.detectedColors
-        console.log(css, colors)
+
+    let options = JSON.parse(localStorage.getItem('manual_options')),
+        css = cssEditor.split('\n'),
+        calculator = new Calculator(options.from, options.to, css, options.op, options.bg)
+
+    calculator.calc()
+    let colors = calculator.parsedColors
+
     if(colors.length > 1) {
         alert(colors.length+' colors have been successfully extracted', 'success')
         colorList(colors)
@@ -140,6 +138,7 @@ function colorList(colors){
                 <div class="color-info">
                     
                 </div>
+                <div class="open-color-btn"><img src="/assets/images/shared/edit-color.png" alt="edit color icon"></div>
             </div>`
         wrapper.querySelector('.color-list').insertAdjacentHTML('beforeend', html)
     })
