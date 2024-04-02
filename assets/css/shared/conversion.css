@@ -59,6 +59,31 @@ main{
     cursor: pointer;
 }
 
+.color-squares{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 1rem;
+    min-width: 100px;
+}
+
+.color-square{
+    width: 1.5rem;
+    height: 1.5rem;
+    box-shadow: rgba(6, 24, 44, 0.4) 0 0 0 2px, rgba(6, 24, 44, 0.65) 0 4px 6px -1px, rgba(255, 255, 255, 0.08) 0 1px 0 inset;
+}
+
+.color-strings{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.color-string{
+    color: var(--dgray);
+    font-size: 0.85rem;
+}
+
 @media screen and (max-width: 700px) {
     .result-column{
         max-width: 100%;
