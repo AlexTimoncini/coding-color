@@ -90,26 +90,26 @@ export class Calculator {
         return {
             response: !!match,
             data: match ? match[1].split(',').map(x=>parseInt(x)) : rgb
-        };
+        }
     }
 
     //get correct, hex, rgb or rgba colors value and string-position
     colorsFromCss(css, lineNumber){
         const regex = /\s*#(?:[0-9a-fA-F]{3}){1,2}\s*|\s*rgb\(\s*(?:\d{1,2}|1\d{2}|2[0-4]\d|25[0-5])\s*,\s*(?:\d{1,2}|1\d{2}|2[0-4]\d|25[0-5])\s*,\s*(?:\d{1,2}|1\d{2}|2[0-4]\d|25[0-5])\s*\)\s*|\s*rgba\(\s*(?:\d{1,2}|1\d{2}|2[0-4]\d|25[0-5])\s*,\s*(?:\d{1,2}|1\d{2}|2[0-4]\d|25[0-5])\s*,\s*(?:\d{1,2}|1\d{2}|2[0-4]\d|25[0-5])\s*,\s*(?:0|1|0?\.\d+)\s*\)\s*/gm;
-        let matches;
-        let colors = [];
+        let matches,
+            colors = []
         while ((matches = regex.exec(css)) !== null) {
-            const match = matches[0].trim();
+            const match = matches[0].trim()
             const spacesBefore = matches[0].length - matches[0].trimStart().length
-            const matchStart = matches.index + spacesBefore;
-            const matchEnd = matchStart + match.length;
+            const matchStart = matches.index + spacesBefore
+            const matchEnd = matchStart + match.length
             let format;
             if (match.includes('#')){
-                format = 'hex';
+                format = 'hex'
             } else if (match.includes('rgba')){
-                format = 'rgba';
+                format = 'rgba'
             } else {
-                format = 'rgb';
+                format = 'rgb'
             }
             colors.push({color: match, format: format, start: matchStart, end: matchEnd, line: lineNumber, original: match})
         }
@@ -124,18 +124,18 @@ export class Calculator {
             colors.forEach((color)=>{
                 let format = this._to_format || color.format
                 if(this._from_format.includes(color.format)){
-                    let alpha = color.color[3];
-                    let inverseAlpha = 1 - alpha;
-                    let red = Math.round((alpha * color.color[0] + inverseAlpha * bgValues.data[0]) / 255 * 255);
-                    let green = Math.round((alpha * color.color[1] + inverseAlpha * bgValues.data[1]) / 255 * 255);
-                    let blue = Math.round((alpha * color.color[2] + inverseAlpha * bgValues.data[2]) / 255 * 255);
+                    let alpha = color.color[3]
+                    let inverseAlpha = 1 - alpha
+                    let red = Math.round((alpha * color.color[0] + inverseAlpha * bgValues.data[0]) / 255 * 255)
+                    let green = Math.round((alpha * color.color[1] + inverseAlpha * bgValues.data[1]) / 255 * 255)
+                    let blue = Math.round((alpha * color.color[2] + inverseAlpha * bgValues.data[2]) / 255 * 255)
                     switch(format){
                         case 'rgba':
-                            color.color = 'rgba('+ color.color[0] +',' + color.color[1] + ','  + color.color[2] + ','  + color.color[3] + ')';
+                            color.color = 'rgba('+ color.color[0] +',' + color.color[1] + ','  + color.color[2] + ','  + color.color[3] + ')'
                             color.converted = true
                         break;
                         case 'rgb':
-                            color.color = 'rgb('+red+','+green+','+blue+')';
+                            color.color = 'rgb('+red+','+green+','+blue+')'
                             color.converted = true
                         break;
                         case 'hex':
