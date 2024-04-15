@@ -127,6 +127,7 @@ function setDefaultOptions(){
     localStorage.setItem('manual_options', JSON.stringify(options))
 }
 function colorList(colors){
+    disableSidebar()
     localStorage.setItem('manual_colors', JSON.stringify(colors))
     const wrapper = document.querySelector('.color-list-wrapper')
     wrapper.appendChild(document.createElement("div"))
@@ -229,6 +230,7 @@ function build(){
             el.addEventListener("mouseout", function () {
                 document.querySelector('.info-text.rected').remove()
             })
+            enableSidebar()
         })
     }
 }
@@ -244,6 +246,7 @@ function resetConversion(){
     editor.focus()
     let old_value = localStorage.getItem('manual_originalCss')
     editor.setValue(old_value)
+    enableSidebar()
 }
 function getFrom(){
     let checkboxes = document.getElementById('from').querySelectorAll('input[type=checkbox]');

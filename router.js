@@ -22,11 +22,11 @@ router.get('/manual', function(){
             'manual.css'
         ],
         [
-            'shared/codemirror.min.js',
-            'shared/jscolor.min.js',
-            'shared/sidebar.js',
-            'shared/conversion.js',
-            'manual.js'
+            {url: 'shared/codemirror.min.js', type: 'module'},
+            {url: 'shared/jscolor.min.js', type: 'module'},
+            {url: 'shared/sidebar.js', type: false},
+            {url: 'shared/conversion.js', type: false},
+            {url: 'manual.js', type: 'module'}
         ]).then(()=>stopLoading())
 });
 router.get('/automatic', function(){
@@ -39,11 +39,11 @@ router.get('/automatic', function(){
             'auto.css'
         ],
         [
-            'shared/codemirror.min.js',
-            'shared/jscolor.min.js',
-            'shared/sidebar.js',
-            'shared/conversion.js',
-            'auto.js'
+            {url: 'shared/codemirror.min.js', type: 'module'},
+            {url: 'shared/jscolor.min.js', type: 'module'},
+            {url: 'shared/sidebar.js', type: false},
+            {url: 'shared/conversion.js', type: false},
+            {url: 'auto.js', type: 'module'}
         ]).then(()=>stopLoading())
 });
 router.get('/single', function(){
@@ -52,7 +52,7 @@ router.get('/single', function(){
 
 router.start();
 
-async function buildPage(mainHTML, css, src){
+async function buildPage(mainHTML, css, scriptList){
     //RUN
     startLoading()
     removeOldStyles()
@@ -61,7 +61,7 @@ async function buildPage(mainHTML, css, src){
     if (!document.getElementById("navbar"))await navbar()
     if (!document.getElementById("footer"))await footer()
     await main()
-    await script()
+    await scripts()
 
     //Functions
     function removeOldStyles() {
@@ -99,25 +99,32 @@ async function buildPage(mainHTML, css, src){
         const html = await resp.text();
         document.getElementById("app").insertAdjacentHTML("afterend", html);
     }
-    async function script() {
+    async function scripts() {
         const existingScripts = document.querySelectorAll('script:not([data-default=true])');
         existingScripts.forEach(spt => spt.remove());
-        if (src) {
-            for (const url of src) {
-                await loadScript(url);
+        if (scriptList) {
+            for (const scripty of scriptList) {
+                await loadScript(scripty)
             }
         }
+        
     }
-    async function loadScript(url) {
+    async function loadScript(scripty) {
         return new Promise((resolve, reject) => {
-            let script = document.createElement('script');
-            script.src = "./js/" + url;
-            script.type = "module";
-            script.onload = resolve;
-            script.onerror = reject;
-            document.body.append(script);
-        });
+            let newScript = document.createElement('script')
+            newScript.src = "./js/" + scripty.url
+            if (scripty.type) newScript.type = scripty.type
+            newScript.onload = () => {
+                resolve()
+            }
+            newScript.onerror = (error) => {
+                reject(error)
+            }
+            document.body.append(newScript);
+        })
     }
+    
+
 }
 
 //loader
