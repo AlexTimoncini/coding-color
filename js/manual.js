@@ -1,28 +1,7 @@
 import {Calculator} from './classes/coding-color.class.js';
 /* DOM */
-//toggle no-events on opacity
-document.getElementById('ab_op').addEventListener('change', () => {
-    document.querySelectorAll("#opacity .parameter:not(:first-of-type)").forEach(el => {
-        if(document.getElementById('ab_op').checked){
-            el.classList.remove("no-events")
-        } else {
-            el.classList.add("no-events")
-        }
-    })
-})
-
 //Convert button
-document.getElementById('calculate_btn').addEventListener('click', ()=>{extract()})
-
-//Editor init
-const editor = CodeMirror.fromTextArea(document.getElementById('colorsCss'), {
-    lineNumbers: true,
-    lineWrapping: true,
-    autofocus: true
-})
-
-//Copy editor btn
-document.querySelector('.copy-icon').addEventListener('click', copyToClipboardCss)
+document.getElementById('calculate_btn').addEventListener('click', extract)
 
 //Sidebar default values
 let optionsJSON = localStorage.getItem('manual_options')
@@ -36,15 +15,24 @@ if(optionsJSON){
     if(options.to){
         document.querySelector('#to [value="'+options.to+'"]').checked = true
     }
+    //Opacity toggle
+    if(options.op || options.op == 0){
+        document.getElementById('ab_op').checked = true
+        document.querySelectorAll('#opacity .no-events').forEach(el=>el.classList.remove('no-events'))
+    }
     //Opacity value
-    document.getElementById('op').value = options.op
+    document.getElementById('op').value = (options.op || options.op == 0) ? options.op : 1
+    //Opacity from value toggle
+    document.getElementById('op_from_var').checked = options.op_from_var
     //Opacity bg
-    document.getElementById('bg').value = options.bg
+    document.getElementById('bg').jscolor.fromString(options.bg)
+    jscolor.install()
     //get opacity from variables flag
     document.getElementById('op_from_var').checked =  options.op_from_var
 }
 
  /* END DOM */
+
 function extract(){
     setDefaultOptions()
     //From
@@ -81,82 +69,84 @@ function extract(){
         alert('No colors detected, try adjusting the filters', 'alert')
     }
 }
-
-//functions
 function setDefaultOptions(){
     const options = {
         from: ['hex', 'rgb', 'rgba'],
         to: false,
-        op: 1,
+        op: false,
         bg: '#fff',
         op_from_var: false
     }
     
     //From
-    let fromData = getFrom();
+    let fromData = getFrom()
     if(fromData.response){
-        options.from = fromData.data;
+        options.from = fromData.data
     }
     
     //To
-    let toData = getTo();
+    let toData = getTo()
     if(toData.response){
-        options.to = toData.data;
+        options.to = toData.data
     }
 
     //Opacity
-    const toggleOp = document.getElementById('ab_op');
+    const toggleOp = document.getElementById('ab_op')
     if(toggleOp.checked) {
 
         //Value
-        let opacityData = getOpacity();
+        let opacityData = getOpacity()
         if (opacityData.response) {
-            options.op = opacityData.data;
-        }
-
-        //Background
-        let backgroundData = getBackground();
-        if (backgroundData.response) {
-            options.bg = backgroundData.data;
+            options.op = opacityData.data
         }
 
         //get opacity from variables flag
         options.op_from_var = document.getElementById('op_from_var').checked
     }
 
+    //Background
+    let backgroundData = getBackground()
+    if (backgroundData.response) {
+        options.bg = backgroundData.data
+    }
+
     localStorage.setItem('manual_options', JSON.stringify(options))
 }
 function colorList(colors){
-    disableSidebar()
-    localStorage.setItem('manual_colors', JSON.stringify(colors))
     const wrapper = document.querySelector('.color-list-wrapper')
     wrapper.appendChild(document.createElement("div"))
     wrapper.querySelector('div').classList.add('color-list')
-    colors.forEach(col=>{
+    colors.forEach((col, index)=>{
+        colors[index].id = 'color-'+index
         let html = `
-            <div class="color-row">
-                <p class="color-main">${col.color} - <span class="color-original">${col.original}</span></p>
+            <div class="color-row" id="color-${index}">
+                <p class="color-main"><span id="color-${index}-new">${col.color}</span> &lharu; <span class="color-original">${col.original}</span></p>
                 <div class="color-info">
                     
                 </div>
                 <div class="open-color-btn"><img src="/assets/images/shared/edit-color.png" alt="edit color icon"></div>
             </div>`
         wrapper.querySelector('.color-list').insertAdjacentHTML('beforeend', html)
+        document.querySelector('#color-'+index+' .open-color-btn').addEventListener('click', ()=>{
+            editColor(col)
+        })
     })
+    localStorage.setItem('manual_colors', JSON.stringify(colors))
     let actions = `
         <div class="row mx-auto justify-center mt-4 g-4">
             <button class="conversion-btn-sec m-0" id="reset_btn">BACK</button>
             <button class="conversion-btn-pri m-0" id="build_btn">BUILD</button>
         </div>`
     wrapper.insertAdjacentHTML('beforeend', actions)
-    document.getElementById('reset_btn').addEventListener('click',()=>resetConversion())
-    document.getElementById('build_btn').addEventListener('click',()=>build())
+    document.getElementById('reset_btn').addEventListener('click', resetConversion)
+    document.getElementById('build_btn').addEventListener('click', build)
     if(!document.querySelector('.editor-wrapper').classList.contains('hidden')){
         document.querySelector('.editor-wrapper').classList.add('hidden')
     }
     if(wrapper.classList.contains('hidden')){
         wrapper.classList.remove('hidden')
     }
+    disableSidebar()
 }
 function build(){
     let optionsJSON = localStorage.getItem('manual_options')
@@ -194,45 +184,128 @@ function build(){
             alert('Color '+colors[0].original+' has been successfully converted', 'success')
         else
             alert('No colors detected converted')
-    
-        /* MARKED COLORS CLICK AND HOVER */
-        document.querySelectorAll('.CodeMirror .marked').forEach(el => {
-            el.addEventListener("click", function () {
-                copyToClipboardColor(el.innerText.trim())
-            })
-    
-            el.addEventListener("mouseover", function () {
-                let oldColor = el.dataset.original,
-                    convertedColor = el.innerText,
-                    html = `
-                        <div class="info-text rected">
-                            <div class="color-squares">
-                                <div class="color-square" style="background-color:${oldColor}"></div>
-                                <p>&rightarrow;</p>
-                                <div class="color-square" style="background-color:${convertedColor}"></div>
-                            </div>
-                            <div class="color-strings">
-                                <p class="color-string">${oldColor}&nbsp;&nbsp;</p>
-                                <p class="color-string">&nbsp;&nbsp;${convertedColor}</p>
-                            </div>    
-                        </div>`   
-                const rect = el.getBoundingClientRect()
-                document.body.insertAdjacentHTML("afterbegin", html);
-                const infoText = document.querySelector('.info-text.rected')
-                infoText.style.cssText = `
-                    opacity: 1;
-                    display: block;
-                    width: auto;
-                    top: ${rect.top + window.scrollY - 7}px;
-                    left: ${rect.left + window.scrollX + (rect.width / 2)}px;`
-            })
-    
-            el.addEventListener("mouseout", function () {
-                document.querySelector('.info-text.rected').remove()
-            })
-            enableSidebar()
+
+        setMarkedEvents()
+        enableSidebar()
+    }
+}
+function editColor(data){
+    closeEditColor()
+    let options = JSON.parse(localStorage.getItem('manual_options')),
+        Converter = new Calculator()
+        html = `
+        <div class="blue-overlay">
+            <div class="color-editor">
+                <div class="close-button"></div>
+                <div class="parameters result">
+                    <div id="editorResult" data-new="${data.color}">
+                        <p>${data.original}</p>
+                        <div class="center-fix">
+                            <div class="color-square" style="background-color:${data.original}"></div> 
+                            &rharu; 
+                            <div class="color-square" style="background-color:${data.color}"></div> 
+                        </div>
+                        <p>${data.color}</p>
+                    </div>
+                </div>
+                <div class="parameters" id="to_single">
+                    <p>
+                        <span class="h3">Final format</span>
+                        <span class="relative">
+                            <span class="info-btn">i</span>
+                            <span class="info-text">If no format is selected the conversion won't change the color format</span>
+                        </span>
+                    </p>
+                    <input type="radio" class="ghost" name="format_out_single" id="rgb_out_single" value="rgb">
+                    <label class="btn-primary" for="rgb_out_single">RGB</label>
+                    <input type="radio" class="ghost" name="format_out_single" id="rgba_out_single" value="rgba">
+                    <label class="btn-primary" for="rgba_out_single">RGBA</label>
+                    <input type="radio" class="ghost" name="format_out_single" id="hex_out_single" value="hex">
+                    <label class="btn-primary" for="hex_out_single">HEX</label>
+                </div>
+                <div class="parameters" id="opacity_single">
+                    <h3>Opacity general options</h3>
+                    <div class="parameter toggle-wrapper parameter-wide">
+                        <label for="ab_op_single">Absorb Opacity 
+                            <span class="relative">
+                                <span class="info-btn">i</span>
+                                <span class="info-text">This value will never overwrite rgba alpha value, it will only works for rgb and hex</span>
+                            </span>
+                        </label>
+                        <input type="checkbox" class="toggle" name="ab_op_single" id="ab_op_single" ${options.op || options.op == 0 ? 'checked' : ''}>
+                    </div>
+                    <div class="parameter parameter-wide no-events">
+                        <label for="op_single">Default value</label>
+                        <input type="text" name="op_single" id="op_single" value="${options.op || options.op == 0 ? options.op : 1}" maxlength="4" class="input-primary input-number">
+                    </div>
+                    <div class="parameter parameter-wide no-events">
+                        <label for="bg_single">Default color</label>
+                        <input type="text" name="bg_single" id="bg_single" class="input-primary" data-jscolor="{value: '${options.bg}'}">
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button class="conversion-btn-pri">SAVE</button>
+                </div>
+            </div>
+        </div>`
+    document.querySelector('body').insertAdjacentHTML('afterbegin', html)
+    if(options.op || options.op == 0){
+        document.getElementById('ab_op_single').checked = true
+        document.querySelectorAll('#opacity_single .no-events').forEach(el=>el.classList.remove('no-events'))
+    }
+    //toggle no-events on opacity
+    document.getElementById('ab_op_single').addEventListener('change', () => {
+        document.querySelectorAll("#opacity_single .parameter:not(:first-of-type)").forEach(el => {
+            if(document.getElementById('ab_op_single').checked){
+                el.classList.remove("no-events")
+            } else {
+                el.classList.add("no-events")
+            }
+        })
+    })
+    //as now we can select no final format (so it won't be changed) we have to make those radios button unselectable
+    document.querySelectorAll('#to_single input[type="radio"]').forEach(btn => {
+        let id = btn.id;
+        document.querySelector('label[for="' + id + '"]').addEventListener('click', (e) => {
+            if (btn.checked) {
+                e.preventDefault()
+                btn.checked = false
+            }
+        })
+    })
+    //validate opacity value
+    document.getElementById('op_single').addEventListener('input', (e)=>{
+        const inputElement = e.target,
+            lastChIndex = inputElement.value.length - 1
+        if(inputElement.value[lastChIndex] === ','){
+            inputElement.value = inputElement.value.substring(0, lastChIndex) + '.'
+        }
+        let inputValue = inputElement.value
+        if (!/^[\d.]*$/.test(inputValue)) {
+            inputElement.value = inputValue.replace(/[^0-9.]/g, '')
+        }
+
+
+    })
+    //rebuild jscolor
+    jscolor.install();
+    document.querySelector('.blue-overlay .close-button').addEventListener('click', closeEditColor)
+    document.querySelector('.blue-overlay .conversion-btn-pri').addEventListener('click', ()=>saveColor(data.id))
+}
+
+function closeEditColor(){
+    let colorEditors = document.querySelectorAll('.blue-overlay')
+    if(colorEditors.length){
+        colorEditors.forEach(el => {
+            el.remove()
         })
     }
+}
+function saveColor(id){
+    const rowColor = document.getElementById(id+'-new'),
+        newColor = document.getElementById('editorResult').dataset.new
+    rowColor.innerText = newColor
+    closeEditColor()
 }
 function resetConversion(){
     const wrapper = document.querySelector('.color-list-wrapper')
@@ -248,6 +321,7 @@ function resetConversion(){
     editor.setValue(old_value)
     enableSidebar()
 }
+
 function getFrom(){
     let checkboxes = document.getElementById('from').querySelectorAll('input[type=checkbox]');
     let format = [];
@@ -291,21 +365,4 @@ function getBackground(){
         response: validation,
         data: validation ? input.value : ''
     }
-}
-function copyToClipboardCss(){
-    let css = editor.getValue()
-    if(css.length > 0){
-        let copyText = css
-        if(!css.startsWith('--Thank you for using Coding-Color.it--\n')) {
-            copyText = '--Thank you for using Coding-Color.it--\n'+css
-        }
-        navigator.clipboard.writeText(copyText);
-        alert('Editor test has been copied to clipboard', 'success');
-    } else {
-        alert('There\'s nothing to copy!', 'alert');
-    }
-}
-function copyToClipboardColor(text){
-    navigator.clipboard.writeText(text);
-    alert('Color ' + text + ' has been copied to clipboard', 'success');
 }
