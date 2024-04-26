@@ -121,9 +121,7 @@ function colorList(colors){
         let html = `
             <div class="color-row" id="color-${index}">
                 <p class="color-main"><span id="color-${index}-new">${col.color}</span> &lharu; <span class="color-original">${col.original}</span></p>
-                <div class="color-info">
-                    
-                </div>
+                <div class="color-info"></div>
                 <div class="open-color-btn"><img src="/assets/images/shared/edit-color.png" alt="edit color icon"></div>
             </div>`
         wrapper.querySelector('.color-list').insertAdjacentHTML('beforeend', html)
@@ -190,9 +188,9 @@ function build(){
     }
 }
 function editColor(data){
+    /*DOM SETTINGS*/
     closeEditColor()
     let options = JSON.parse(localStorage.getItem('manual_options')),
-        Converter = new Calculator()
         html = `
         <div class="blue-overlay">
             <div class="color-editor">
@@ -203,9 +201,9 @@ function editColor(data){
                         <div class="center-fix">
                             <div class="color-square" style="background-color:${data.original}"></div> 
                             &rharu; 
-                            <div class="color-square" style="background-color:${data.color}"></div> 
+                            <div id="converted_color_sqr" class="color-square" style="background-color:${data.color}"></div> 
                         </div>
-                        <p>${data.color}</p>
+                        <p id="converted_color_txt">${data.color}</p>
                     </div>
                 </div>
                 <div class="parameters" id="to_single">
@@ -216,11 +214,11 @@ function editColor(data){
                             <span class="info-text">If no format is selected the conversion won't change the color format</span>
                         </span>
                     </p>
-                    <input type="radio" class="ghost" name="format_out_single" id="rgb_out_single" value="rgb">
+                    <input type="radio" class="ghost" name="format_out_single" id="rgb_out_single" value="rgb" ${options.to === 'rgb' ? 'checked' : ''}>
                     <label class="btn-primary" for="rgb_out_single">RGB</label>
-                    <input type="radio" class="ghost" name="format_out_single" id="rgba_out_single" value="rgba">
+                    <input type="radio" class="ghost" name="format_out_single" id="rgba_out_single" value="rgba" ${options.to === 'rgba' ? 'checked' : ''}>
                     <label class="btn-primary" for="rgba_out_single">RGBA</label>
-                    <input type="radio" class="ghost" name="format_out_single" id="hex_out_single" value="hex">
+                    <input type="radio" class="ghost" name="format_out_single" id="hex_out_single" value="hex" ${options.to === 'hex' ? 'checked' : ''}>
                     <label class="btn-primary" for="hex_out_single">HEX</label>
                 </div>
                 <div class="parameters" id="opacity_single">
@@ -253,7 +251,29 @@ function editColor(data){
         document.getElementById('ab_op_single').checked = true
         document.querySelectorAll('#opacity_single .no-events').forEach(el=>el.classList.remove('no-events'))
     }
-    //toggle no-events on opacity
+    /* CONVERTER */
+    //first we save an editable copy of our options
+    let specific_options = localStorage.getItem('manual_single_options')
+    if(!specific_options){
+        let specific_options = options
+        localStorage.setItem('manual_single_options', JSON.stringify(options))
+    }
+    //then we set all of ours events
+    //TO FORMAT
+    document.querySelectorAll('#to_single input[type="radio"]').forEach(input => {
+        //deselect + convert
+        document.querySelector('label[for="' + input.id + '"]').addEventListener('click', (e) => {
+            let value = input.value
+            if (input.checked) {
+                e.preventDefault()
+                input.checked = false
+                value = false
+            }
+            singleColorConversion(data, 'to', value)
+        })
+    })
+    //OP
+    //toggle no-events on opacity + convert
     document.getElementById('ab_op_single').addEventListener('change', () => {
         document.querySelectorAll("#opacity_single .parameter:not(:first-of-type)").forEach(el => {
             if(document.getElementById('ab_op_single').checked){
@@ -262,18 +282,15 @@ function editColor(data){
                 el.classList.add("no-events")
             }
         })
+
+        if(document.getElementById('ab_op_single').checked){
+            singleColorConversion(data, 'op', parseFloat(document.getElementById('op_single').value))
+        } else {
+            singleColorConversion(data, 'op', false)
+        }
     })
-    //as now we can select no final format (so it won't be changed) we have to make those radios button unselectable
-    document.querySelectorAll('#to_single input[type="radio"]').forEach(btn => {
-        let id = btn.id;
-        document.querySelector('label[for="' + id + '"]').addEventListener('click', (e) => {
-            if (btn.checked) {
-                e.preventDefault()
-                btn.checked = false
-            }
-        })
-    })
-    //validate opacity value
+
+    //validate opacity value + convert
     document.getElementById('op_single').addEventListener('input', (e)=>{
         const inputElement = e.target,
             lastChIndex = inputElement.value.length - 1
@@ -284,15 +301,41 @@ function editColor(data){
         if (!/^[\d.]*$/.test(inputValue)) {
             inputElement.value = inputValue.replace(/[^0-9.]/g, '')
         }
-
-
+        if(parseFloat(inputElement.value) > 1){
+            inputElement.value = 1
+        }
+        if(!isNaN(parseFloat(inputElement.value) && parseFloat(inputElement.value) < 1)){
+            singleColorConversion(data, 'op', parseFloat(inputElement.value))
+        }
     })
-    //rebuild jscolor
-    jscolor.install();
+
+    //BG
+    jscolor.install()
+    document.getElementById('bg_single').addEventListener('input', function(){
+        singleColorConversion(data, 'bg', this.value)
+    })
+    
     document.querySelector('.blue-overlay .close-button').addEventListener('click', closeEditColor)
     document.querySelector('.blue-overlay .conversion-btn-pri').addEventListener('click', ()=>saveColor(data.id))
 }
+function singleColorConversion(color, option, value){
+    /* 1. Prendiamo le opzioni del colore
+    *  2. Settiamo le opzioni con quella da aggiornare
+    *  3. Convertiamo il colore
+    *  4. Settiamo il colore convertito
+    * */
+    console.log(color, option, value)
+    let general_options = JSON.parse(localStorage.getItem('manual_single_options'))   
+    general_options[option] = value
+    localStorage.setItem('manual_single_options', JSON.stringify(general_options))
 
+    let MiniCalculator = new Calculator(general_options.from, general_options.to, [color.original], general_options.op, general_options.bg),
+        result = MiniCalculator.calc()[0]
+        console.log(result)
+    document.getElementById('editorResult').dataset.new = result.css
+    document.getElementById('converted_color_txt').innerText = result.css
+    document.getElementById('converted_color_sqr').style.backgroundColor = result.css
+}
 function closeEditColor(){
     let colorEditors = document.querySelectorAll('.blue-overlay')
     if(colorEditors.length){
@@ -321,7 +364,6 @@ function resetConversion(){
     editor.setValue(old_value)
     enableSidebar()
 }
-
 function getFrom(){
     let checkboxes = document.getElementById('from').querySelectorAll('input[type=checkbox]');
     let format = [];
