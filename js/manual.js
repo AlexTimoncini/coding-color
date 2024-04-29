@@ -16,12 +16,12 @@ if(optionsJSON){
         document.querySelector('#to [value="'+options.to+'"]').checked = true
     }
     //Opacity toggle
-    if(options.op || options.op == 0){
+    if(options.op || options.op === 0){
         document.getElementById('ab_op').checked = true
         document.querySelectorAll('#opacity .no-events').forEach(el=>el.classList.remove('no-events'))
     }
     //Opacity value
-    document.getElementById('op').value = (options.op || options.op == 0) ? options.op : 1
+    document.getElementById('op').value = (options.op || options.op === 0) ? options.op : 1
     //Opacity from value toggle
     document.getElementById('op_from_var').checked = options.op_from_var
     //Opacity bg
@@ -230,11 +230,11 @@ function editColor(data){
                                 <span class="info-text">This value will never overwrite rgba alpha value, it will only works for rgb and hex</span>
                             </span>
                         </label>
-                        <input type="checkbox" class="toggle" name="ab_op_single" id="ab_op_single" ${options.op || options.op == 0 ? 'checked' : ''}>
+                        <input type="checkbox" class="toggle" name="ab_op_single" id="ab_op_single" ${options.op || options.op === 0 ? 'checked' : ''}>
                     </div>
                     <div class="parameter parameter-wide no-events">
                         <label for="op_single">Default value</label>
-                        <input type="text" name="op_single" id="op_single" value="${options.op || options.op == 0 ? options.op : 1}" maxlength="4" class="input-primary input-number">
+                        <input type="text" name="op_single" id="op_single" value="${options.op || options.op === 0 ? options.op : 1}" maxlength="4" class="input-primary input-number">
                     </div>
                     <div class="parameter parameter-wide no-events">
                         <label for="bg_single">Default color</label>
@@ -247,7 +247,7 @@ function editColor(data){
             </div>
         </div>`
     document.querySelector('body').insertAdjacentHTML('afterbegin', html)
-    if(options.op || options.op == 0){
+    if(options.op || options.op === 0){
         document.getElementById('ab_op_single').checked = true
         document.querySelectorAll('#opacity_single .no-events').forEach(el=>el.classList.remove('no-events'))
     }
@@ -324,14 +324,12 @@ function singleColorConversion(color, option, value){
     *  3. Convertiamo il colore
     *  4. Settiamo il colore convertito
     * */
-    console.log(color, option, value)
     let general_options = JSON.parse(localStorage.getItem('manual_single_options'))   
     general_options[option] = value
     localStorage.setItem('manual_single_options', JSON.stringify(general_options))
 
     let MiniCalculator = new Calculator(general_options.from, general_options.to, [color.original], general_options.op, general_options.bg),
         result = MiniCalculator.calc()[0]
-        console.log(result)
     document.getElementById('editorResult').dataset.new = result.css
     document.getElementById('converted_color_txt').innerText = result.css
     document.getElementById('converted_color_sqr').style.backgroundColor = result.css
@@ -348,6 +346,15 @@ function saveColor(id){
     const rowColor = document.getElementById(id+'-new'),
         newColor = document.getElementById('editorResult').dataset.new
     rowColor.innerText = newColor
+
+    let colors = JSON.parse(localStorage.getItem('manual_colors'))
+    console.log(colors)
+    colors.forEach((col, i) => {
+        if (col.id === id){
+            colors[i].color = newColor
+            localStorage.setItem('manual_colors', JSON.stringify(colors))
+        }
+    })
     closeEditColor()
 }
 function resetConversion(){
