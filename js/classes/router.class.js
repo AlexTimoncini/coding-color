@@ -19,7 +19,7 @@ export class Router {
         if (currentRoute in this.routes) {
             this.routes[currentRoute]();
         } else {
-            console.log('Route not found, loading default route');
+            console.log(currentHash, currentRoute, 'Route not found, loading default route');
             const defaultRoute = this.root + '/';
             if (defaultRoute in this.routes) {
                 this.routes[defaultRoute]();
