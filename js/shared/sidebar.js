@@ -30,8 +30,8 @@ function toggleSidebar(){
 
 function disableSidebar(){
     let sidebar = document.querySelector('.sidebar'),
-    filters = document.querySelector('.sidebar .filter-column')
-.querySelector('.sidebar')
+        filters = document.querySelector('.sidebar .filter-column')
+
     if(!sidebar.classList.contains('minimize')){
         sidebar.classList.add('minimize')
     }
