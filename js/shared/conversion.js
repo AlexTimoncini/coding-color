@@ -1,3 +1,13 @@
+initEditor()
+
+function initEditor(){
+    const editor = CodeMirror.fromTextArea(document.getElementById('colorsCss'), {
+        lineNumbers: true,
+        lineWrapping: true,
+        autofocus: true
+    })
+}
+
 //toggle no-events on opacity
 document.getElementById('ab_op').addEventListener('change', () => {
     document.querySelectorAll("#opacity .parameter:not(:first-of-type)").forEach(el => {
@@ -31,13 +41,6 @@ document.getElementById('op').addEventListener('input', (e)=>{
     if (!/^[\d.]*$/.test(inputValue)) {
         inputElement.value = inputValue.replace(/[^0-9.]/g, '');
     }
-})
-
-//Editor init
-const editor = CodeMirror.fromTextArea(document.getElementById('colorsCss'), {
-    lineNumbers: true,
-    lineWrapping: true,
-    autofocus: true
 })
 
 //Copy editor btn
@@ -88,6 +91,7 @@ function copyToClipboardColor(text){
 }
 
 function copyToClipboardCss(){
+    const editor = document.querySelector('.CodeMirror').CodeMirror
     let css = editor.getValue()
     if(css.length > 0){
         let copyText = css

@@ -2,7 +2,6 @@ import {Calculator} from './classes/coding-color.class.js';
 
 //Convert button
 document.getElementById('calculate_btn').addEventListener('click', convert) 
-
 function convert(){
     //From
     let fromData = getFrom()

@@ -4,39 +4,43 @@ import {Calculator} from './classes/coding-color.class.js';
 document.getElementById('calculate_btn').addEventListener('click', extract)
 
 //Sidebar default values
-let optionsJSON = localStorage.getItem('manual_options')
-if(optionsJSON){
-    let options = JSON.parse(optionsJSON)
-    //from
-    options.from.forEach(f=>{
-        document.querySelector('#from [value="'+f+'"]').checked = true
-    })
-    //to
-    if(options.to){
-        document.querySelector('#to [value="'+options.to+'"]').checked = true
+intiOptions()
+function intiOptions(){
+    let optionsJSON = localStorage.getItem('manual_options')
+    if(optionsJSON){
+        let options = JSON.parse(optionsJSON)
+        //from
+        options.from.forEach(f=>{
+            document.querySelector('#from [value="'+f+'"]').checked = true
+        })
+        //to
+        if(options.to){
+            document.querySelector('#to [value="'+options.to+'"]').checked = true
+        }
+        //Opacity toggle
+        if(options.op || options.op === 0){
+            document.getElementById('ab_op').checked = true
+            document.querySelectorAll('#opacity .no-events').forEach(el=>el.classList.remove('no-events'))
+        }
+        //Opacity value
+        document.getElementById('op').value = (options.op || options.op === 0) ? options.op : 1
+        //Opacity from value toggle
+        document.getElementById('op_from_var').checked = options.op_from_var
+        //Opacity bg
+        document.getElementById('bg').jscolor.fromString(options.bg)
+        jscolor.install()
+        //get opacity from variables flag
+        document.getElementById('op_from_var').checked =  options.op_from_var
     }
-    //Opacity toggle
-    if(options.op || options.op === 0){
-        document.getElementById('ab_op').checked = true
-        document.querySelectorAll('#opacity .no-events').forEach(el=>el.classList.remove('no-events'))
-    }
-    //Opacity value
-    document.getElementById('op').value = (options.op || options.op === 0) ? options.op : 1
-    //Opacity from value toggle
-    document.getElementById('op_from_var').checked = options.op_from_var
-    //Opacity bg
-    document.getElementById('bg').jscolor.fromString(options.bg)
-    jscolor.install()
-    //get opacity from variables flag
-    document.getElementById('op_from_var').checked =  options.op_from_var
 }
 
  /* END DOM */
 
 function extract(){
+    const editor = document.querySelector('.CodeMirror').CodeMirror
     setDefaultOptions()
     //From
-    let fromData = getFrom();
+    let fromData = getFrom()
     if(!fromData.response){
         alert('Please select at least one extracting format!', 'alert', '#from label')
         return
@@ -113,7 +117,8 @@ function setDefaultOptions(){
     localStorage.setItem('manual_options', JSON.stringify(options))
 }
 function colorList(colors){
-    const wrapper = document.querySelector('.color-list-wrapper')
+    const editor = document.querySelector('.CodeMirror').CodeMirror,
+          wrapper = document.querySelector('.color-list-wrapper')
     wrapper.appendChild(document.createElement("div"))
     wrapper.querySelector('div').classList.add('color-list')
     colors.forEach((col, index)=>{
@@ -148,6 +153,8 @@ function colorList(colors){
 }
 function build(){
     let optionsJSON = localStorage.getItem('manual_options')
+    const editor = document.querySelector('.CodeMirror').CodeMirror
+
     if(optionsJSON){
         let options = JSON.parse(optionsJSON),
             css = localStorage.getItem('manual_originalCss').split('\n'),
@@ -358,7 +365,8 @@ function saveColor(id){
     closeEditColor()
 }
 function resetConversion(){
-    const wrapper = document.querySelector('.color-list-wrapper')
+    const editor = document.querySelector('.CodeMirror').CodeMirror,
+          wrapper = document.querySelector('.color-list-wrapper')
     wrapper.innerHTML = ''
     if(document.querySelector('.editor-wrapper').classList.contains('hidden')){
         document.querySelector('.editor-wrapper').classList.remove('hidden')
